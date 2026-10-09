@@ -1,0 +1,10 @@
+{
+  "name": "apply-os",
+  "private": true,
+  "packageManager": "pnpm@10.34.6",
+  "scripts": {
+    "dev": "pnpm --filter @applyos/web dev",
+    "build": "pnpm --filter @applyos/web build",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
