@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --card: #131316;
+  --popover: rgb(24 24 27 / 0.9);
+  --muted: #1c1c20;
+  --muted-foreground: #a1a1aa;
+  --border: rgb(39 39 42 / 0.8);
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --accent: rgb(99 102 241 / 0.14);
+  --accent-foreground: #c7d2fe;
+  --destructive: #f87171;
+  --ring: #6366f1;
+}
+
+/* The app is dark-only: `dark:` utilities always apply. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-popover: var(--popover);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+
+  --animate-fade-in: fade-in 150ms ease-out;
+  --animate-slide-in-right: slide-in-right 200ms ease-out;
+  --animate-pop-in: pop-in 150ms ease-out;
+  --animate-rise-in: rise-in 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-shimmer: shimmer 1.6s linear infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes slide-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      translate: 0 6px;
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      scale: 0.97;
+    }
+  }
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  /* Tailwind v4 leaves buttons with the default cursor. Anything that
+     responds to a click should say so. */
+  a[href],
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="tab"],
+  select:not(:disabled),
+  summary,
+  label[for],
+  input[type="checkbox"],
+  input[type="file"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  body {
+    background:
+      radial-gradient(
+        ellipse 80% 50% at 50% -10%,
+        rgb(99 102 241 / 0.09),
+        transparent
+      ),
+      var(--background);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

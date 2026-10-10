@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ApplyOS Clipper</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 340px;
+        margin: 0;
+        padding: 14px;
+        background: #09090b;
+        color: #f4f4f5;
+        font: 13px/1.45 ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+      }
+      h1 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 12px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .logo {
+        display: grid;
+        place-items: center;
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        background: #6366f1;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      label {
+        display: block;
+        margin: 10px 0 4px;
+        color: #a1a1aa;
+        font-size: 11px;
+        font-weight: 500;
+      }
+      input[type="text"],
+      input[type="url"],
+      select {
+        width: 100%;
+        height: 32px;
+        padding: 0 9px;
+        border: 1px solid #27272a;
+        border-radius: 6px;
+        background: #18181b;
+        color: inherit;
+        font: inherit;
+        outline: none;
+        transition: border-color 150ms ease-out;
+      }
+      input:focus,
+      select:focus {
+        border-color: #6366f1;
+      }
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 10px 0 0;
+        color: #f4f4f5;
+        font-size: 13px;
+        cursor: pointer;
+      }
+      .check input {
+        accent-color: #6366f1;
+      }
+      .meta {
+        margin: 8px 0 0;
+        color: #71717a;
+        font-size: 11px;
+      }
+      button {
+        width: 100%;
+        height: 34px;
+        margin-top: 14px;
+        border: 0;
+        border-radius: 6px;
+        background: #6366f1;
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 150ms ease-out, opacity 150ms ease-out;
+      }
+      button:hover:not(:disabled) {
+        background: #818cf8;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .status {
+        margin-top: 12px;
+        padding: 8px 10px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        font-size: 12px;
+      }
+      .status:empty {
+        display: none;
+      }
+      .status.ok {
+        border-color: rgb(16 185 129 / 0.3);
+        background: rgb(16 185 129 / 0.1);
+        color: #6ee7b7;
+      }
+      .status.error {
+        border-color: rgb(239 68 68 / 0.3);
+        background: rgb(239 68 68 / 0.1);
+        color: #fca5a5;
+      }
+      a {
+        color: #a5b4fc;
+      }
+      details {
+        margin-top: 12px;
+        color: #a1a1aa;
+        font-size: 12px;
+      }
+      summary {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1><span class="logo">A</span>Import to ApplyOS</h1>
+
+    <label for="company">Company</label>
+    <input id="company" type="text" maxlength="200" />
+    <label for="role">Role</label>
+    <input id="role" type="text" maxlength="200" />
+    <p class="meta" id="captured">Reading this page…</p>
+
+    <label for="model">Tailor with</label>
+    <select id="model">
+      <option value="">ApplyOS default</option>
+      <option value="claude-sonnet-5-5">Claude Sonnet 5.5</option>
+      <option value="gpt-4o">GPT-4o</option>
+      <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+    </select>
+
+    <label class="check"><input id="autoTailor" type="checkbox" checked /> Tailor resume, cover letter and outreach</label>
+    <label class="check"><input id="applied" type="checkbox" /> I have already applied</label>
+
+    <button id="import" disabled>Import to ApplyOS</button>
+    <div id="status" class="status" role="status"></div>
+
+    <details>
+      <summary>ApplyOS address</summary>
+      <label for="appUrl">Where your ApplyOS runs</label>
+      <input id="appUrl" type="url" placeholder="http://localhost:3000" />
+      <p class="meta">You must be signed in to ApplyOS in this browser.</p>
+    </details>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
