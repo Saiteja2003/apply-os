@@ -3,6 +3,7 @@
 import {
   Briefcase,
   CalendarDays,
+  Compass,
   FileText,
   LayoutDashboard,
   LogOut,
@@ -27,6 +28,7 @@ interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, shortcut: "D" },
+  { href: "/discover", label: "Discover", icon: Compass, shortcut: "J" },
   { href: "/applications", label: "Applications", icon: Briefcase, shortcut: "A" },
   { href: "/calendar", label: "Calendar", icon: CalendarDays, shortcut: "C" },
   { href: "/resume", label: "Resume", icon: FileText, shortcut: "R" },
