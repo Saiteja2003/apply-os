@@ -4,14 +4,16 @@ import { z } from "zod";
 
 import type { ActionResult } from "@/lib/action-result";
 import {
+  getMasterResumeHistory,
   getMasterResumeVersion,
   listMasterResumeVersions,
-  saveMasterResume,
-} from "@/lib/db/master-resume";
+  restoreMasterResumeVersion,
+  saveMasterResumeVersion,
+} from "@/lib/db/resume";
 import { describeGatewayError } from "@/lib/llm/describe-error";
 import { GatewayError } from "@/lib/llm/errors";
 import { getModel } from "@/lib/llm/models";
-import { masterResumeSchema } from "@/lib/resume/schema";
+import { masterResumeSchema, parsedResumeSchema } from "@/lib/resume/schema";
 import { importResumeFromText } from "@/lib/resume/text-import";
 import type { VerbatimGuardResult } from "@/lib/resume/verbatim-guard";
 import { getSessionUser } from "@/lib/supabase/server";
@@ -19,6 +21,7 @@ import type {
   MasterResume,
   MasterResumeVersion,
   MasterResumeVersionSummary,
+  ParsedResumeData,
 } from "@/lib/types/resume";
 
 const SIGNED_OUT = "You are signed out. Sign in and try again.";
@@ -32,45 +35,82 @@ const modelConfigSchema = z.object({
 });
 
 /**
- * Saves the resume as a new version. Earlier versions are never modified:
- * the table is append-only and the database rejects updates.
+ * Saves the resume as a new version. Strictly append-only:
+ * Never executes an SQL UPDATE against master_resumes.
  */
-export async function saveMasterResumeAction(
-  resume: MasterResume,
+export async function saveMasterResumeVersionAction(
+  updatedAST: ParsedResumeData,
 ): Promise<ActionResult<MasterResumeVersion>> {
   const user = await getSessionUser();
   if (!user) return { ok: false, error: SIGNED_OUT };
 
-  const parsed = masterResumeSchema.safeParse(resume);
+  const parsed = parsedResumeSchema.safeParse(updatedAST);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
     return {
       ok: false,
       error: issue
         ? `${issue.path.join(" › ")}: ${issue.message}`
-        : "The resume is not valid.",
+        : "The resume AST is not valid.",
     };
   }
 
   try {
-    return { ok: true, data: await saveMasterResume(user.id, parsed.data) };
+    const saved = await saveMasterResumeVersion(user.id, parsed.data);
+    return { ok: true, data: saved };
   } catch (error) {
     console.error(error);
-    return { ok: false, error: "Could not save the new version." };
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not save the new version.",
+    };
   }
 }
 
-export async function listResumeVersionsAction(): Promise<
+/** Backwards-compatible alias for existing callers */
+export const saveMasterResumeAction = saveMasterResumeVersionAction;
+
+/**
+ * Fetches all version snapshots (id, version, created_at, summary)
+ * for the authenticated user ordered by version desc.
+ */
+export async function getMasterResumeHistoryAction(): Promise<
   ActionResult<MasterResumeVersionSummary[]>
 > {
   const user = await getSessionUser();
   if (!user) return { ok: false, error: SIGNED_OUT };
 
   try {
-    return { ok: true, data: await listMasterResumeVersions(user.id) };
+    const history = await getMasterResumeHistory(user.id);
+    return { ok: true, data: history };
   } catch (error) {
     console.error(error);
-    return { ok: false, error: "Could not load version history." };
+    return { ok: false, error: "Could not load master resume version history." };
+  }
+}
+
+export const listResumeVersionsAction = getMasterResumeHistoryAction;
+
+/** Restores a historical version by creating a new tip version matching it. */
+export async function restoreMasterResumeVersionAction(
+  versionNumber: number,
+): Promise<ActionResult<MasterResumeVersion>> {
+  const user = await getSessionUser();
+  if (!user) return { ok: false, error: SIGNED_OUT };
+
+  if (typeof versionNumber !== "number" || versionNumber <= 0) {
+    return { ok: false, error: "Invalid version number." };
+  }
+
+  try {
+    const restored = await restoreMasterResumeVersion(user.id, versionNumber);
+    return { ok: true, data: restored };
+  } catch (error) {
+    console.error(error);
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : "Could not restore version.",
+    };
   }
 }
 
@@ -81,7 +121,7 @@ export async function getResumeVersionAction(
   const user = await getSessionUser();
   if (!user) return { ok: false, error: SIGNED_OUT };
 
-  const id = z.uuid().safeParse(versionId);
+  const id = z.string().uuid().safeParse(versionId);
   if (!id.success) return { ok: false, error: "Unknown version." };
 
   try {
@@ -103,14 +143,17 @@ export async function importResumeTextAction(
   const user = await getSessionUser();
   if (!user) return { ok: false, error: SIGNED_OUT };
 
-  const source = typeof text === "string" ? text.trim() : "";
-  if (source.length < MIN_IMPORT_CHARS) {
-    return { ok: false, error: "Paste the full text of your resume." };
-  }
-  if (source.length > MAX_IMPORT_CHARS) {
+  const trimmed = text.trim();
+  if (trimmed.length < MIN_IMPORT_CHARS) {
     return {
       ok: false,
-      error: "That text is too long (40,000 characters max).",
+      error: `Paste the full resume text (at least ${MIN_IMPORT_CHARS} characters).`,
+    };
+  }
+  if (trimmed.length > MAX_IMPORT_CHARS) {
+    return {
+      ok: false,
+      error: `Resume text is too long (${MAX_IMPORT_CHARS.toLocaleString()} characters max).`,
     };
   }
 
@@ -120,19 +163,16 @@ export async function importResumeTextAction(
   }
 
   try {
-    return {
-      ok: true,
-      data: await importResumeFromText({
-        text: source,
-        modelConfig: config.data,
-      }),
-    };
+    const imported = await importResumeFromText({
+      text: trimmed,
+      modelConfig: config.data,
+    });
+    return { ok: true, data: imported };
   } catch (error) {
     if (error instanceof GatewayError) {
-      console.error("Resume import failed", error.attempts);
-      return { ok: false, error: describeGatewayError(error, "Import") };
+      return { ok: false, error: describeGatewayError(error, "Resume import") };
     }
     console.error(error);
-    return { ok: false, error: "Import failed. Try again." };
+    return { ok: false, error: "Could not parse the resume. Try again." };
   }
 }

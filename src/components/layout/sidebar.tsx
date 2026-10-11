@@ -31,7 +31,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/discover", label: "Discover", icon: Compass, shortcut: "J" },
   { href: "/applications", label: "Applications", icon: Briefcase, shortcut: "A" },
   { href: "/calendar", label: "Calendar", icon: CalendarDays, shortcut: "C" },
-  { href: "/resume", label: "Resume", icon: FileText, shortcut: "R" },
+  { href: "/resume", label: "Master Resume", icon: FileText, shortcut: "R" },
   { href: "/settings", label: "Settings", icon: Settings, shortcut: "S" },
 ];
 

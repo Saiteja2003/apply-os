@@ -184,3 +184,6 @@ export function validateResume(draft: MasterResume): ResumeValidation {
     })),
   };
 }
+
+export const parsedResumeSchema = masterResumeSchema;
+

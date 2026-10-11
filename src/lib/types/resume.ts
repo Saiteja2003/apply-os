@@ -117,11 +117,15 @@ export interface MasterResumeVersion {
   resume: MasterResume;
 }
 
+export type ParsedResumeData = MasterResume;
+
 /** A version without its content, for listing history. */
 export interface MasterResumeVersionSummary {
   id: string;
   version: number;
+  versionNumber?: number;
   createdAt: string;
+  summary?: string;
 }
 
 // ---------------------------------------------------------------------------

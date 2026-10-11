@@ -43,7 +43,7 @@ export function collectIds(resume: MasterResume): Set<string> {
 }
 
 /** A new id that is not in `taken`. The id is added to `taken`. */
-export function newId(prefix: string, taken: Set<string>): string {
+export function newId(prefix: string, taken: Set<string> = new Set()): string {
   for (;;) {
     const id = `${prefix}_${crypto.randomUUID().replace(/-/g, "").slice(0, 8)}`;
     if (!taken.has(id)) {
