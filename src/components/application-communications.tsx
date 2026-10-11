@@ -354,7 +354,7 @@ export function ApplicationCommunications({
         </span>
         <p className="mt-3 text-sm font-medium">No emails yet</p>
         <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-          Recruiter emails forwarded to ApplyOS appear here, matched to the
+          Recruiter emails forwarded to Honing appear here, matched to the
           right job, with a reply drafted for you to review.
         </p>
       </div>
@@ -364,7 +364,7 @@ export function ApplicationCommunications({
   return (
     <div className="space-y-4">
       <p className="text-xs text-muted-foreground">
-        Replies are drafts. ApplyOS never sends email: copy a reply into your
+        Replies are drafts. Honing never sends email: copy a reply into your
         own mail client after you have read it.
       </p>
       <ul className="space-y-4">

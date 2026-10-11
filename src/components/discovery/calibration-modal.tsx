@@ -471,7 +471,7 @@ export function CalibrationModal({
                 <div className="mt-2.5 flex items-start gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 p-2.5 text-xs text-amber-300/90">
                   <AlertTriangle className="size-4 shrink-0 text-amber-400 mt-0.5" />
                   <span>
-                    <strong>Strict filter enabled:</strong> ApplyOS will reject any job
+                    <strong>Strict filter enabled:</strong> Honing will reject any job
                     specifying &quot;No visa sponsorship&quot; or requiring existing citizenship/clearance.
                   </span>
                 </div>

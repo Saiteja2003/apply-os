@@ -9,7 +9,7 @@ import {
 import { getSessionUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Job Radar & Autonomous Dispatch · ApplyOS",
+  title: "Job Radar & Autonomous Dispatch · Honing",
   description:
     "Candidate calibration profile, strict permission protocol, and preference-filtered job opportunities.",
 };

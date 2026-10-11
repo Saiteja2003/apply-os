@@ -5,7 +5,7 @@ import { getMasterResume } from "@/lib/db/resume";
 import { getSessionUser } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Master Resume Studio · ApplyOS",
+  title: "Master Resume Studio · Honing",
   description:
     "Structured AST visual editor with append-only revisions and live ATS vector preview.",
 };

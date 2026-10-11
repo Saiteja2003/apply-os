@@ -19,7 +19,7 @@ import {
 } from "@/components/application-communications";
 import { InterviewPrepStudio } from "@/components/interview/interview-prep-studio";
 import { MatchScore } from "@/components/match-score";
-import { ResumeDiffViewer } from "@/components/resume-diff-viewer";
+import { ResumeDiffViewer } from "@/components/applications/resume-diff-viewer";
 import { ResumePreview } from "@/components/resume-preview";
 import { STATUS_LABELS } from "@/components/status-badge";
 import { Badge } from "@/components/ui/badge";
@@ -59,7 +59,7 @@ interface ApplicationDrawerProps {
 }
 
 const TABS = [
-  { id: "diff", label: "Resume diff" },
+  { id: "diff", label: "Before vs. After" },
   { id: "preview", label: "Resume preview" },
   { id: "assets", label: "Cover Letter & Outreach" },
   { id: "prep", label: "Interview prep" },
@@ -82,26 +82,6 @@ function DiffTab({
   onTailor,
 }: Pick<DrawerBodyProps, "application" | "master" | "isTailoring" | "onTailor">) {
   const patch = application.patchDocument;
-  const tailoredBy = application.tailoredByModel;
-  // A patch only makes sense against the exact version it was computed from.
-  const patchMatchesMaster =
-    patch !== null && master !== null && patch.masterResumeId === master.id;
-
-  const tailorButton = (label: string, variant: "default" | "outline") => (
-    <Button
-      variant={variant}
-      size={variant === "outline" ? "sm" : "default"}
-      disabled={isTailoring}
-      onClick={() => onTailor(application.id)}
-    >
-      {isTailoring ? (
-        <Loader2 className="animate-spin" aria-hidden />
-      ) : (
-        <Sparkles aria-hidden />
-      )}
-      {isTailoring ? "Tailoring…" : label}
-    </Button>
-  );
 
   return (
     <div className="space-y-6">
@@ -111,64 +91,51 @@ function DiffTab({
         </p>
       )}
 
-      {patch ? (
-        <>
-          <section>
-            <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-sm font-medium">ATS keyword match</h3>
-              <MatchScore score={application.matchScore} />
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {application.atsKeywords.matched.map((keyword) => (
-                <Badge key={keyword} variant="success">
-                  {keyword}
-                </Badge>
-              ))}
-              {application.atsKeywords.missing.map((keyword) => (
-                <Badge key={keyword} variant="outline">
-                  {keyword}
-                </Badge>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-sm font-medium">Resume diff</h3>
-              <div className="flex items-center gap-2">
-                <p className="text-xs text-muted-foreground">
-                  Tailored by{" "}
-                  {tailoredBy ? (getModel(tailoredBy)?.label ?? tailoredBy) : "–"}
-                </p>
-                {tailorButton("Re-tailor", "outline")}
-              </div>
-            </div>
-            <div className="mt-2">
-              {patchMatchesMaster && master ? (
-                <ResumeDiffViewer master={master.resume} patch={patch} />
-              ) : (
-                <p className="rounded-lg border border-dashed border-zinc-800 px-4 py-6 text-center text-sm text-muted-foreground">
-                  This patch was made against an earlier version of your master
-                  resume. Re-tailor to compare against the current one.
-                </p>
-              )}
-            </div>
-          </section>
-        </>
+      {patch && master ? (
+        <ResumeDiffViewer
+          master={master.resume}
+          patch={patch}
+          application={application}
+          onTailor={() => onTailor(application.id)}
+          isTailoring={isTailoring}
+        />
       ) : (
-        <section className="rounded-xl border border-dashed border-zinc-800 px-4 py-10 text-center">
-          <p className="text-sm font-medium">No tailored resume yet</p>
-          <p className="mx-auto mt-1 mb-4 max-w-sm text-sm text-muted-foreground">
-            Tailoring re-orders and rephrases your existing bullets for this
-            job. Your master resume is not changed.
+        <section className="rounded-xl border border-dashed border-zinc-800 bg-zinc-900/40 p-8 text-center shadow-sm">
+          <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-indigo-500/10 text-indigo-400 ring-1 ring-indigo-500/20">
+            <Sparkles className="size-6" />
+          </div>
+          <h3 className="text-base font-semibold text-zinc-100">Ready to Tailor</h3>
+          <p className="mx-auto mt-1.5 mb-6 max-w-md text-sm text-zinc-400 leading-relaxed">
+            Generate an ATS-optimized variant of your resume tailored specifically for{" "}
+            <span className="font-medium text-zinc-200">{application.roleTitle}</span> at{" "}
+            <span className="font-medium text-zinc-200">{application.companyName}</span>. Your master resume remains 100% immutable and unedited.
           </p>
-          {tailorButton("Tailor resume", "default")}
+          <Button
+            size="default"
+            disabled={isTailoring}
+            onClick={() => onTailor(application.id)}
+            className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium shadow-md shadow-indigo-600/20 transition-all duration-150"
+          >
+            {isTailoring ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Tailoring in progress…
+              </>
+            ) : (
+              <>
+                <Sparkles className="mr-2 size-4" />
+                Tailor Resume with Honing
+              </>
+            )}
+          </Button>
         </section>
       )}
 
-      <section>
-        <h3 className="text-sm font-medium">Job description</h3>
-        <p className="mt-1.5 text-sm leading-relaxed whitespace-pre-wrap text-muted-foreground">
+      <section className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          Job Description
+        </h3>
+        <p className="mt-2 text-xs font-mono leading-relaxed whitespace-pre-wrap text-zinc-400 max-h-60 overflow-y-auto pr-2">
           {application.jobDescription}
         </p>
       </section>

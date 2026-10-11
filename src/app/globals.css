@@ -1,39 +1,107 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: dark;
-  --background: #09090b;
-  --foreground: #f4f4f5;
-  --card: #131316;
-  --popover: rgb(24 24 27 / 0.9);
-  --muted: #1c1c20;
-  --muted-foreground: #a1a1aa;
-  --border: rgb(39 39 42 / 0.8);
-  --primary: #6366f1;
-  --primary-foreground: #ffffff;
-  --accent: rgb(99 102 241 / 0.14);
-  --accent-foreground: #c7d2fe;
-  --destructive: #f87171;
-  --ring: #6366f1;
-}
-
-/* The app is dark-only: `dark:` utilities always apply. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root,
+.dark {
+  color-scheme: dark;
+  --background: 240 10% 4%;
+  --foreground: 240 5% 96%;
+  --card: 240 10% 6%;
+  --card-foreground: 240 5% 96%;
+  --surface: 240 10% 6%;
+  --popover: 240 10% 6%;
+  --popover-foreground: 240 5% 96%;
+  --primary: 243 75% 59%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 5% 12%;
+  --secondary-foreground: 240 5% 96%;
+  --muted: 240 6% 10%;
+  --muted-foreground: 240 4% 56%;
+  --border: 240 5% 16%;
+  --input: 240 5% 16%;
+  --ring: 243 75% 59%;
+  --accent: 243 75% 59% / 0.14;
+  --accent-foreground: 238 84% 87%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Honing brand design tokens */
+  --honing-graphite-950: #09090b;
+  --honing-graphite-900: #101014;
+  --honing-graphite-850: #131316;
+  --honing-graphite-800: #1c1c20;
+  --honing-graphite-line: rgb(36 36 42 / 0.9);
+  --honing-steel-50: #f4f4f5;
+  --honing-steel-400: #8e8e98;
+  --honing-steel-500: #71717a;
+  --honing-edge-200: #c7d2fe;
+  --honing-edge-400: #818cf8;
+  --honing-edge-500: #6366f1;
+  --honing-edge-600: #4f46e5;
+  --honing-edge-glow: rgb(99 102 241 / 0.09);
+}
+
+.light {
+  color-scheme: light;
+  --background: 0 0% 98%;
+  --foreground: 240 10% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 4%;
+  --surface: 0 0% 100%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 4%;
+  --primary: 243 75% 59%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 5% 96%;
+  --secondary-foreground: 240 10% 4%;
+  --muted: 240 5% 96%;
+  --muted-foreground: 240 4% 46%;
+  --border: 240 6% 90%;
+  --input: 240 6% 90%;
+  --ring: 243 75% 59%;
+  --accent: 243 75% 59% / 0.08;
+  --accent-foreground: 243 75% 40%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+
+  /* Honing brand design tokens */
+  --honing-graphite-950: #09090b;
+  --honing-graphite-900: #111114;
+  --honing-graphite-850: #131316;
+  --honing-graphite-800: #1c1c20;
+  --honing-graphite-line: rgb(228 228 231 / 0.9);
+  --honing-steel-50: #09090b;
+  --honing-steel-400: #52525b;
+  --honing-steel-500: #71717a;
+  --honing-edge-200: #4f46e5;
+  --honing-edge-400: #4f46e5;
+  --honing-edge-500: #6366f1;
+  --honing-edge-600: #4f46e5;
+  --honing-edge-glow: rgb(99 102 241 / 0.07);
+}
+
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-popover: var(--popover);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-ring: var(--ring);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-surface: hsl(var(--surface));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-ring: hsl(var(--ring));
 
   --animate-fade-in: fade-in 150ms ease-out;
   --animate-slide-in-right: slide-in-right 200ms ease-out;
@@ -75,7 +143,7 @@
 
 @layer base {
   * {
-    border-color: var(--border);
+    border-color: hsl(var(--border));
   }
   /* Tailwind v4 leaves buttons with the default cursor. Anything that
      responds to a click should say so. */
@@ -97,12 +165,12 @@
     background:
       radial-gradient(
         ellipse 80% 50% at 50% -10%,
-        rgb(99 102 241 / 0.09),
+        rgb(99 102 241 / 0.08),
         transparent
       ),
-      var(--background);
+      hsl(var(--background));
     background-attachment: fixed;
-    color: var(--foreground);
+    color: hsl(var(--foreground));
     font-family:
       ui-sans-serif,
       system-ui,

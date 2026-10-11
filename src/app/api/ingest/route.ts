@@ -134,7 +134,7 @@ export async function POST(request: NextRequest) {
 
   const user = await getSessionUser();
   if (!user) {
-    return respond(request, { error: "Sign in to ApplyOS first." }, 401);
+    return respond(request, { error: "Sign in to Honing first." }, 401);
   }
 
   const body: unknown = await request.json().catch(() => null);

@@ -58,13 +58,13 @@ const TIERS: {
     title: "Tier 3: Autonomous Dispatch",
     tagline: "Direct agentic submission with strict safety halts.",
     description:
-      "ApplyOS submits applications on your behalf via ATS API or browser automation. Execution strictly enforces a 5/day quota and halts on any question outside your profile.",
+      "Honing submits applications on your behalf via ATS API or browser automation. Execution strictly enforces a 5/day quota and halts on any question outside your profile.",
     icon: Zap,
     badge: { text: "Fully Agentic", variant: "warning" },
   },
 ];
 
-const AUTONOMOUS_CONSENT_DECLARATION = `I hereby grant ApplyOS explicit legal authorization to act as my designated agent to compile and submit job applications on my behalf. I acknowledge and agree to the following terms:
+const AUTONOMOUS_CONSENT_DECLARATION = `I hereby grant Honing explicit legal authorization to act as my designated agent to compile and submit job applications on my behalf. I acknowledge and agree to the following terms:
 1. Daily Rate Cap: A strict circuit breaker limit of 5 submissions per day is enforced.
 2. Compliance Circuit Breaker: Submissions will HALT IMMEDIATELY if an application presents questions outside my calibrated intake profile.
 3. Master AST Ground Truth: Submissions rely strictly on genuine achievements from my Master Resume AST with zero fabrication.
@@ -156,7 +156,7 @@ export function PermissionGate({
             </Badge>
           </div>
           <p className="mt-1 text-xs text-zinc-400">
-            Define the exact level of autonomy ApplyOS is granted when discovering and
+            Define the exact level of autonomy Honing is granted when discovering and
             dispatching job applications.
           </p>
         </div>

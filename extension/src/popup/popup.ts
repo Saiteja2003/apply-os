@@ -1,3 +1,4 @@
+import type { AutofillResult, CandidateProfile } from "../autofill/types";
 import type { ExtractedJob } from "../types/extractor";
 
 const DEFAULT_APP_URL = "http://localhost:3000";
@@ -25,6 +26,9 @@ const appliedCheckbox = $<HTMLInputElement>("applied");
 const clipBtn = $<HTMLButtonElement>("clipBtn");
 const btnSpinner = $<HTMLSpanElement>("btnSpinner");
 const btnText = $<HTMLSpanElement>("btnText");
+const autofillBtn = $<HTMLButtonElement>("autofillBtn");
+const autofillSpinner = $<HTMLSpanElement>("autofillSpinner");
+const autofillBtnText = $<HTMLSpanElement>("autofillBtnText");
 const statusAlert = $<HTMLDivElement>("statusAlert");
 const statusMessage = $<HTMLDivElement>("statusMessage");
 const actionLinks = $<HTMLDivElement>("actionLinks");
@@ -84,6 +88,26 @@ async function checkHostConnection(origin: string) {
   } catch {
     setConnectionStatus("offline", "Unreachable");
   }
+}
+
+async function syncCandidateProfile(origin: string): Promise<CandidateProfile | null> {
+  try {
+    const res = await fetch(`${origin}/api/profile/autofill-data`, {
+      method: "GET",
+      credentials: "include",
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.profile) {
+        await chrome.storage.local.set({ candidateProfile: data.profile });
+        return data.profile;
+      }
+    }
+  } catch {
+    // Unreachable or offline, use cached profile
+  }
+  const cached = await chrome.storage.local.get("candidateProfile");
+  return (cached.candidateProfile as CandidateProfile) || null;
 }
 
 async function loadSettings() {
@@ -224,10 +248,10 @@ async function handleClip() {
     });
 
     if (res.status === 401) {
-      showAlert("error", "You are signed out. Please sign in to ApplyOS.");
+      showAlert("error", "You are signed out. Please sign in to Honing.");
       setConnectionStatus("offline", "Auth Required");
     } else if (res.status === 403) {
-      showAlert("error", "Origin not accepted by ApplyOS (CORS / Extension origin check).");
+      showAlert("error", "Origin not accepted by Honing (CORS / Extension origin check).");
     } else if (!res.ok) {
       const data = await res.json().catch(() => ({}));
       showAlert("error", data.error || `Server responded with HTTP ${res.status}.`);
@@ -242,7 +266,7 @@ async function handleClip() {
       return;
     }
   } catch (err) {
-    showAlert("error", `Could not connect to ApplyOS at ${origin}.`);
+    showAlert("error", `Could not connect to Honing at ${origin}.`);
     setConnectionStatus("offline", "Unreachable");
   } finally {
     btnSpinner.classList.add("hidden");
@@ -253,8 +277,97 @@ async function handleClip() {
   }
 }
 
+async function handleAutofill() {
+  const origin = getAppOrigin();
+  autofillBtn.disabled = true;
+  autofillSpinner.classList.remove("hidden");
+  autofillBtnText.textContent = "Autofilling...";
+  clearAlert();
+
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab || !tab.id || !/^https?:/.test(tab.url || "")) {
+    showAlert("error", "Open an active job application form page first.");
+    autofillBtn.disabled = false;
+    autofillSpinner.classList.add("hidden");
+    autofillBtnText.textContent = "Autofill Application Form";
+    return;
+  }
+
+  // Load candidate profile
+  let profile = await syncCandidateProfile(origin);
+  if (!profile) {
+    const cached = await chrome.storage.local.get("candidateProfile");
+    profile = (cached.candidateProfile as CandidateProfile) || null;
+  }
+
+  if (!profile) {
+    showAlert(
+      "error",
+      "No candidate profile found. Sign in to Honing to load your intake data.",
+    );
+    autofillBtn.disabled = false;
+    autofillSpinner.classList.add("hidden");
+    autofillBtnText.textContent = "Autofill Application Form";
+    return;
+  }
+
+  try {
+    // Seed profile data into the page context
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: (candidateData: any) => {
+        (window as any).__applyos_candidate_profile = candidateData;
+      },
+      args: [profile],
+    });
+
+    // Execute autofill content script
+    const [injection] = await chrome.scripting.executeScript<AutofillResult>({
+      target: { tabId: tab.id },
+      files: ["autofill.js"],
+    });
+
+    const result = injection && injection.result;
+    if (result && result.filledCount > 0) {
+      const unhandledMsg =
+        result.unhandledFields.length > 0
+          ? ` (${result.unhandledFields.length} custom question(s) highlighted in amber)`
+          : "";
+      showAlert(
+        "success",
+        `✓ Autofilled ${result.filledCount} fields (${result.portal.toUpperCase()}). Review before submitting${unhandledMsg}.`,
+      );
+      autofillBtnText.textContent = `Autofilled (${result.filledCount}) ✓`;
+    } else if (result && result.unhandledFields.length > 0) {
+      showAlert(
+        "error",
+        `Detected ${result.unhandledFields.length} custom fields (highlighted in amber). Fill them manually.`,
+      );
+      autofillBtnText.textContent = "Autofill Application Form";
+    } else {
+      showAlert(
+        "error",
+        "No matching application form inputs detected on this page. Open the application form or Easy Apply modal first.",
+      );
+      autofillBtnText.textContent = "Autofill Application Form";
+    }
+  } catch (err) {
+    showAlert("error", "Failed to inject autofill script into page.");
+    autofillBtnText.textContent = "Autofill Application Form";
+  } finally {
+    autofillSpinner.classList.add("hidden");
+    setTimeout(() => {
+      autofillBtn.disabled = false;
+      if (autofillBtnText.textContent.includes("✓")) {
+        autofillBtnText.textContent = "Autofill Application Form";
+      }
+    }, 3500);
+  }
+}
+
 // Event Listeners
 clipBtn.addEventListener("click", handleClip);
+autofillBtn.addEventListener("click", handleAutofill);
 
 testBtn.addEventListener("click", async () => {
   const origin = getAppOrigin();
@@ -263,7 +376,9 @@ testBtn.addEventListener("click", async () => {
 
 appUrlInput.addEventListener("change", () => {
   saveSettings();
-  checkHostConnection(getAppOrigin());
+  const origin = getAppOrigin();
+  checkHostConnection(origin);
+  syncCandidateProfile(origin);
 });
 
 modelSelect.addEventListener("change", saveSettings);
@@ -274,5 +389,6 @@ autoTailorCheckbox.addEventListener("change", saveSettings);
   await loadSettings();
   const origin = getAppOrigin();
   checkHostConnection(origin);
+  syncCandidateProfile(origin);
   await inspectActiveTab();
 })();

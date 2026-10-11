@@ -9,7 +9,7 @@ export function Input({
   return (
     <input
       className={cn(
-        "h-9 w-full rounded-md border bg-zinc-900 border-zinc-800 text-zinc-100 placeholder:text-zinc-500 focus:border-indigo-500 px-3 text-sm transition-[border-color,box-shadow] duration-150 outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-60 aria-[invalid=true]:border-red-500/60 aria-[invalid=true]:focus:ring-red-500/20",
+        "h-9 w-full rounded-md border border-border bg-card px-3 text-sm text-foreground placeholder:text-muted-foreground transition-[border-color,box-shadow] duration-150 outline-none focus:border-primary focus:ring-2 focus:ring-ring/20 disabled:opacity-60 aria-[invalid=true]:border-destructive/60 aria-[invalid=true]:focus:ring-destructive/20",
         className,
       )}
       {...props}

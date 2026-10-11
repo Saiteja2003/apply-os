@@ -14,6 +14,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+import { HoningLogo } from "@/components/brand/logo";
 import { signOutAction } from "@/app/actions/auth";
 import { Kbd } from "@/components/ui/kbd";
 import { cn } from "@/lib/utils";
@@ -87,19 +88,15 @@ export function Sidebar({ userEmail }: { userEmail: string | null }) {
   useNavigationShortcuts();
 
   return (
-    <aside className="flex w-14 shrink-0 flex-col border-r bg-zinc-950/60 backdrop-blur-md md:w-60">
+    <aside className="flex w-14 shrink-0 flex-col border-r border-border bg-card/80 backdrop-blur-md dark:bg-zinc-950/60 md:w-60">
       <div className="flex h-14 items-center px-2">
         <Link
           href="/dashboard"
-          aria-label="ApplyOS, go to dashboard"
-          className="group/logo flex h-9 items-center gap-2.5 rounded-md px-1.5 transition-colors duration-150 outline-none hover:bg-zinc-800/40 focus-visible:ring-2 focus-visible:ring-ring md:px-2"
+          aria-label="Honing, go to dashboard"
+          className="group/logo flex h-9 items-center gap-2.5 rounded-md px-1.5 transition-colors duration-150 outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring md:px-2"
         >
-          <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-primary text-xs font-bold text-primary-foreground shadow-md shadow-indigo-500/30 transition-transform duration-150 group-hover/logo:scale-105">
-            A
-          </span>
-          <span className="hidden text-[15px] font-semibold tracking-tight md:inline">
-            ApplyOS
-          </span>
+          <HoningLogo variant="mark" size="sm" className="md:hidden" />
+          <HoningLogo variant="full" size="sm" className="hidden md:block" />
         </Link>
       </div>
 
@@ -126,18 +123,23 @@ export function Sidebar({ userEmail }: { userEmail: string | null }) {
               className={cn(
                 "group relative flex h-8 items-center gap-2.5 rounded-md px-2.5 text-[13px] transition-colors duration-150 ease-out outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 active
-                  ? "bg-zinc-800/70 font-medium text-zinc-100 shadow-sm shadow-black/20"
-                  : "text-zinc-400 hover:bg-zinc-800/40 hover:text-zinc-100",
+                  ? "bg-muted font-medium text-foreground shadow-sm shadow-black/10 dark:bg-zinc-800/70 dark:text-zinc-100 dark:shadow-black/20"
+                  : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
               )}
             >
               {active && (
                 <span
-                  className="absolute top-1.5 bottom-1.5 left-0 w-0.5 rounded-full bg-indigo-400"
+                  className="absolute top-1.5 bottom-1.5 left-0 w-0.5 rounded-full bg-indigo-500 dark:bg-indigo-400"
                   aria-hidden
                 />
               )}
               <Icon
-                className={cn("size-4 shrink-0", active && "text-indigo-400")}
+                className={cn(
+                  "size-4 shrink-0",
+                  active
+                    ? "text-indigo-600 dark:text-indigo-400"
+                    : "text-muted-foreground group-hover:text-foreground",
+                )}
                 aria-hidden
               />
               <span className="hidden flex-1 md:inline">{label}</span>
@@ -153,16 +155,16 @@ export function Sidebar({ userEmail }: { userEmail: string | null }) {
         })}
       </nav>
 
-      <form action={signOutAction} className="mt-auto border-t p-2">
+      <form action={signOutAction} className="mt-auto border-t border-border p-2">
         {userEmail && (
-          <p className="hidden truncate px-2.5 pb-1.5 text-xs text-zinc-500 md:block">
+          <p className="hidden truncate px-2.5 pb-1.5 text-xs text-muted-foreground md:block">
             {userEmail}
           </p>
         )}
         <button
           type="submit"
           title="Sign out"
-          className="flex h-8 w-full items-center gap-2.5 rounded-md px-2.5 text-[13px] text-zinc-400 transition-colors duration-150 outline-none hover:bg-zinc-800/40 hover:text-zinc-100 focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex h-8 w-full items-center gap-2.5 rounded-md px-2.5 text-[13px] text-muted-foreground transition-colors duration-150 outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         >
           <LogOut className="size-4 shrink-0" aria-hidden />
           <span className="hidden md:inline">Sign out</span>

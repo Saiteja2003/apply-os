@@ -304,7 +304,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 const UNRECOGNISED =
-  "This JSON does not look like a resume. Use the ApplyOS format or the JSON Resume standard (jsonresume.org).";
+  "This JSON does not look like a resume. Use the Honing format or the JSON Resume standard (jsonresume.org).";
 
 export function parseResumeJson(source: string): ImportedResume {
   let json: unknown;

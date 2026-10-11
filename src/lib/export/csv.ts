@@ -61,7 +61,7 @@ function applicationToRow(app: JobApplication): string[] {
 
 /**
  * Export an array of `JobApplication` objects to a CSV file downloaded on the
- * client. The file is named `applyos_applications_YYYY-MM-DD.csv`.
+ * client. The file is named `honing_applications_YYYY-MM-DD.csv`.
  */
 export function exportApplicationsToCsv(
   applications: JobApplication[],
@@ -80,7 +80,7 @@ export function exportApplicationsToCsv(
   const today = new Date().toISOString().slice(0, 10);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `applyos_applications_${today}.csv`;
+  link.download = `honing_applications_${today}.csv`;
   link.style.display = "none";
   document.body.appendChild(link);
   link.click();

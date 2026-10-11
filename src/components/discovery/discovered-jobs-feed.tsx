@@ -437,7 +437,7 @@ export function DiscoveredJobsFeed({
                 Compliance Halt Simulator
               </DialogTitle>
               <DialogDescription className="text-xs text-zinc-400 mt-1">
-                Verifies ApplyOS&apos;s non-negotiable safety halt when encountering
+                Verifies Honing&apos;s non-negotiable safety halt when encountering
                 questions outside your calibrated profile.
               </DialogDescription>
             </div>

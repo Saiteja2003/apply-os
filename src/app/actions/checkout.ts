@@ -59,7 +59,7 @@ export async function createCheckoutSessionAction(
             currency: "usd",
             unit_amount: bundle.priceCents,
             product_data: {
-              name: `ApplyOS ${bundle.name} (${bundle.credits} Credits)`,
+              name: `Honing ${bundle.name} (${bundle.credits} Credits)`,
               description: bundle.description,
             },
           },

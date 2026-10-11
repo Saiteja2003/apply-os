@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "ApplyOS Clipper",
+  "name": "Honing — Career Ingestion Clipper",
   "version": "1.0.0",
-  "description": "Deterministic one-click job clipper and tailoring bridge for ApplyOS.",
+  "description": "Deterministic one-click job clipper, form filler, and tailoring bridge for Honing.",
   "action": {
-    "default_title": "Clip & Tailor with ApplyOS",
+    "default_title": "Clip & Tailor with Honing",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",

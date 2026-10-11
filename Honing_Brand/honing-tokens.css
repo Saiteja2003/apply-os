@@ -1,0 +1,37 @@
+/* Honing brand tokens. Drop-in for src/app/globals.css :root.
+   Values are the app's existing palette, renamed to brand roles. */
+:root {
+  /* Graphite: neutral foundation (zinc) */
+  --honing-graphite-950: #09090b; /* page */
+  --honing-graphite-900: #111114; /* app icon tile, sidebar */
+  --honing-graphite-850: #131316; /* card surface */
+  --honing-graphite-800: #1c1c20; /* muted surface */
+  --honing-graphite-line: rgb(39 39 42 / 0.8); /* borders */
+
+  /* Steel: text and the mark's stems */
+  --honing-steel-50: #f4f4f5;  /* primary text, mark stems on dark */
+  --honing-steel-400: #a1a1aa; /* secondary text */
+  --honing-steel-500: #71717a; /* tertiary text, removed words */
+
+  /* Edge: the single accent. Reserved for the delta and primary action. */
+  --honing-edge-200: #c7d2fe; /* accent text on dark */
+  --honing-edge-400: #818cf8; /* mark delta on dark, links */
+  --honing-edge-500: #6366f1; /* primary buttons, focus ring */
+  --honing-edge-600: #4f46e5; /* mark delta on light */
+  --honing-edge-glow: rgb(99 102 241 / 0.09);
+
+  /* Semantic (never used as brand color) */
+  --honing-added: #4ade80;
+  --honing-warning: #fbbf24;
+  --honing-danger: #f87171;
+
+  /* Type */
+  --honing-font-sans: "Geist", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --honing-font-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+  --honing-font-editorial: "Instrument Serif", Georgia, serif; /* italic, marketing only */
+
+  /* Geometry */
+  --honing-bevel: 26.565deg; /* 1:2 rise, the angle of every cut */
+  --honing-radius-tile: 22.5%;
+  --honing-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -216,7 +216,7 @@ export function ClipImport() {
           <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
             {unreadable
               ? "The link carried a job that could not be decoded, most likely because it was cut short. Clip the posting again, or add it by hand from the "
-              : "This page receives jobs from the ApplyOS clipper. Open a job posting and use the bookmarklet or the browser extension, or add one by hand from the "}
+              : "This page receives jobs from the Honing clipper. Open a job posting and use the bookmarklet or the browser extension, or add one by hand from the "}
             <Link
               href="/dashboard"
               className="rounded text-indigo-400 transition-colors outline-none hover:text-indigo-300 focus-visible:ring-2 focus-visible:ring-ring"

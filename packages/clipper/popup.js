@@ -23,6 +23,9 @@
   var clipBtn = $("clipBtn");
   var btnSpinner = $("btnSpinner");
   var btnText = $("btnText");
+  var autofillBtn = $("autofillBtn");
+  var autofillSpinner = $("autofillSpinner");
+  var autofillBtnText = $("autofillBtnText");
   var statusAlert = $("statusAlert");
   var statusMessage = $("statusMessage");
   var actionLinks = $("actionLinks");
@@ -75,6 +78,24 @@
     } catch {
       setConnectionStatus("offline", "Unreachable");
     }
+  }
+  async function syncCandidateProfile(origin) {
+    try {
+      const res = await fetch(`${origin}/api/profile/autofill-data`, {
+        method: "GET",
+        credentials: "include"
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.profile) {
+          await chrome.storage.local.set({ candidateProfile: data.profile });
+          return data.profile;
+        }
+      }
+    } catch {
+    }
+    const cached = await chrome.storage.local.get("candidateProfile");
+    return cached.candidateProfile || null;
   }
   async function loadSettings() {
     try {
@@ -191,10 +212,10 @@
         body: JSON.stringify(payload)
       });
       if (res.status === 401) {
-        showAlert("error", "You are signed out. Please sign in to ApplyOS.");
+        showAlert("error", "You are signed out. Please sign in to Honing.");
         setConnectionStatus("offline", "Auth Required");
       } else if (res.status === 403) {
-        showAlert("error", "Origin not accepted by ApplyOS (CORS / Extension origin check).");
+        showAlert("error", "Origin not accepted by Honing (CORS / Extension origin check).");
       } else if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         showAlert("error", data.error || `Server responded with HTTP ${res.status}.`);
@@ -207,7 +228,7 @@
         return;
       }
     } catch (err) {
-      showAlert("error", `Could not connect to ApplyOS at ${origin}.`);
+      showAlert("error", `Could not connect to Honing at ${origin}.`);
       setConnectionStatus("offline", "Unreachable");
     } finally {
       btnSpinner.classList.add("hidden");
@@ -217,14 +238,92 @@
       }
     }
   }
+  async function handleAutofill() {
+    const origin = getAppOrigin();
+    autofillBtn.disabled = true;
+    autofillSpinner.classList.remove("hidden");
+    autofillBtnText.textContent = "Autofilling...";
+    clearAlert();
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab || !tab.id || !/^https?:/.test(tab.url || "")) {
+      showAlert("error", "Open an active job application form page first.");
+      autofillBtn.disabled = false;
+      autofillSpinner.classList.add("hidden");
+      autofillBtnText.textContent = "Autofill Application Form";
+      return;
+    }
+    let profile = await syncCandidateProfile(origin);
+    if (!profile) {
+      const cached = await chrome.storage.local.get("candidateProfile");
+      profile = cached.candidateProfile || null;
+    }
+    if (!profile) {
+      showAlert(
+        "error",
+        "No candidate profile found. Sign in to Honing to load your intake data."
+      );
+      autofillBtn.disabled = false;
+      autofillSpinner.classList.add("hidden");
+      autofillBtnText.textContent = "Autofill Application Form";
+      return;
+    }
+    try {
+      await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: (candidateData) => {
+          window.__applyos_candidate_profile = candidateData;
+        },
+        args: [profile]
+      });
+      const [injection] = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["autofill.js"]
+      });
+      const result = injection && injection.result;
+      if (result && result.filledCount > 0) {
+        const unhandledMsg = result.unhandledFields.length > 0 ? ` (${result.unhandledFields.length} custom question(s) highlighted in amber)` : "";
+        showAlert(
+          "success",
+          `\u2713 Autofilled ${result.filledCount} fields (${result.portal.toUpperCase()}). Review before submitting${unhandledMsg}.`
+        );
+        autofillBtnText.textContent = `Autofilled (${result.filledCount}) \u2713`;
+      } else if (result && result.unhandledFields.length > 0) {
+        showAlert(
+          "error",
+          `Detected ${result.unhandledFields.length} custom fields (highlighted in amber). Fill them manually.`
+        );
+        autofillBtnText.textContent = "Autofill Application Form";
+      } else {
+        showAlert(
+          "error",
+          "No matching application form inputs detected on this page. Open the application form or Easy Apply modal first."
+        );
+        autofillBtnText.textContent = "Autofill Application Form";
+      }
+    } catch (err) {
+      showAlert("error", "Failed to inject autofill script into page.");
+      autofillBtnText.textContent = "Autofill Application Form";
+    } finally {
+      autofillSpinner.classList.add("hidden");
+      setTimeout(() => {
+        autofillBtn.disabled = false;
+        if (autofillBtnText.textContent.includes("\u2713")) {
+          autofillBtnText.textContent = "Autofill Application Form";
+        }
+      }, 3500);
+    }
+  }
   clipBtn.addEventListener("click", handleClip);
+  autofillBtn.addEventListener("click", handleAutofill);
   testBtn.addEventListener("click", async () => {
     const origin = getAppOrigin();
     await checkHostConnection(origin);
   });
   appUrlInput.addEventListener("change", () => {
     saveSettings();
-    checkHostConnection(getAppOrigin());
+    const origin = getAppOrigin();
+    checkHostConnection(origin);
+    syncCandidateProfile(origin);
   });
   modelSelect.addEventListener("change", saveSettings);
   autoTailorCheckbox.addEventListener("change", saveSettings);
@@ -232,6 +331,7 @@
     await loadSettings();
     const origin = getAppOrigin();
     checkHostConnection(origin);
+    syncCandidateProfile(origin);
     await inspectActiveTab();
   })();
 })();

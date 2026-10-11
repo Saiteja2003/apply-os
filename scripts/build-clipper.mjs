@@ -91,36 +91,36 @@ function generatePngIcon(size) {
         continue;
       }
 
-      const nx = (x / (size - 1)) * 2 - 1;
-      const ny = (y / (size - 1)) * 2 - 1;
+      const gx = (x / Math.max(1, size - 1)) * 64;
+      const gy = (y / Math.max(1, size - 1)) * 64;
 
-      let isGlyph = false;
-      const apexY = -0.55;
-      const baseY = 0.55;
-      const legSlope = 0.45;
-      const thickness = 0.14;
+      // Honing Geometry on 64-unit grid
+      // Master left stem
+      const isMasterStem = gx >= 12 && gx <= 24 && gy >= 12 && gy <= 52;
+      // Variant right stem (beveled 1:2 cut from y=18 at x=40 down to y=12 at x=52)
+      const variantCutTop = 18 - (gx - 40) * 0.5;
+      const isVariantStem = gx >= 40 && gx <= 52 && gy >= variantCutTop && gy <= 52;
+      // Floating delta crossbar (beveled 1:2, stops short of stems)
+      const deltaTop = 30.5 - (gx - 27) * 0.5;
+      const isDelta = gx >= 27 && gx <= 37 && gy >= deltaTop && gy <= deltaTop + 8;
 
-      if (ny >= apexY && ny <= baseY) {
-        const t = (ny - apexY) / (baseY - apexY);
-        const expectedX = t * legSlope;
-        if (Math.abs(Math.abs(nx) - expectedX) < thickness) {
-          isGlyph = true;
-        }
-        if (Math.abs(ny - 0.1) < 0.12 && Math.abs(nx) <= 0.35) {
-          isGlyph = true;
-        }
-      }
-
-      if (isGlyph) {
+      if (isDelta) {
+        // Honing Edge 400 (#818CF8)
+        rawData.writeUInt8(129, offset++);
+        rawData.writeUInt8(140, offset++);
+        rawData.writeUInt8(248, offset++);
         rawData.writeUInt8(255, offset++);
-        rawData.writeUInt8(255, offset++);
-        rawData.writeUInt8(255, offset++);
+      } else if (isMasterStem || isVariantStem) {
+        // Honing Steel 50 (#F4F4F5)
+        rawData.writeUInt8(244, offset++);
+        rawData.writeUInt8(244, offset++);
+        rawData.writeUInt8(245, offset++);
         rawData.writeUInt8(255, offset++);
       } else {
-        const grad = Math.floor((y / size) * 20);
-        rawData.writeUInt8(Math.max(60, 79 - grad), offset++);
-        rawData.writeUInt8(Math.max(55, 70 - grad), offset++);
-        rawData.writeUInt8(229, offset++);
+        // Honing Graphite 900 tile (#111114)
+        rawData.writeUInt8(17, offset++);
+        rawData.writeUInt8(17, offset++);
+        rawData.writeUInt8(20, offset++);
         rawData.writeUInt8(255, offset++);
       }
     }
@@ -134,7 +134,7 @@ function generatePngIcon(size) {
 }
 
 async function build() {
-  console.log("🚀 Building ApplyOS Clipper (Manifest V3 - IIFE)...");
+  console.log("🚀 Building Honing Clipper (Manifest V3 - IIFE)...");
 
   const extDir = path.join(ROOT, "extension");
   const distDir = path.join(extDir, "dist");
@@ -172,6 +172,7 @@ async function build() {
     entryPoints: [
       { in: path.join(extDir, "src", "popup", "popup.ts"), out: "popup" },
       { in: path.join(extDir, "src", "extract.ts"), out: "extract" },
+      { in: path.join(extDir, "src", "autofill", "filler.ts"), out: "autofill" },
     ],
     bundle: true,
     format: "iife",
@@ -190,9 +191,22 @@ async function build() {
     fs.writeFileSync(path.join(distDir, "extract.js"), extractJs, "utf8");
   }
 
+  // Ensure autofill.js returns the autofill result when evaluated via chrome.scripting.executeScript
+  let autofillJs = fs.readFileSync(path.join(distDir, "autofill.js"), "utf8");
+  const lastAutofillEnd = autofillJs.lastIndexOf("})();");
+  if (lastAutofillEnd !== -1) {
+    autofillJs =
+      autofillJs.slice(0, lastAutofillEnd) +
+      "  return (window && window.__applyos_last_autofill) || null;\n})();\n";
+    fs.writeFileSync(path.join(distDir, "autofill.js"), autofillJs, "utf8");
+  }
+
   // Mirror bundled scripts to packages/clipper
   fs.copyFileSync(path.join(distDir, "extract.js"), path.join(packagesDistDir, "extract.js"));
   fs.copyFileSync(path.join(distDir, "extract.js"), path.join(ROOT, "packages", "clipper", "extract.js"));
+
+  fs.copyFileSync(path.join(distDir, "autofill.js"), path.join(packagesDistDir, "autofill.js"));
+  fs.copyFileSync(path.join(distDir, "autofill.js"), path.join(ROOT, "packages", "clipper", "autofill.js"));
 
   fs.copyFileSync(path.join(distDir, "popup.js"), path.join(packagesDistDir, "popup.js"));
   fs.copyFileSync(path.join(distDir, "popup.js"), path.join(ROOT, "packages", "clipper", "popup.js"));
@@ -224,6 +238,7 @@ async function build() {
 
   const popupJsContent = fs.readFileSync(path.join(distDir, "popup.js"), "utf8");
   const extractJsContent = fs.readFileSync(path.join(distDir, "extract.js"), "utf8");
+  const autofillJsContent = fs.readFileSync(path.join(distDir, "autofill.js"), "utf8");
 
   if (/\bexports\b/.test(popupJsContent)) {
     throw new Error("popup.js contains reference to 'exports'!");
@@ -237,6 +252,12 @@ async function build() {
   if (/\bmodule\.exports\b/.test(extractJsContent)) {
     throw new Error("extract.js contains reference to 'module.exports'!");
   }
+  if (/\bexports\b/.test(autofillJsContent)) {
+    throw new Error("autofill.js contains reference to 'exports'!");
+  }
+  if (/\bmodule\.exports\b/.test(autofillJsContent)) {
+    throw new Error("autofill.js contains reference to 'module.exports'!");
+  }
 
   const scriptMatch = popupHtml.match(/<script(?![^>]*src=)[^>]*>([\s\S]*?)<\/script>/i);
   if (scriptMatch) {
@@ -248,6 +269,7 @@ async function build() {
     popupHtml: fs.statSync(path.join(distDir, "popup.html")).size,
     popupJs: popupJsContent.length,
     extractJs: extractJsContent.length,
+    autofillJs: autofillJsContent.length,
     icon128: fs.statSync(path.join(distDir, "icons", "icon-128.png")).size,
   };
 
@@ -256,6 +278,7 @@ async function build() {
   console.log(`   - popup.html:    ${distStats.popupHtml} B`);
   console.log(`   - popup.js:      ${distStats.popupJs} B (0 exports references)`);
   console.log(`   - extract.js:    ${distStats.extractJs} B (0 exports references)`);
+  console.log(`   - autofill.js:   ${distStats.autofillJs} B (0 exports references)`);
   console.log(`   - icons/icon-128:${distStats.icon128} B`);
   console.log(`📍 Extension bundle is ready at: ${distDir}`);
 }

@@ -1,0 +1,374 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Honing Brand Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: a single 1080px column on a 64-unit baseline grid; specimen plates sit flush, notes run beside them. */
+:root {
+  --bg: #09090b; --plate: #111114; --surface: #131316; --line: rgb(39 39 42 / .8);
+  --fg: #f4f4f5; --fg-2: #a1a1aa; --fg-3: #71717a;
+  --edge: #818cf8; --edge-strong: #6366f1; --edge-soft: rgb(99 102 241 / .14); --glow: rgb(99 102 241 / .10);
+  --inv-bg: #ffffff; --inv-fg: #09090b; --inv-edge: #4f46e5;
+  --added: #4ade80; --danger: #f87171;
+  --sans: "Geist", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) {
+  --bg: #fafafa; --plate: #f1f1f3; --surface: #ffffff; --line: rgb(212 212 216 / .9);
+  --fg: #09090b; --fg-2: #52525b; --fg-3: #71717a;
+  --edge: #4f46e5; --edge-strong: #4f46e5; --edge-soft: rgb(79 70 229 / .08); --glow: rgb(99 102 241 / .07);
+  --inv-bg: #09090b; --inv-fg: #f4f4f5; --inv-edge: #818cf8; --added: #16a34a; --danger: #dc2626;
+  color-scheme: light; } }
+:root[data-theme="light"] {
+  --bg: #fafafa; --plate: #f1f1f3; --surface: #ffffff; --line: rgb(212 212 216 / .9);
+  --fg: #09090b; --fg-2: #52525b; --fg-3: #71717a;
+  --edge: #4f46e5; --edge-strong: #4f46e5; --edge-soft: rgb(79 70 229 / .08); --glow: rgb(99 102 241 / .07);
+  --inv-bg: #09090b; --inv-fg: #f4f4f5; --inv-edge: #818cf8; --added: #16a34a; --danger: #dc2626;
+  color-scheme: light; }
+
+* { box-sizing: border-box; }
+body { background: radial-gradient(ellipse 80% 420px at 50% -60px, var(--glow), transparent), var(--bg);
+  color: var(--fg); font: 400 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; padding: 0 20px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 56px 96px; display: grid; gap: 112px; }
+h1, h2, h3 { font-weight: 600; letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+h2 { font-size: 28px; line-height: 1.15; }
+h3 { font-size: 15px; letter-spacing: -.005em; }
+p { margin: 0; max-width: 62ch; color: var(--fg-2); }
+.label { font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--fg-3); }
+code, .mono { font-family: var(--mono); font-size: 12.5px; }
+.ink { fill: currentColor; } .delta { fill: var(--edge); }
+section { display: grid; gap: 32px; }
+.head { display: grid; grid-template-columns: 200px 1fr; gap: 24px; align-items: start; }
+.head > div { display: grid; gap: 12px; min-width: 0; }
+@media (max-width: 720px) { .head { grid-template-columns: 1fr; gap: 8px; } }
+
+/* Hero */
+.hero { display: grid; gap: 40px; padding-top: 24px; }
+.hero-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.hero-top svg { height: 30px; width: auto; color: var(--fg); }
+.hero h1 { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(48px, 9vw, 104px); line-height: .95; letter-spacing: -.02em; }
+.hero h1 span { color: var(--fg-3); }
+.hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
+@media (max-width: 720px) { .hero-grid { grid-template-columns: 1fr; } }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+.facts div { padding: 14px 0 0; display: grid; gap: 6px; }
+.facts b { font: 500 13px/1.3 var(--sans); color: var(--fg); }
+
+/* Plates */
+.plate { background: var(--plate); border: 1px solid var(--line); border-radius: 4px; position: relative; overflow: hidden; }
+.inv { background: var(--inv-bg); color: var(--inv-fg); --edge: var(--inv-edge); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 720px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+
+/* Construction */
+.construct { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; }
+@media (max-width: 820px) { .construct { grid-template-columns: 1fr; } }
+.construct .plate { aspect-ratio: 1; max-width: 100%; }
+.construct svg { width: 100%; height: 100%; display: block; color: var(--fg); }
+.gridline { stroke: var(--line); stroke-width: .12; }
+.guide { stroke: var(--edge); stroke-width: .18; stroke-dasharray: .8 .6; fill: none; }
+.anno { font: 500 1.7px/1 var(--mono); fill: var(--fg-3); letter-spacing: .08em; }
+.anno.e { fill: var(--edge); }
+.rules { display: grid; gap: 0; align-content: start; }
+.rule { display: grid; grid-template-columns: 44px 1fr; gap: 16px; padding: 20px 0; border-top: 1px solid var(--line); }
+.rule:last-child { border-bottom: 1px solid var(--line); }
+.rule svg { width: 44px; height: 44px; color: var(--fg); }
+.rule div { display: grid; gap: 6px; min-width: 0; }
+
+/* Lockups */
+.lock { display: grid; place-items: center; padding: 64px 24px; min-height: 220px; }
+.lock svg { width: min(100%, 360px); height: auto; color: inherit; }
+.lock.word svg { width: min(100%, 300px); }
+.cap { position: absolute; left: 14px; bottom: 12px; }
+.clear svg { width: min(100%, 520px); }
+.clear .zone { fill: var(--edge-soft); stroke: var(--edge); stroke-width: .5; stroke-dasharray: 2 2; }
+.sizes { display: flex; align-items: flex-end; gap: 32px; flex-wrap: wrap; padding: 40px 32px; color: var(--fg); }
+.sizes figure { margin: 0; display: grid; gap: 10px; justify-items: start; }
+
+/* Color */
+.swatches { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+@media (max-width: 820px) { .swatches { grid-template-columns: 1fr 1fr; } }
+.sw { background: var(--surface); display: grid; grid-template-rows: 140px auto; }
+.sw .chip { display: flex; align-items: flex-end; padding: 12px; }
+.sw .meta { padding: 14px; display: grid; gap: 4px; }
+.sw .meta b { font-weight: 600; font-size: 14px; }
+.sw .meta span { font: 400 12px/1.5 var(--mono); color: var(--fg-3); font-variant-numeric: tabular-nums; }
+.sw .meta p { font-size: 13px; margin-top: 6px; }
+.ramp { display: grid; grid-template-columns: repeat(9, 1fr); border-radius: 4px; overflow: hidden; border: 1px solid var(--line); }
+.ramp div { height: 56px; display: flex; align-items: flex-end; padding: 6px; font: 400 10px/1 var(--mono); }
+.ratio { display: grid; grid-template-columns: 1fr; gap: 0; }
+.ratio-bar { display: flex; height: 14px; border-radius: 2px; overflow: hidden; border: 1px solid var(--line); }
+
+/* Type */
+.spec { display: grid; gap: 0; }
+.spec-row { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 28px 0; border-top: 1px solid var(--line); align-items: baseline; }
+.spec-row:last-child { border-bottom: 1px solid var(--line); }
+.spec-row > div { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 720px) { .spec-row { grid-template-columns: 1fr; gap: 10px; } }
+.scale { display: grid; gap: 8px; }
+.scale div { display: grid; grid-template-columns: 72px 1fr; gap: 16px; align-items: baseline; }
+.scale div > :last-child { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--fg); }
+
+/* App icon */
+.icons { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-end; padding: 48px 32px; }
+.icons figure { margin: 0; display: grid; gap: 12px; justify-items: center; }
+.icons img, .icons svg { display: block; }
+.px { image-rendering: pixelated; }
+
+/* In product */
+.mock { border-radius: 8px; border: 1px solid var(--line); overflow: hidden; background: #09090b; color: #f4f4f5; }
+.mock-bar { display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px; border-bottom: 1px solid rgb(39 39 42 / .8); background: rgb(9 9 11 / .6); --edge: #818cf8; }
+.mock-bar svg { height: 17px; width: auto; }
+.crumb { font-size: 13px; color: #71717a; display: flex; gap: 6px; align-items: center; }
+.crumb b { color: #f4f4f5; font-weight: 500; }
+.mock-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgb(39 39 42 / .8); }
+@media (max-width: 720px) { .mock-body { grid-template-columns: 1fr; } }
+.pane { background: #111114; padding: 20px; display: grid; gap: 12px; align-content: start; }
+.pane .label { color: #71717a; }
+.pane p { color: #d4d4d8; font-size: 13.5px; }
+del { color: #71717a; text-decoration-color: rgb(113 113 122 / .7); }
+ins { text-decoration: none; color: #4ade80; background: rgb(74 222 128 / .08); border-radius: 2px; padding: 0 2px; }
+.btn { justify-self: start; font: 500 13px/1 var(--sans); background: #6366f1; color: #fff; border: 0; padding: 9px 14px; border-radius: 6px; box-shadow: 0 0 0 1px rgb(255 255 255 / .08) inset, 0 8px 24px -8px rgb(99 102 241 / .5); }
+
+/* Misuse */
+.donts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 820px) { .donts { grid-template-columns: 1fr 1fr; } }
+.dont { display: grid; gap: 10px; }
+.dont .plate { aspect-ratio: 1; display: grid; place-items: center; }
+.dont .plate svg { width: 48%; color: var(--fg); }
+.dont .plate::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - .5px), var(--danger) 50%, transparent calc(50% + .5px)); opacity: .5; }
+.dont p { font-size: 13px; }
+
+/* Files */
+.files { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); }
+@media (max-width: 720px) { .files { grid-template-columns: 1fr; } }
+.files div { padding: 18px 16px 18px 0; display: grid; gap: 8px; align-content: start; }
+.files ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font: 400 12.5px/1.5 var(--mono); color: var(--fg-2); }
+pre { margin: 0; background: var(--plate); border: 1px solid var(--line); border-radius: 4px; padding: 18px; overflow-x: auto; font: 400 12.5px/1.7 var(--mono); color: var(--fg-2); }
+.copy { font: 500 12px/1 var(--sans); color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; cursor: pointer; transition: border-color .15s ease-out, color .15s ease-out; justify-self: start; }
+.copy:hover { border-color: var(--edge); }
+.copy:focus-visible { outline: 2px solid var(--edge); outline-offset: 2px; }
+footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 18px; }
+@media (prefers-reduced-motion: no-preference) {
+  .hero .draw { animation: rise .7s cubic-bezier(.16,1,.3,1) both; }
+  .hero .draw.d2 { animation-delay: .08s; } .hero .draw.d3 { animation-delay: .16s; }
+  @keyframes rise { from { transform: translateY(6px); opacity: .001; } }
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="mark" viewBox="0 0 64 64"><path class="ink" d="M12 12H24V52H12ZM40 18L52 12V52H40Z"/><path class="delta" d="M27 30.5L37 25.5V33.5L27 38.5Z"/></symbol>
+    <symbol id="wordmark" viewBox="0 0 201 66"><g transform="translate(3.493 48) scale(0.056338)"><path d="M80 0.0V-710.0H210V-370.6L150.4 -413.8H568.2L508.6 -370.6V-710.0H638.6V0.0H508.6V-343.4L568.2 -300.6H150.4L210 -343.4V0.0Z M1008.8 12.0Q929.8 12.0 870.6 -22.4Q811.4 -56.8 778.8 -119.7Q746.2 -182.6 746.2 -267Q746.2 -352 778.8 -414.4Q811.4 -476.8 870.6 -511.4Q929.8 -546 1008.8 -546Q1087.8 -546 1146.7 -511.4Q1205.6 -476.8 1238.2 -414.4Q1270.8 -352 1270.8 -267Q1270.8 -182.6 1238.2 -119.7Q1205.6 -56.8 1146.7 -22.4Q1087.8 12.0 1008.8 12.0ZM1008.8 -91.6Q1070.6 -91.6 1104.5 -137.9Q1138.4 -184.2 1138.4 -267Q1138.4 -349.4 1104.5 -395.9Q1070.6 -442.4 1008.8 -442.4Q947 -442.4 912.8 -395.9Q878.6 -349.4 878.6 -267Q878.6 -184.2 912.8 -137.9Q947 -91.6 1008.8 -91.6Z M1368.4 0.0V-534H1484.2L1489.2 -384.2L1473.6 -390.4Q1482 -446.2 1506.8 -480.3Q1531.6 -514.4 1567.9 -530.2Q1604.2 -546 1647.2 -546Q1706.2 -546 1746.5 -520.2Q1786.8 -494.4 1807.7 -448.9Q1828.6 -403.4 1828.6 -343.4V0.0H1700.6V-302.2Q1700.6 -347.2 1691.9 -378.3Q1683.2 -409.4 1662.8 -425.7Q1642.4 -442 1608 -442Q1556.6 -442 1526.5 -406.1Q1496.4 -370.2 1496.4 -302.2V0.0Z M1957.4 0.0V-534H2085.4V0.0Z M2214.4 0.0V-534H2330.2L2335.2 -384.2L2319.6 -390.4Q2328 -446.2 2352.8 -480.3Q2377.6 -514.4 2413.9 -530.2Q2450.2 -546 2493.2 -546Q2552.2 -546 2592.5 -520.2Q2632.8 -494.4 2653.7 -448.9Q2674.6 -403.4 2674.6 -343.4V0.0H2546.6V-302.2Q2546.6 -347.2 2537.9 -378.3Q2529.2 -409.4 2508.8 -425.7Q2488.4 -442 2454 -442Q2402.6 -442 2372.5 -406.1Q2342.4 -370.2 2342.4 -302.2V0.0Z M3030.8 162.0Q2960.6 162.0 2910.8 143.0Q2861 124.0 2830.4 89.6Q2799.8 55.2 2788 10.4L2920 1.2Q2929.6 31 2954.5 48.1Q2979.4 65.2 3030.8 65.2Q3090.4 65.2 3122.3 38.6Q3154.2 12 3154.2 -44.4V-111.6Q3135.2 -72.8 3093.2 -49.4Q3051.2 -26 2999.2 -26Q2933 -26 2881.5 -58.6Q2830 -91.2 2801.1 -149.6Q2772.2 -208 2772.2 -285.4Q2772.2 -362.2 2800.8 -420.7Q2829.4 -479.2 2880.3 -512.6Q2931.2 -546 2996.8 -546Q3054.8 -546 3096.7 -520Q3138.6 -494 3158.2 -450.8V-534H3283V-47.2Q3283 21.2 3251.6 67.9Q3220.2 114.6 3163.6 138.3Q3107 162.0 3030.8 162.0ZM3029.2 -126.4Q3086.4 -126.4 3120.4 -168.9Q3154.4 -211.4 3155 -286.2Q3155.6 -336 3140.3 -371.7Q3125 -407.4 3096.5 -426.7Q3068 -446 3029.2 -446Q2970 -446 2937.3 -402.7Q2904.6 -359.4 2904.6 -286.2Q2904.6 -212.6 2938.3 -169.5Q2972 -126.4 3029.2 -126.4Z" class="ink"/><path d="M1957.4 -654.6L2085.4 -718.6V-609.8L1957.4 -545.8Z" class="delta"/></g></symbol>
+    <symbol id="lockup" viewBox="0 0 281 82"><g transform="translate(4 4) scale(1)"><path d="M12 12H24V52H12ZM40 18L52 12V52H40Z" class="ink"/><path d="M27 30.5L37 25.5V33.5L27 38.5Z" class="delta"/></g><g transform="translate(75.493 56) scale(0.056338)"><path d="M80 0.0V-710.0H210V-370.6L150.4 -413.8H568.2L508.6 -370.6V-710.0H638.6V0.0H508.6V-343.4L568.2 -300.6H150.4L210 -343.4V0.0Z M1008.8 12.0Q929.8 12.0 870.6 -22.4Q811.4 -56.8 778.8 -119.7Q746.2 -182.6 746.2 -267Q746.2 -352 778.8 -414.4Q811.4 -476.8 870.6 -511.4Q929.8 -546 1008.8 -546Q1087.8 -546 1146.7 -511.4Q1205.6 -476.8 1238.2 -414.4Q1270.8 -352 1270.8 -267Q1270.8 -182.6 1238.2 -119.7Q1205.6 -56.8 1146.7 -22.4Q1087.8 12.0 1008.8 12.0ZM1008.8 -91.6Q1070.6 -91.6 1104.5 -137.9Q1138.4 -184.2 1138.4 -267Q1138.4 -349.4 1104.5 -395.9Q1070.6 -442.4 1008.8 -442.4Q947 -442.4 912.8 -395.9Q878.6 -349.4 878.6 -267Q878.6 -184.2 912.8 -137.9Q947 -91.6 1008.8 -91.6Z M1368.4 0.0V-534H1484.2L1489.2 -384.2L1473.6 -390.4Q1482 -446.2 1506.8 -480.3Q1531.6 -514.4 1567.9 -530.2Q1604.2 -546 1647.2 -546Q1706.2 -546 1746.5 -520.2Q1786.8 -494.4 1807.7 -448.9Q1828.6 -403.4 1828.6 -343.4V0.0H1700.6V-302.2Q1700.6 -347.2 1691.9 -378.3Q1683.2 -409.4 1662.8 -425.7Q1642.4 -442 1608 -442Q1556.6 -442 1526.5 -406.1Q1496.4 -370.2 1496.4 -302.2V0.0Z M1957.4 0.0V-534H2085.4V0.0Z M2214.4 0.0V-534H2330.2L2335.2 -384.2L2319.6 -390.4Q2328 -446.2 2352.8 -480.3Q2377.6 -514.4 2413.9 -530.2Q2450.2 -546 2493.2 -546Q2552.2 -546 2592.5 -520.2Q2632.8 -494.4 2653.7 -448.9Q2674.6 -403.4 2674.6 -343.4V0.0H2546.6V-302.2Q2546.6 -347.2 2537.9 -378.3Q2529.2 -409.4 2508.8 -425.7Q2488.4 -442 2454 -442Q2402.6 -442 2372.5 -406.1Q2342.4 -370.2 2342.4 -302.2V0.0Z M3030.8 162.0Q2960.6 162.0 2910.8 143.0Q2861 124.0 2830.4 89.6Q2799.8 55.2 2788 10.4L2920 1.2Q2929.6 31 2954.5 48.1Q2979.4 65.2 3030.8 65.2Q3090.4 65.2 3122.3 38.6Q3154.2 12 3154.2 -44.4V-111.6Q3135.2 -72.8 3093.2 -49.4Q3051.2 -26 2999.2 -26Q2933 -26 2881.5 -58.6Q2830 -91.2 2801.1 -149.6Q2772.2 -208 2772.2 -285.4Q2772.2 -362.2 2800.8 -420.7Q2829.4 -479.2 2880.3 -512.6Q2931.2 -546 2996.8 -546Q3054.8 -546 3096.7 -520Q3138.6 -494 3158.2 -450.8V-534H3283V-47.2Q3283 21.2 3251.6 67.9Q3220.2 114.6 3163.6 138.3Q3107 162.0 3030.8 162.0ZM3029.2 -126.4Q3086.4 -126.4 3120.4 -168.9Q3154.4 -211.4 3155 -286.2Q3155.6 -336 3140.3 -371.7Q3125 -407.4 3096.5 -426.7Q3068 -446 3029.2 -446Q2970 -446 2937.3 -402.7Q2904.6 -359.4 2904.6 -286.2Q2904.6 -212.6 2938.3 -169.5Q2972 -126.4 3029.2 -126.4Z" class="ink"/><path d="M1957.4 -654.6L2085.4 -718.6V-609.8L1957.4 -545.8Z" class="delta"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="hero-top">
+    <svg viewBox="0 0 281 82" role="img" aria-label="Honing"><use href="#lockup"/></svg>
+    <span class="label">Identity system · v1.0 · October 2026</span>
+  </div>
+  <div class="hero-grid">
+    <h1><span class="draw">Your record,</span><br><span class="draw d2" style="color:var(--fg)">honed.</span></h1>
+    <div style="display:grid;gap:24px" class="draw d3">
+      <p>Honing is the career command center formerly called ApplyOS. One immutable master record, and a precise, reviewable edit for every role. The identity is built from that idea and nothing else: two stems, one cut, one floating patch.</p>
+      <div class="facts">
+        <div><span class="label">Angle</span><b>1 : 2 bevel</b></div>
+        <div><span class="label">Accent</span><b>Edge indigo</b></div>
+        <div><span class="label">Type</span><b>Geist family</b></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="mark-section">
+  <div class="head"><span class="label">01 · The mark</span><div><h2>An H that tells the product's story</h2><p>Every part of the mark maps to how Honing works. Stems and gaps sit on a 64-unit grid with a 4-unit module, so it holds together from a 16px favicon to a billboard.</p></div></div>
+  <div class="construct">
+    <div class="plate">
+      <svg viewBox="0 0 64 64" role="img" aria-label="Construction drawing of the Honing mark on a 64-unit grid">
+        <g><path class="gridline" d="M0 0V64M0 0H64"/><path class="gridline" d="M4 0V64M0 4H64"/><path class="gridline" d="M8 0V64M0 8H64"/><path class="gridline" d="M12 0V64M0 12H64"/><path class="gridline" d="M16 0V64M0 16H64"/><path class="gridline" d="M20 0V64M0 20H64"/><path class="gridline" d="M24 0V64M0 24H64"/><path class="gridline" d="M28 0V64M0 28H64"/><path class="gridline" d="M32 0V64M0 32H64"/><path class="gridline" d="M36 0V64M0 36H64"/><path class="gridline" d="M40 0V64M0 40H64"/><path class="gridline" d="M44 0V64M0 44H64"/><path class="gridline" d="M48 0V64M0 48H64"/><path class="gridline" d="M52 0V64M0 52H64"/><path class="gridline" d="M56 0V64M0 56H64"/><path class="gridline" d="M60 0V64M0 60H64"/><path class="gridline" d="M64 0V64M0 64H64"/></g>
+        <use href="#mark"/>
+        <path class="guide" d="M28 24L60 8"/>
+        <path class="guide" d="M8 12H58M8 52H58"/>
+        <text class="anno" x="12" y="57.5">MASTER</text>
+        <text class="anno" x="40" y="57.5">VARIANT</text>
+        <text class="anno e" x="25.5" y="44">DELTA</text>
+        <text class="anno" x="59" y="12.6">12</text>
+        <text class="anno" x="59" y="52.6">52</text>
+        <text class="anno e" x="54" y="7">1:2</text>
+      </svg>
+    </div>
+    <div class="rules">
+      <div class="rule"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M12 12H24V52H12Z"/></svg><div><h3>The master stem never changes</h3><p>A full, untouched block. It is the append-only master resume: the source of truth every variant is measured against.</p></div></div>
+      <div class="rule"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M40 18L52 12V52H40Z"/></svg><div><h3>The variant is cut, never stretched</h3><p>Its top is honed on a 1 : 2 bevel, and the tip reaches exactly the master's height. A tailored resume can be sharpened toward a role, but it never claims more than the record holds.</p></div></div>
+      <div class="rule"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="var(--edge)" d="M22 34.5L42 24.5V32.5L22 42.5Z"/></svg><div><h3>The delta floats</h3><p>The crossbar is the patch. It runs on the same angle as the cut and stops three units short of each stem, because a patch is stored beside the master and never written into it.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">02 · Logo suite</span><div><h2>Lockup, wordmark, symbol</h2><p>The horizontal lockup is the default. The mark sits exactly at cap height, separated by two stem widths. In the wordmark, the tittle of the i is redrawn as the delta, cut on the same angle.</p></div></div>
+  <div class="grid2">
+    <div class="plate lock" style="color:var(--fg)"><svg viewBox="0 0 281 82" role="img" aria-label="Honing lockup"><use href="#lockup"/></svg><span class="label cap">Lockup · primary</span></div>
+    <div class="plate lock inv"><svg viewBox="0 0 281 82" role="img" aria-label="Honing lockup, inverse"><use href="#lockup"/></svg><span class="label cap" style="color:inherit;opacity:.5">Lockup · inverse</span></div>
+    <div class="plate lock word" style="color:var(--fg)"><svg viewBox="0 0 201 66" role="img" aria-label="Honing wordmark"><use href="#wordmark"/></svg><span class="label cap">Wordmark</span></div>
+    <div class="plate lock" style="color:var(--fg);--edge:currentColor"><svg viewBox="0 0 64 64" style="width:140px" role="img" aria-label="Honing mark, one color"><use href="#mark"/></svg><span class="label cap">Mark · one color</span></div>
+  </div>
+  <div class="grid2">
+    <div class="plate lock clear" style="color:var(--fg)">
+      <svg viewBox="-40 -40 361 162" role="img" aria-label="Clear space around the lockup">
+        <rect class="zone" x="-40" y="-40" width="361" height="162" rx="2"/>
+        <rect x="0" y="0" width="281" height="82" fill="var(--plate)"/>
+        <use href="#lockup" x="0" y="0" width="281" height="82"/>
+      </svg>
+      <span class="label cap">Clear space = one mark height on every side</span>
+    </div>
+    <div class="plate">
+      <div class="sizes">
+        <figure><svg viewBox="0 0 281 82" style="height:32px;width:auto"><use href="#lockup"/></svg><figcaption class="label">Lockup min · 96px</figcaption></figure>
+        <figure><svg viewBox="0 0 281 82" style="height:26px;width:auto"><use href="#lockup"/></svg><figcaption class="label">78px</figcaption></figure>
+        <figure><svg viewBox="0 0 64 64" style="height:24px;width:24px"><use href="#mark"/></svg><figcaption class="label">Mark min · 24px</figcaption></figure>
+        <figure><img class="px" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMy41IiBmaWxsPSIjMTExMTE0Ii8+CjxwYXRoIGQ9Ik0zIDNINlYxM0gzWk0xMCA0LjVMMTMgM1YxM0gxMFoiIGZpbGw9IiNGNEY0RjUiLz4KPHBhdGggZD0iTTYgNy44TDEwIDUuOFY4LjRMNiAxMC40WiIgZmlsbD0iIzgxOENGOCIvPgo8L3N2Zz4K" width="16" height="16" alt="16px favicon"><figcaption class="label">Below 24 · use favicon cut</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">03 · Color</span><div><h2>Graphite, Steel, and one Edge</h2><p>These are the values already in the app, named for their job. Graphite and Steel do almost all the work. Edge is reserved for the delta, the primary action, and focus, so on any screen it marks what is being changed or what to do next.</p></div></div>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#09090b;color:#71717a"><span class="mono">bg · page</span></div><div class="meta"><b>Graphite 950</b><span>#09090B · zinc-950</span><p>Page ground. Pair with a 9% Edge glow from the top edge.</p></div></div>
+    <div class="sw"><div class="chip" style="background:#131316;color:#71717a"><span class="mono">card</span></div><div class="meta"><b>Graphite 850</b><span>#131316</span><p>Raised surfaces, at 60% with blur.</p></div></div>
+    <div class="sw"><div class="chip" style="background:#f4f4f5;color:#71717a"><span class="mono">fg</span></div><div class="meta"><b>Steel 50</b><span>#F4F4F5 · zinc-100</span><p>Text and the mark's stems.</p></div></div>
+    <div class="sw"><div class="chip" style="background:#818cf8;color:#1e1b4b"><span class="mono">accent</span></div><div class="meta"><b>Edge 400</b><span>#818CF8 · indigo-400</span><p>Delta on dark. 6.7 : 1 on Graphite.</p></div></div>
+  </div>
+  <div class="ramp" aria-label="Full palette ramp">
+    <div style="background:#09090b;color:#52525b">950</div><div style="background:#111114;color:#52525b">900</div><div style="background:#1c1c20;color:#71717a">800</div><div style="background:#3f3f46;color:#a1a1aa">line</div><div style="background:#71717a;color:#e4e4e7">500</div><div style="background:#a1a1aa;color:#18181b">400</div><div style="background:#4f46e5;color:#e0e7ff">E 600</div><div style="background:#6366f1;color:#fff">E 500</div><div style="background:#c7d2fe;color:#312e81">E 200</div>
+  </div>
+  <div class="grid3">
+    <div style="display:grid;gap:8px"><span class="label">Proportion on a screen</span><div class="ratio-bar"><span style="flex:80;background:#09090b"></span><span style="flex:12;background:#1c1c20"></span><span style="flex:6;background:#f4f4f5"></span><span style="flex:2;background:#6366f1"></span></div><p style="font-size:13px">80 Graphite, 12 surface, 6 Steel, 2 Edge. If Edge covers more than a button, it stops meaning anything.</p></div>
+    <div style="display:grid;gap:8px"><span class="label">Edge on light</span><p style="font-size:13px"><span class="mono" style="color:var(--fg)">#4F46E5</span> indigo-600. Used for the delta on white and light documents (6.3 : 1 on white).</p></div>
+    <div style="display:grid;gap:8px"><span class="label">Semantic, not brand</span><p style="font-size:13px"><span class="mono" style="color:var(--added)">Added #4ADE80</span>, <span class="mono" style="color:var(--fg-3)">Removed #71717A struck</span>, <span class="mono" style="color:var(--danger)">Danger #F87171</span>. Never used in logos or marketing.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">04 · Typography</span><div><h2>One engineered family, one editorial voice</h2><p>Geist matches the Next.js stack and loads free through <code>next/font</code>. Instrument Serif Italic appears only in marketing headlines, as the human counterweight to the grid.</p></div></div>
+  <div class="spec">
+    <div class="spec-row"><div class="label">Display & UI<br><br>Geist 400 / 500 / 600</div><div><div style="font:600 clamp(36px,6vw,64px)/1 var(--sans);letter-spacing:-.03em;color:var(--fg)">Shortlisted → Offer</div><p style="margin-top:12px">Headings at 600 with −2% to −3% tracking. Interface text at 13–14px, weight 400 or 500.</p></div></div>
+    <div class="spec-row"><div class="label">Data & diffs<br><br>Geist Mono 400 / 500</div><div><div style="font:400 15px/1.7 var(--mono);color:var(--fg)">match 87% · patch 3f2a9c · +4 −1 words<br>2026-10-14 09:30 · Interview · Stripe</div><p style="margin-top:12px">IDs, scores, dates, keyboard hints and diff counts. Always tabular figures.</p></div></div>
+    <div class="spec-row"><div class="label">Editorial<br><br>Instrument Serif Italic</div><div><div style="font:italic 400 clamp(36px,6vw,60px)/1 var(--serif);color:var(--fg)">Sharpened, never stretched.</div><p style="margin-top:12px">Marketing headlines and the social card only. Never inside the product UI, never for body text.</p></div></div>
+  </div>
+  <div class="scale">
+    <span class="label">Product scale (px / weight / tracking)</span>
+    <div><span class="mono" style="color:var(--fg-3)">32/600</span><span style="font:600 32px/1.15 var(--sans);letter-spacing:-.025em">Pipeline</span></div>
+    <div><span class="mono" style="color:var(--fg-3)">20/600</span><span style="font:600 20px/1.3 var(--sans);letter-spacing:-.015em">Senior Product Engineer · Linear</span></div>
+    <div><span class="mono" style="color:var(--fg-3)">14/500</span><span style="font:500 14px/1.5 var(--sans)">Ready to submit · 3 approvals pending</span></div>
+    <div><span class="mono" style="color:var(--fg-3)">13/400</span><span style="font:400 13px/1.5 var(--sans);color:var(--fg-2)">Tailored from master v12. Nothing was added that the master does not contain.</span></div>
+    <div><span class="mono" style="color:var(--fg-3)">11/500</span><span class="label" style="color:var(--fg-3)">Workspace · Settings</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">05 · App icon & favicon</span><div><h2>One tile, hinted per size</h2><p>The tile is Graphite 900 with an Edge glow from above and a hairline rim. Below 24px the mark is redrawn on whole pixels and the delta closes up to the stems, since a three-unit gap cannot survive at that size.</p></div></div>
+  <div class="plate icons">
+    <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSI+CjxkZWZzPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjUwJSIgY3k9IjAlIiByPSI5MCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNjM2NkYxIiBzdG9wLW9wYWNpdHk9Ii4yOCIvPgogICAgPHN0b3Agb2Zmc2V0PSIuNiIgc3RvcC1jb2xvcj0iIzYzNjZGMSIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8bGluZWFyR3JhZGllbnQgaWQ9InJpbSIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4xNiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUuMiIgZmlsbD0iIzExMTExNCIvPgo8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExNS4yIiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI1MTAiIGhlaWdodD0iNTEwIiByeD0iMTE0LjIiIHN0cm9rZT0idXJsKCNyaW0pIiBzdHJva2Utd2lkdGg9IjIiLz4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzEuNjggNzEuNjgpIHNjYWxlKDUuNzYpIj48cGF0aCBkPSJNMTIgMTJIMjRWNTJIMTJaTTQwIDE4TDUyIDEyVjUySDQwWiIgZmlsbD0iI0Y0RjRGNSIvPjxwYXRoIGQ9Ik0yNyAzMC41TDM3IDI1LjVWMzMuNUwyNyAzOC41WiIgZmlsbD0iIzgxOENGOCIvPjwvZz4KPC9zdmc+Cg==" width="160" height="160" alt="App icon"><figcaption class="label">512 · app / PWA</figcaption></figure>
+    <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSI+CjxkZWZzPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjUwJSIgY3k9IjAlIiByPSI5MCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNjM2NkYxIiBzdG9wLW9wYWNpdHk9Ii4yOCIvPgogICAgPHN0b3Agb2Zmc2V0PSIuNiIgc3RvcC1jb2xvcj0iIzYzNjZGMSIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8bGluZWFyR3JhZGllbnQgaWQ9InJpbSIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4xNiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUuMiIgZmlsbD0iIzExMTExNCIvPgo8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExNS4yIiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI1MTAiIGhlaWdodD0iNTEwIiByeD0iMTE0LjIiIHN0cm9rZT0idXJsKCNyaW0pIiBzdHJva2Utd2lkdGg9IjIiLz4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzEuNjggNzEuNjgpIHNjYWxlKDUuNzYpIj48cGF0aCBkPSJNMTIgMTJIMjRWNTJIMTJaTTQwIDE4TDUyIDEyVjUySDQwWiIgZmlsbD0iI0Y0RjRGNSIvPjxwYXRoIGQ9Ik0yNyAzMC41TDM3IDI1LjVWMzMuNUwyNyAzOC41WiIgZmlsbD0iIzgxOENGOCIvPjwvZz4KPC9zdmc+Cg==" width="88" height="88" alt="App icon"><figcaption class="label">180 · apple-touch</figcaption></figure>
+    <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgZmlsbD0ibm9uZSI+CjxkZWZzPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iZyIgY3g9IjUwJSIgY3k9IjAlIiByPSI5MCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjNjM2NkYxIiBzdG9wLW9wYWNpdHk9Ii4yOCIvPgogICAgPHN0b3Agb2Zmc2V0PSIuNiIgc3RvcC1jb2xvcj0iIzYzNjZGMSIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgPC9yYWRpYWxHcmFkaWVudD4KICA8bGluZWFyR3JhZGllbnQgaWQ9InJpbSIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4xNiIvPgogICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkZGRkZGIiBzdG9wLW9wYWNpdHk9Ii4wNCIvPgogIDwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSIxMTUuMiIgZmlsbD0iIzExMTExNCIvPgo8cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExNS4yIiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEiIHk9IjEiIHdpZHRoPSI1MTAiIGhlaWdodD0iNTEwIiByeD0iMTE0LjIiIHN0cm9rZT0idXJsKCNyaW0pIiBzdHJva2Utd2lkdGg9IjIiLz4KPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNzEuNjggNzEuNjgpIHNjYWxlKDUuNzYpIj48cGF0aCBkPSJNMTIgMTJIMjRWNTJIMTJaTTQwIDE4TDUyIDEyVjUySDQwWiIgZmlsbD0iI0Y0RjRGNSIvPjxwYXRoIGQ9Ik0yNyAzMC41TDM3IDI1LjVWMzMuNUwyNyAzOC41WiIgZmlsbD0iIzgxOENGOCIvPjwvZz4KPC9zdmc+Cg==" width="48" height="48" alt="App icon"><figcaption class="label">48</figcaption></figure>
+    <figure><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzExMTExNCIvPgo8cGF0aCBkPSJNNyA2SDEzVjI2SDdaTTE5IDlMMjUgNlYyNkgxOVoiIGZpbGw9IiNGNEY0RjUiLz4KPHBhdGggZD0iTTE0IDE0LjVMMTggMTIuNVYxNy41TDE0IDE5LjVaIiBmaWxsPSIjODE4Q0Y4Ii8+Cjwvc3ZnPgo=" width="32" height="32" alt="Favicon 32"><figcaption class="label">32</figcaption></figure>
+    <figure><img class="px" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMy41IiBmaWxsPSIjMTExMTE0Ii8+CjxwYXRoIGQ9Ik0zIDNINlYxM0gzWk0xMCA0LjVMMTMgM1YxM0gxMFoiIGZpbGw9IiNGNEY0RjUiLz4KPHBhdGggZD0iTTYgNy44TDEwIDUuOFY4LjRMNiAxMC40WiIgZmlsbD0iIzgxOENGOCIvPgo8L3N2Zz4K" width="16" height="16" alt="Favicon 16"><figcaption class="label">16</figcaption></figure>
+    <figure><img class="px" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHJlY3Qgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMy41IiBmaWxsPSIjMTExMTE0Ii8+CjxwYXRoIGQ9Ik0zIDNINlYxM0gzWk0xMCA0LjVMMTMgM1YxM0gxMFoiIGZpbGw9IiNGNEY0RjUiLz4KPHBhdGggZD0iTTYgNy44TDEwIDUuOFY4LjRMNiAxMC40WiIgZmlsbD0iIzgxOENGOCIvPgo8L3N2Zz4K" width="96" height="96" alt="Favicon 16 enlarged"><figcaption class="label">16 at 6×</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">06 · In the product</span><div><h2>The brand at work</h2><p>The top bar carries the lockup and links to the dashboard. In the diff view, the same rule holds as in the mark: the master on the left is never touched; the variant on the right shows every change.</p></div></div>
+  <div class="mock">
+    <div class="mock-bar"><svg viewBox="0 0 281 82" role="img" aria-label="Honing"><use href="#lockup"/></svg><span class="crumb">Workspace <span aria-hidden="true">›</span> <b>Resume</b></span></div>
+    <div class="mock-body">
+      <div class="pane"><span class="label">Master · v12</span><p>Built a reporting pipeline that cut month-end close from 6 days to 2.</p><p>Led migration of 40 services to Kubernetes.</p></div>
+      <div class="pane"><span class="label" style="color:#818cf8">Variant · Platform Engineer</span><p>Built <ins>an event-driven</ins> reporting pipeline that cut month-end close from 6 days to 2.</p><p>Led <del>migration</del> <ins>the zero-downtime migration</ins> of 40 services to Kubernetes.</p><button class="btn" type="button">Approve patch</button></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">07 · Misuse</span><div><h2>Four ways to break it</h2><p>Each of these changes what the mark says about the product.</p></div></div>
+  <div class="donts">
+    <div class="dont"><div class="plate"><svg viewBox="0 0 64 64"><path class="ink" d="M12 12H24V52H12ZM40 18L52 12V52H40Z"/><path class="delta" d="M24 32L40 24V32L24 40Z"/></svg></div><p>Don't join the delta to the stems above 24px. A patch that touches the master is a destructive edit.</p></div>
+    <div class="dont"><div class="plate"><svg viewBox="0 0 64 64"><path class="ink" d="M12 12H24V52H12ZM40 6L52 0V52H40Z"/><path class="delta" d="M27 30.5L37 25.5V33.5L27 38.5Z"/></svg></div><p>Don't let the variant rise above the master. That is a claim the record can't back.</p></div>
+    <div class="dont"><div class="plate"><svg viewBox="0 0 64 64" style="color:var(--fg)"><path class="ink" d="M12 12H24V52H12ZM40 18L52 12V52H40Z"/><path fill="#f59e0b" d="M27 30.5L37 25.5V33.5L27 38.5Z"/></svg></div><p>Don't recolor the delta. It is Edge, or the same color as the stems.</p></div>
+    <div class="dont"><div class="plate"><svg viewBox="0 0 64 64" style="transform:rotate(-12deg)"><use href="#mark"/></svg></div><p>Don't rotate, skew, outline, or add effects. The angle already lives inside the mark.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="head"><span class="label">08 · Files & tokens</span><div><h2>What's in the kit</h2><p>Every file is in the project's shared folder under <code>brand/honing</code>. SVGs are outlined, so they render identically without the fonts installed.</p></div></div>
+  <div class="files">
+    <div><span class="label">svg/</span><ul><li>honing-lockup-{dark,light}</li><li>honing-wordmark-{dark,light}</li><li>honing-mark-{dark,light}</li><li>…-mono-{white,black}</li><li>honing-app-icon</li><li>favicon, favicon-16</li></ul></div>
+    <div><span class="label">png/</span><ul><li>logo/ · 512, 1024, 2048w</li><li>app-icon/ · 1024, 512, 192</li><li>app-icon/apple-touch-icon</li><li>favicon/ · 16, 32, 48, .ico</li><li>social/ · og 1200×630</li><li>social/ · avatar 400</li></ul></div>
+    <div><span class="label">code/</span><ul><li>honing-tokens.css</li><li>brand-guide.html</li></ul></div>
+  </div>
+  <div style="display:grid;gap:12px;min-width:0">
+    <pre id="tokens">/* Honing brand tokens. Drop-in for src/app/globals.css :root.
+   Values are the app&#x27;s existing palette, renamed to brand roles. */
+:root {
+  /* Graphite: neutral foundation (zinc) */
+  --honing-graphite-950: #09090b; /* page */
+  --honing-graphite-900: #111114; /* app icon tile, sidebar */
+  --honing-graphite-850: #131316; /* card surface */
+  --honing-graphite-800: #1c1c20; /* muted surface */
+  --honing-graphite-line: rgb(39 39 42 / 0.8); /* borders */
+
+  /* Steel: text and the mark&#x27;s stems */
+  --honing-steel-50: #f4f4f5;  /* primary text, mark stems on dark */
+  --honing-steel-400: #a1a1aa; /* secondary text */
+  --honing-steel-500: #71717a; /* tertiary text, removed words */
+
+  /* Edge: the single accent. Reserved for the delta and primary action. */
+  --honing-edge-200: #c7d2fe; /* accent text on dark */
+  --honing-edge-400: #818cf8; /* mark delta on dark, links */
+  --honing-edge-500: #6366f1; /* primary buttons, focus ring */
+  --honing-edge-600: #4f46e5; /* mark delta on light */
+  --honing-edge-glow: rgb(99 102 241 / 0.09);
+
+  /* Semantic (never used as brand color) */
+  --honing-added: #4ade80;
+  --honing-warning: #fbbf24;
+  --honing-danger: #f87171;
+
+  /* Type */
+  --honing-font-sans: &quot;Geist&quot;, ui-sans-serif, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --honing-font-mono: &quot;Geist Mono&quot;, ui-monospace, &quot;SFMono-Regular&quot;, monospace;
+  --honing-font-editorial: &quot;Instrument Serif&quot;, Georgia, serif; /* italic, marketing only */
+
+  /* Geometry */
+  --honing-bevel: 26.565deg; /* 1:2 rise, the angle of every cut */
+  --honing-radius-tile: 22.5%;
+  --honing-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+</pre>
+    <button class="copy" id="copy-tokens" type="button">Copy tokens</button>
+  </div>
+</section>
+
+<footer><span class="label">Honing identity system</span><span class="label">Graphite · Steel · Edge</span></footer>
+</div>
+
+<script>
+document.getElementById('copy-tokens').addEventListener('click', async (e) => {
+  const btn = e.currentTarget, text = document.getElementById('tokens').textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+  catch { const r = document.createRange(); r.selectNodeContents(document.getElementById('tokens')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected, press Ctrl+C'; }
+  setTimeout(() => (btn.textContent = 'Copy tokens'), 1800);
+});
+</script>
+
+</body></html>

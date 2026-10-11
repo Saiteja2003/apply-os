@@ -420,7 +420,7 @@ export function QuickImportDialog({
             <Dropzone
               icon={FileJson}
               title="Drop a JSON file here, or choose one"
-              hint="Accepts an ApplyOS resume or the JSON Resume standard (jsonresume.org). Ids already in the file are kept. No model is involved."
+              hint="Accepts a Honing resume or the JSON Resume standard (jsonresume.org). Ids already in the file are kept. No model is involved."
               accept="application/json,.json"
               onFile={(file) => void importJsonFile(file)}
             />

@@ -6,7 +6,7 @@ import { getSessionUser } from "@/lib/supabase/server";
 import type { CalendarEvent } from "@/lib/types/calendar";
 
 export const metadata: Metadata = {
-  title: "Calendar & Interview Command Center · ApplyOS",
+  title: "Calendar & Interview Command Center · Honing",
   description:
     "Institutional agenda timeline, interview countdown telemetry, and direct STAR Studio response practice bridge.",
 };
