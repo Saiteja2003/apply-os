@@ -1,7 +1,10 @@
 import { after, NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
+import { hasOwnKeyFor, platformAllows } from "@/lib/billing/model-access";
+import { getByokKeys } from "@/lib/db/api-keys";
 import { createApplication } from "@/lib/db/applications";
+import { getUserCredits } from "@/lib/db/credits";
 import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
 import { getSessionUser } from "@/lib/supabase/server";
 import { tailorApplication } from "@/lib/tailoring/engine";
@@ -100,6 +103,30 @@ export function OPTIONS(request: NextRequest) {
   return new NextResponse(null, { status: 204, headers: corsHeaders(request) });
 }
 
+/**
+ * The model background tailoring will actually run on. A model the account
+ * cannot use on platform keys (see src/lib/billing/model-access.ts) is
+ * replaced by the default model here, because nobody is watching the
+ * background run to see the refusal. Fails closed: if the plan cannot be
+ * read, only the default model is used.
+ */
+async function runnableModelId(
+  userId: string,
+  requested: string,
+): Promise<string> {
+  if (requested === MODEL_REGISTRY.defaultModelId) return requested;
+  try {
+    if (hasOwnKeyFor(requested, await getByokKeys(userId))) return requested;
+    const credits = await getUserCredits(userId);
+    return platformAllows(credits?.tier ?? null, requested)
+      ? requested
+      : MODEL_REGISTRY.defaultModelId;
+  } catch (error) {
+    console.error("Could not check model access for ingest", error);
+    return MODEL_REGISTRY.defaultModelId;
+  }
+}
+
 export async function POST(request: NextRequest) {
   if (!originAllowed(request)) {
     return respond(request, { error: "Origin not allowed." }, 403);
@@ -121,7 +148,7 @@ export async function POST(request: NextRequest) {
   }
   const input = parsed.data;
 
-  const modelId =
+  const requestedModelId =
     input.modelId && getModel(input.modelId)
       ? input.modelId
       : MODEL_REGISTRY.defaultModelId;
@@ -144,9 +171,11 @@ export async function POST(request: NextRequest) {
   // From here the job is saved, and nothing below may turn that into an
   // error response: tailoring is best effort.
   let tailoring = false;
+  let modelId = requestedModelId;
   if (input.autoTailor) {
     const jobId = application.id;
     const jobDescription = application.jobDescription;
+    modelId = await runnableModelId(user.id, requestedModelId);
     try {
       // Runs once the response is out. A failure or a timeout leaves the
       // job saved and untailored; it can be retried from its detail drawer.
@@ -174,7 +203,15 @@ export async function POST(request: NextRequest) {
 
   return respond(
     request,
-    { application, id: application.id, status: application.status, tailoring },
+    {
+      application,
+      id: application.id,
+      status: application.status,
+      tailoring,
+      /** The model tailoring runs on; differs from the request when clamped. */
+      model: modelId,
+      modelClamped: modelId !== requestedModelId,
+    },
     201,
   );
 }

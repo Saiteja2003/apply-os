@@ -1,7 +1,15 @@
 "use client";
 
-import { Building2, ExternalLink, Loader2, MapPin, Sparkles } from "lucide-react";
-import { useState } from "react";
+import {
+  Building2,
+  ExternalLink,
+  Loader2,
+  MapPin,
+  Send,
+  Sparkles,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { ApplicationAssets } from "@/components/application-assets";
 import { InterviewPrep } from "@/components/interview-prep";
@@ -35,7 +43,10 @@ interface ApplicationDrawerProps {
   isTailoring: boolean;
   isPreparing: boolean;
   onClose: () => void;
-  onMove: (applicationId: string, status: ApplicationStatus) => void;
+  onMove: (
+    applicationId: string,
+    status: ApplicationStatus,
+  ) => void | Promise<void>;
   onTailor: (applicationId: string) => void;
   onPrepare: (applicationId: string) => void;
   /** Called with the saved row when an asset is edited in the drawer. */
@@ -159,6 +170,131 @@ function DiffTab({
   );
 }
 
+/** Opens a link in a new tab, severed from this one, as an anchor would. */
+function openInNewTab(url: string) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.click();
+}
+
+/**
+ * Assisted apply for a saved, tailored job: downloads the tailored PDF,
+ * copies the cover letter (or recruiter note), opens the posting and moves
+ * the card to Applied. The submission itself stays with the user.
+ */
+function ApplyNowButton({
+  application,
+  master,
+  patchCurrent,
+  onMove,
+}: {
+  application: JobApplication;
+  master: MasterResumeVersion | null;
+  /** The patch was made against the current master resume. */
+  patchCurrent: boolean;
+  onMove: DrawerBodyProps["onMove"];
+}) {
+  const [busy, setBusy] = useState(false);
+  const patch = application.patchDocument;
+  const ready = Boolean(master && patch && patchCurrent);
+
+  // The PDF engine is large: have it loaded by the time the button is used.
+  useEffect(() => {
+    void import("@/lib/pdf/render");
+  }, []);
+
+  async function apply() {
+    if (busy || !master || !patch || !patchCurrent) return;
+    setBusy(true);
+
+    // Copy first, while the click still counts as a user gesture.
+    const text =
+      application.coverLetter?.content.trim() ||
+      application.recruiterOutreach?.inmailBody.trim() ||
+      "";
+    let copied = false;
+    if (text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      } catch {
+        // Reported in the final toast.
+      }
+    }
+
+    // A failed PDF stops here: nothing is opened and nothing is marked.
+    try {
+      const { renderTailoredResume, resumeFileName } = await import(
+        "@/lib/pdf/render"
+      );
+      const { blob } = await renderTailoredResume(master.resume, patch);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = resumeFileName(master.resume.basics.name, application.companyName);
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    } catch (error) {
+      console.error(error);
+      toast.error("Could not create the PDF", {
+        description: "Nothing was opened and the job is still Saved.",
+      });
+      setBusy(false);
+      return;
+    }
+
+    const jobUrl =
+      application.jobUrl && /^https?:\/\//i.test(application.jobUrl)
+        ? application.jobUrl
+        : null;
+    if (jobUrl) openInNewTab(jobUrl);
+
+    await onMove(application.id, "APPLIED");
+
+    const done = [
+      "PDF downloaded",
+      copied
+        ? application.coverLetter
+          ? "cover letter copied"
+          : "recruiter note copied"
+        : text
+          ? "could not copy the text, copy it from the Cover Letter tab"
+          : "no cover letter to copy",
+      jobUrl ? "job page opened" : "no job link saved",
+    ];
+    toast.success(`Ready to apply to ${application.companyName}`, {
+      description: `${done.join(" · ")}. Moved to Applied.`,
+      action: jobUrl
+        ? { label: "Open job page", onClick: () => openInNewTab(jobUrl) }
+        : undefined,
+    });
+    setBusy(false);
+  }
+
+  return (
+    <Button
+      size="sm"
+      className="sm:ml-auto"
+      disabled={busy || !ready}
+      onClick={() => void apply()}
+      title={
+        ready
+          ? "Downloads your tailored PDF, copies your cover letter, opens the job page and moves this to Applied"
+          : "Re-tailor first: this patch was made against an earlier master resume"
+      }
+    >
+      {busy ? (
+        <Loader2 className="animate-spin" aria-hidden />
+      ) : (
+        <Send aria-hidden />
+      )}
+      {busy ? "Preparing…" : "Apply now"}
+    </Button>
+  );
+}
+
 function DrawerBody({
   application,
   initialTab,
@@ -196,6 +332,14 @@ function DrawerBody({
               </option>
             ))}
           </select>
+          {application.status === "SAVED" && patch && (
+            <ApplyNowButton
+              application={application}
+              master={master}
+              patchCurrent={previewPatch !== null}
+              onMove={onMove}
+            />
+          )}
         </div>
         <DialogDescription asChild>
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">

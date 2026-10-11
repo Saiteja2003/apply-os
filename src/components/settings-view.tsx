@@ -11,7 +11,8 @@ import { ModelSelector } from "@/components/model-selector";
 import { Button } from "@/components/ui/button";
 import { InlineAlert } from "@/components/ui/inline-alert";
 import { useWorkspace } from "@/components/workspace-provider";
-import { fetchKeyHints, queryKeys } from "@/lib/api";
+import { platformAllows } from "@/lib/billing/model-access";
+import { fetchBilling, fetchKeyHints, queryKeys } from "@/lib/api";
 import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
 import { useModelConfig } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -68,6 +69,12 @@ export function SettingsView({ email }: { email: string | null }) {
     queryFn: fetchKeyHints,
   });
 
+  // Shared with the Plans & credits section, so this costs no extra request.
+  const { data: billing, isError: billingFailed } = useQuery({
+    queryKey: queryKeys.billing(userId),
+    queryFn: fetchBilling,
+  });
+
   const activeModel = getModel(modelId) ?? MODEL_REGISTRY.models[0];
   const activeProvider =
     MODEL_REGISTRY.providers.find(
@@ -76,6 +83,21 @@ export function SettingsView({ email }: { email: string | null }) {
   const byokProviders = MODEL_REGISTRY.providers.filter(
     (provider) => provider.supportsByok,
   );
+
+  // What the active model will run on, for the status line under its name.
+  const status: { text: string; tone: "ok" | "warn" | "muted" } =
+    keyHints === undefined
+      ? { text: isError ? "key status unavailable" : "checking key…", tone: "muted" }
+      : activeProvider.id in keyHints
+        ? { text: "runs on your own key", tone: "ok" }
+        : billing === undefined
+          ? {
+              text: billingFailed ? "plan status unavailable" : "checking plan…",
+              tone: "muted",
+            }
+          : platformAllows(billing.credits?.tier ?? null, activeModel.id)
+            ? { text: "runs on the platform key, if one is configured", tone: "ok" }
+            : { text: "Requires a Pro Credit Pack or own API key", tone: "warn" };
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-5 px-4 py-5 md:px-6">
@@ -102,13 +124,14 @@ export function SettingsView({ email }: { email: string | null }) {
             <p className="text-sm font-medium">Active model</p>
             <p className="text-xs text-muted-foreground">
               {activeProvider.label} ·{" "}
-              {keyHints === undefined
-                ? isError
-                  ? "key status unavailable"
-                  : "checking key…"
-                : activeProvider.id in keyHints
-                  ? "runs on your own key"
-                  : "runs on the platform key, if one is configured"}{" "}
+              <span
+                className={cn(
+                  "transition-colors duration-150",
+                  status.tone === "warn" && "font-medium text-amber-400",
+                )}
+              >
+                {status.text}
+              </span>{" "}
               · remembered in this browser
             </p>
           </div>
