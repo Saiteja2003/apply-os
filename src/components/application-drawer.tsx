@@ -4,6 +4,7 @@ import {
   Building2,
   ExternalLink,
   Loader2,
+  Mail,
   MapPin,
   Send,
   Sparkles,
@@ -12,6 +13,10 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { ApplicationAssets } from "@/components/application-assets";
+import {
+  ApplicationCommunications,
+  useEmailInteractions,
+} from "@/components/application-communications";
 import { InterviewPrep } from "@/components/interview-prep";
 import { MatchScore } from "@/components/match-score";
 import { ResumeDiffViewer } from "@/components/resume-diff-viewer";
@@ -58,6 +63,7 @@ const TABS = [
   { id: "preview", label: "Resume preview" },
   { id: "assets", label: "Cover Letter & Outreach" },
   { id: "prep", label: "Interview prep" },
+  { id: "mail", label: "Communications" },
 ] as const;
 
 export type DrawerTab = (typeof TABS)[number]["id"];
@@ -307,6 +313,7 @@ function DrawerBody({
   onUpdated,
 }: DrawerBodyProps) {
   const [tab, setTab] = useState<DrawerTab>(initialTab);
+  const emailCount = useEmailInteractions(application.id).data?.length ?? 0;
   const patch = application.patchDocument;
   const previewPatch =
     patch && master && patch.masterResumeId === master.id ? patch : null;
@@ -393,6 +400,16 @@ function DrawerBody({
               {id === "prep" && isPreparing && (
                 <Loader2 className="size-3 animate-spin text-indigo-400" aria-hidden />
               )}
+              {id === "mail" && (
+                <>
+                  <Mail className="size-3.5" aria-hidden />
+                  {emailCount > 0 && (
+                    <span className="rounded-full bg-indigo-500/20 px-1.5 text-[11px] leading-4 font-medium text-indigo-200 tabular-nums">
+                      {emailCount}
+                    </span>
+                  )}
+                </>
+              )}
             </button>
           ))}
         </div>
@@ -440,6 +457,9 @@ function DrawerBody({
             isPreparing={isPreparing}
             onGenerate={() => onPrepare(application.id)}
           />
+        )}
+        {tab === "mail" && (
+          <ApplicationCommunications applicationId={application.id} />
         )}
       </div>
     </>

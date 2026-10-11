@@ -1,5 +1,6 @@
 import { getKeyHintsAction } from "@/app/actions/api-keys";
 import { getBillingAction } from "@/app/actions/billing";
+import { listEmailInteractionsAction } from "@/app/actions/email";
 import { listCalendarEventsAction } from "@/app/actions/calendar";
 import {
   getResumeVersionAction,
@@ -15,6 +16,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import type { BillingSummary } from "@/lib/types/billing";
 import type { CalendarEventsResult } from "@/lib/types/calendar";
+import type { EmailInteraction } from "@/lib/types/email";
 import type {
   JobApplication,
   MasterResumeVersion,
@@ -32,6 +34,8 @@ export const queryKeys = {
   masterResume: (userId: string) => ["master-resume", userId] as const,
   keyHints: (userId: string) => ["byok-key-hints", userId] as const,
   billing: (userId: string) => ["billing", userId] as const,
+  emailInteractions: (userId: string, applicationId: string) =>
+    ["email-interactions", userId, applicationId] as const,
   calendarEvents: (userId: string) => ["calendar-events", userId] as const,
   resumeVersions: (userId: string) => ["resume-versions", userId] as const,
   resumeVersion: (userId: string, versionId: string) =>
@@ -63,6 +67,14 @@ export async function fetchMasterResume(): Promise<MasterResumeVersion | null> {
 
 export async function fetchKeyHints(): Promise<KeyHints> {
   const result = await getKeyHintsAction();
+  if (!result.ok) throw new Error(result.error);
+  return result.data;
+}
+
+export async function fetchEmailInteractions(
+  applicationId: string,
+): Promise<EmailInteraction[]> {
+  const result = await listEmailInteractionsAction(applicationId);
   if (!result.ok) throw new Error(result.error);
   return result.data;
 }
