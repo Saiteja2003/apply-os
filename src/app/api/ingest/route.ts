@@ -138,7 +138,21 @@ export async function POST(request: NextRequest) {
   }
 
   const body: unknown = await request.json().catch(() => null);
-  const parsed = ingestSchema.safeParse(body);
+  const rawObj =
+    typeof body === "object" && body !== null
+      ? (body as Record<string, unknown>)
+      : {};
+  const normalized = {
+    company: rawObj.company ?? rawObj.companyName,
+    role: rawObj.role ?? rawObj.roleTitle,
+    location: rawObj.location,
+    url: rawObj.url ?? rawObj.jobUrl,
+    jobDescription: rawObj.jobDescription ?? rawObj.description,
+    autoTailor: rawObj.autoTailor,
+    applied: rawObj.applied,
+    modelId: rawObj.modelId,
+  };
+  const parsed = ingestSchema.safeParse(normalized);
   if (!parsed.success) {
     return respond(
       request,

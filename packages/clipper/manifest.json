@@ -1,13 +1,36 @@
 {
   "manifest_version": 3,
   "name": "ApplyOS Clipper",
-  "version": "0.1.0",
-  "description": "Send the job posting you are looking at to your ApplyOS pipeline and start tailoring.",
+  "version": "1.0.0",
+  "description": "Deterministic one-click job clipper and tailoring bridge for ApplyOS.",
   "action": {
-    "default_title": "Import to ApplyOS",
-    "default_popup": "popup.html"
+    "default_title": "Clip & Tailor with ApplyOS",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
   },
-  "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["http://localhost:3000/*"],
-  "optional_host_permissions": ["https://*/*", "http://*/*"]
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "https://*.linkedin.com/*",
+    "https://*.greenhouse.io/*",
+    "https://*.lever.co/*",
+    "https://*.ashbyhq.com/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ]
 }

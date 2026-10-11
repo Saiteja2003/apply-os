@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ApplyOS Clipper</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Top Bar / Header -->
+      <header class="header">
+        <div class="brand">
+          <div class="brand-icon">A</div>
+          <div class="brand-text">
+            <span class="brand-title">ApplyOS</span>
+            <span class="brand-sub">Clipper V3</span>
+          </div>
+        </div>
+        <div id="connectionPill" class="connection-pill checking">
+          <span class="status-dot"></span>
+          <span id="connectionText" class="connection-text">Checking...</span>
+        </div>
+      </header>
+
+      <!-- Main Detected Content Card -->
+      <main class="content-card">
+        <div class="source-bar">
+          <span class="source-label">Source</span>
+          <span id="sourceBadge" class="source-badge">Detecting...</span>
+        </div>
+
+        <div class="field-group">
+          <label for="role" class="field-label">Role Title</label>
+          <input
+            id="role"
+            type="text"
+            class="input-text"
+            placeholder="e.g. Senior Software Engineer"
+            maxlength="200"
+          />
+        </div>
+
+        <div class="field-row">
+          <div class="field-group flex-1">
+            <label for="company" class="field-label">Company</label>
+            <input
+              id="company"
+              type="text"
+              class="input-text"
+              placeholder="e.g. Acme Corp"
+              maxlength="200"
+            />
+          </div>
+          <div class="field-group flex-1">
+            <label for="location" class="field-label">Location</label>
+            <input
+              id="location"
+              type="text"
+              class="input-text"
+              placeholder="e.g. Remote / NYC"
+              maxlength="200"
+            />
+          </div>
+        </div>
+
+        <div class="telemetry-box" id="telemetryBox">
+          <div class="telemetry-info">
+            <span id="telemetryIcon" class="telemetry-icon">⏳</span>
+            <span id="telemetryText" class="telemetry-text">Inspecting active tab...</span>
+          </div>
+          <span id="telemetryBadge" class="telemetry-badge hidden">ATS Ready</span>
+        </div>
+
+        <div class="field-group">
+          <label for="model" class="field-label">Model Engine</label>
+          <select id="model" class="select-input">
+            <option value="">ApplyOS Default</option>
+            <option value="claude-sonnet-5-5">Claude 3.5 Sonnet</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+            <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite</option>
+          </select>
+        </div>
+
+        <div class="toggles">
+          <label class="toggle-label">
+            <input id="autoTailor" type="checkbox" class="toggle-checkbox" checked />
+            <span class="toggle-text">Tailor resume, cover letter & outreach</span>
+          </label>
+          <label class="toggle-label">
+            <input id="applied" type="checkbox" class="toggle-checkbox" />
+            <span class="toggle-text">I have already submitted this application</span>
+          </label>
+        </div>
+
+        <button id="clipBtn" class="btn-primary" disabled>
+          <span id="btnSpinner" class="spinner hidden"></span>
+          <span id="btnText">Clip & Tailor Application</span>
+        </button>
+
+        <div id="statusAlert" class="status-alert hidden" role="status">
+          <div id="statusMessage" class="status-msg"></div>
+          <div id="actionLinks" class="action-links hidden">
+            <a id="pipelineLink" href="#" target="_blank" class="action-link">Open Pipeline →</a>
+          </div>
+        </div>
+      </main>
+
+      <!-- Advanced / Instance Settings -->
+      <footer class="footer">
+        <details class="settings-details">
+          <summary class="settings-summary">
+            <span>ApplyOS Host Settings</span>
+            <span class="summary-caret">▾</span>
+          </summary>
+          <div class="settings-content">
+            <label for="appUrl" class="field-label">Host URL</label>
+            <div class="url-input-row">
+              <input
+                id="appUrl"
+                type="url"
+                class="input-text url-input"
+                placeholder="http://localhost:3000"
+              />
+              <button id="testBtn" class="btn-secondary" type="button">Test</button>
+            </div>
+            <p class="settings-hint">
+              Active browser session cookies authenticate your imports.
+            </p>
+          </div>
+        </details>
+      </footer>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

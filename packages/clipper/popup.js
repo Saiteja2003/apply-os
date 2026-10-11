@@ -1,156 +1,237 @@
-// Popup for the ApplyOS Clipper. Reads the job from the active tab, then
-// posts it to ApplyOS's /api/ingest using the browser's ApplyOS session.
-
-const DEFAULT_APP_URL = "http://localhost:3000";
-
-const $ = (id) => document.getElementById(id);
-const fields = {
-  company: $("company"),
-  role: $("role"),
-  model: $("model"),
-  autoTailor: $("autoTailor"),
-  applied: $("applied"),
-  appUrl: $("appUrl"),
-};
-const importButton = $("import");
-const status = $("status");
-const captured = $("captured");
-
-let job = null;
-
-function showStatus(kind, message, link) {
-  status.className = `status ${kind}`;
-  status.textContent = message;
-  if (link) {
-    status.append(" ");
-    const anchor = document.createElement("a");
-    anchor.href = link.href;
-    anchor.target = "_blank";
-    anchor.rel = "noreferrer";
-    anchor.textContent = link.label;
-    status.append(anchor);
+"use strict";
+(() => {
+  // extension/src/popup/popup.ts
+  var DEFAULT_APP_URL = "http://localhost:3000";
+  var $ = (id) => {
+    const el = document.getElementById(id);
+    if (!el) throw new Error(`Missing element #${id}`);
+    return el;
+  };
+  var connectionPill = $("connectionPill");
+  var connectionText = $("connectionText");
+  var sourceBadge = $("sourceBadge");
+  var roleInput = $("role");
+  var companyInput = $("company");
+  var locationInput = $("location");
+  var telemetryBox = $("telemetryBox");
+  var telemetryIcon = $("telemetryIcon");
+  var telemetryText = $("telemetryText");
+  var telemetryBadge = $("telemetryBadge");
+  var modelSelect = $("model");
+  var autoTailorCheckbox = $("autoTailor");
+  var appliedCheckbox = $("applied");
+  var clipBtn = $("clipBtn");
+  var btnSpinner = $("btnSpinner");
+  var btnText = $("btnText");
+  var statusAlert = $("statusAlert");
+  var statusMessage = $("statusMessage");
+  var actionLinks = $("actionLinks");
+  var pipelineLink = $("pipelineLink");
+  var appUrlInput = $("appUrl");
+  var testBtn = $("testBtn");
+  var currentJob = null;
+  function getAppOrigin() {
+    const input = appUrlInput.value.trim() || DEFAULT_APP_URL;
+    try {
+      return new URL(input).origin;
+    } catch {
+      return DEFAULT_APP_URL;
+    }
   }
-}
-
-const appOrigin = () =>
-  new URL(fields.appUrl.value.trim() || DEFAULT_APP_URL).origin;
-
-async function loadSettings() {
-  const saved = await chrome.storage.sync.get(["appUrl", "model", "autoTailor"]);
-  fields.appUrl.value = saved.appUrl || DEFAULT_APP_URL;
-  fields.model.value = saved.model || "";
-  fields.autoTailor.checked = saved.autoTailor !== false;
-}
-
-async function readPage() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab || !tab.id || !/^https?:/.test(tab.url || "")) {
-    captured.textContent = "Open a job posting, then click the clipper.";
-    return;
+  function setConnectionStatus(status, text) {
+    connectionPill.className = `connection-pill ${status}`;
+    connectionText.textContent = text;
   }
-  try {
-    const [injection] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["extract.js"],
-    });
-    job = injection && injection.result;
-  } catch {
-    captured.textContent = "This page cannot be read by extensions.";
-    return;
-  }
-
-  if (!job || typeof job.jobDescription !== "string") {
-    job = null;
-    captured.textContent = "Could not read a job from this page.";
-    return;
-  }
-
-  fields.company.value = job.company || "";
-  fields.role.value = job.role || "";
-  const length = job.jobDescription.length;
-  captured.textContent =
-    length >= 80
-      ? `Captured ${length.toLocaleString()} characters of the job description.`
-      : "No job description found. Select the description text on the page and reopen this popup.";
-  importButton.disabled = length < 80;
-}
-
-async function importJob() {
-  if (!job) return;
-  if (!fields.company.value.trim() || !fields.role.value.trim()) {
-    showStatus("error", "Add the company and the role first.");
-    (fields.company.value.trim() ? fields.role : fields.company).focus();
-    return;
-  }
-
-  let origin;
-  try {
-    origin = appOrigin();
-  } catch {
-    showStatus("error", "The ApplyOS address is not a valid URL.");
-    return;
-  }
-
-  // Ask for access to the ApplyOS origin if it is not the built-in default.
-  const granted = await chrome.permissions.request({ origins: [`${origin}/*`] });
-  if (!granted) {
-    showStatus("error", "Permission to reach ApplyOS was not granted.");
-    return;
-  }
-  await chrome.storage.sync.set({
-    appUrl: origin,
-    model: fields.model.value,
-    autoTailor: fields.autoTailor.checked,
-  });
-
-  importButton.disabled = true;
-  importButton.textContent = "Importing…";
-  status.className = "status";
-  status.textContent = "";
-
-  try {
-    const response = await fetch(`${origin}/api/ingest`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        company: fields.company.value,
-        role: fields.role.value,
-        location: job.location,
-        url: job.url,
-        jobDescription: job.jobDescription,
-        autoTailor: fields.autoTailor.checked,
-        applied: fields.applied.checked,
-        modelId: fields.model.value || null,
-      }),
-    });
-
-    if (response.status === 403) {
-      showStatus("error", "ApplyOS did not accept this extension.");
-    } else if (response.status === 401) {
-      showStatus("error", "You are not signed in to ApplyOS.", {
-        href: `${origin}/login`,
-        label: "Sign in",
-      });
-    } else if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      showStatus("error", body.error || `ApplyOS answered with ${response.status}.`);
+  function showAlert(type, message, links) {
+    statusAlert.className = `status-alert ${type}`;
+    statusMessage.textContent = message;
+    statusAlert.classList.remove("hidden");
+    if (links && links.dashboard) {
+      pipelineLink.href = links.dashboard;
+      actionLinks.classList.remove("hidden");
     } else {
-      const body = await response.json().catch(() => ({}));
-      showStatus(
-        "ok",
-        body.tailoring ? "Imported & Tailoring Initiated!" : "Imported to your pipeline.",
-        { href: `${origin}/dashboard`, label: "Open pipeline" },
-      );
-      importButton.textContent = "Imported";
+      actionLinks.classList.add("hidden");
+    }
+  }
+  function clearAlert() {
+    statusAlert.classList.add("hidden");
+    statusMessage.textContent = "";
+    actionLinks.classList.add("hidden");
+  }
+  async function checkHostConnection(origin) {
+    setConnectionStatus("checking", "Connecting...");
+    try {
+      const res = await fetch(`${origin}/api/ingest`, {
+        method: "OPTIONS",
+        credentials: "include"
+      });
+      if (res.ok || res.status === 204) {
+        setConnectionStatus("online", "Connected");
+      } else if (res.status === 401) {
+        setConnectionStatus("offline", "Auth Required");
+      } else {
+        setConnectionStatus("online", "Online");
+      }
+    } catch {
+      setConnectionStatus("offline", "Unreachable");
+    }
+  }
+  async function loadSettings() {
+    try {
+      const saved = await chrome.storage.sync.get(["appUrl", "model", "autoTailor"]);
+      appUrlInput.value = saved.appUrl || DEFAULT_APP_URL;
+      modelSelect.value = saved.model || "";
+      autoTailorCheckbox.checked = saved.autoTailor !== false;
+    } catch {
+      appUrlInput.value = DEFAULT_APP_URL;
+    }
+  }
+  async function saveSettings() {
+    try {
+      await chrome.storage.sync.set({
+        appUrl: getAppOrigin(),
+        model: modelSelect.value,
+        autoTailor: autoTailorCheckbox.checked
+      });
+    } catch {
+    }
+  }
+  async function inspectActiveTab() {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (!tab || !tab.id || !/^https?:/.test(tab.url || "")) {
+      sourceBadge.textContent = "Unsupported";
+      telemetryIcon.textContent = "\u26A0\uFE0F";
+      telemetryText.textContent = "Open a valid job posting tab.";
+      clipBtn.disabled = true;
       return;
     }
-  } catch {
-    showStatus("error", `Could not reach ApplyOS at ${origin}.`);
+    telemetryIcon.textContent = "\u23F3";
+    telemetryText.textContent = "Extracting job details...";
+    try {
+      const [injection] = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        files: ["extract.js"]
+      });
+      currentJob = injection && injection.result || null;
+    } catch (err) {
+      sourceBadge.textContent = "Restricted";
+      telemetryIcon.textContent = "\u26A0\uFE0F";
+      telemetryText.textContent = "Browser security prohibits script injection here.";
+      clipBtn.disabled = true;
+      return;
+    }
+    if (!currentJob || typeof currentJob.description !== "string") {
+      currentJob = null;
+      sourceBadge.textContent = "Unknown";
+      telemetryIcon.textContent = "\u26A0\uFE0F";
+      telemetryText.textContent = "No job posting detected.";
+      clipBtn.disabled = true;
+      return;
+    }
+    roleInput.value = currentJob.roleTitle || currentJob.role || "";
+    companyInput.value = currentJob.companyName || currentJob.company || "";
+    locationInput.value = currentJob.location || "";
+    sourceBadge.textContent = currentJob.source || "Detected";
+    const charLength = currentJob.description.length;
+    if (charLength >= 80) {
+      telemetryIcon.textContent = "\u2713";
+      telemetryText.textContent = `${charLength.toLocaleString()} characters captured`;
+      telemetryBadge.classList.remove("hidden");
+      clipBtn.disabled = false;
+    } else {
+      telemetryIcon.textContent = "\u26A0\uFE0F";
+      telemetryText.textContent = "Description too short (<80 chars). Highlight text & retry.";
+      telemetryBadge.classList.add("hidden");
+      clipBtn.disabled = true;
+    }
   }
-  importButton.disabled = false;
-  importButton.textContent = "Import to ApplyOS";
-}
-
-importButton.addEventListener("click", importJob);
-loadSettings().then(readPage);
+  async function handleClip() {
+    if (!currentJob) return;
+    const company = companyInput.value.trim();
+    const role = roleInput.value.trim();
+    const location = locationInput.value.trim();
+    if (!company || !role) {
+      showAlert("error", "Company and Role Title are required.");
+      (company ? roleInput : companyInput).focus();
+      return;
+    }
+    const origin = getAppOrigin();
+    try {
+      const granted = await chrome.permissions.request({
+        origins: [`${origin}/*`]
+      });
+      if (!granted) {
+        showAlert("error", `Permission to connect to ${origin} was denied.`);
+        return;
+      }
+    } catch {
+    }
+    await saveSettings();
+    clearAlert();
+    clipBtn.disabled = true;
+    btnSpinner.classList.remove("hidden");
+    btnText.textContent = "Importing...";
+    const payload = {
+      company,
+      role,
+      location,
+      url: currentJob.jobUrl || currentJob.url,
+      jobDescription: currentJob.description || currentJob.jobDescription,
+      autoTailor: autoTailorCheckbox.checked,
+      applied: appliedCheckbox.checked,
+      modelId: modelSelect.value || null
+    };
+    try {
+      const res = await fetch(`${origin}/api/ingest`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+      if (res.status === 401) {
+        showAlert("error", "You are signed out. Please sign in to ApplyOS.");
+        setConnectionStatus("offline", "Auth Required");
+      } else if (res.status === 403) {
+        showAlert("error", "Origin not accepted by ApplyOS (CORS / Extension origin check).");
+      } else if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        showAlert("error", data.error || `Server responded with HTTP ${res.status}.`);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        const msg = data.tailoring ? "\u2713 Job clipped & background tailoring started!" : "\u2713 Job clipped to your pipeline!";
+        showAlert("success", msg, { dashboard: `${origin}/dashboard` });
+        btnText.textContent = "Clipped \u2713";
+        setConnectionStatus("online", "Connected");
+        return;
+      }
+    } catch (err) {
+      showAlert("error", `Could not connect to ApplyOS at ${origin}.`);
+      setConnectionStatus("offline", "Unreachable");
+    } finally {
+      btnSpinner.classList.add("hidden");
+      if (btnText.textContent !== "Clipped \u2713") {
+        clipBtn.disabled = false;
+        btnText.textContent = "Clip & Tailor Application";
+      }
+    }
+  }
+  clipBtn.addEventListener("click", handleClip);
+  testBtn.addEventListener("click", async () => {
+    const origin = getAppOrigin();
+    await checkHostConnection(origin);
+  });
+  appUrlInput.addEventListener("change", () => {
+    saveSettings();
+    checkHostConnection(getAppOrigin());
+  });
+  modelSelect.addEventListener("change", saveSettings);
+  autoTailorCheckbox.addEventListener("change", saveSettings);
+  (async () => {
+    await loadSettings();
+    const origin = getAppOrigin();
+    checkHostConnection(origin);
+    await inspectActiveTab();
+  })();
+})();
