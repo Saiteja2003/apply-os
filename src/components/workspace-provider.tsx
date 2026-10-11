@@ -24,7 +24,11 @@ import {
 import type { ActionResult } from "@/lib/action-result";
 import { fetchApplications, fetchMasterResume, queryKeys } from "@/lib/api";
 import { useModelConfig } from "@/lib/store";
-import { INSUFFICIENT_CREDITS, MODEL_NOT_ALLOWED } from "@/lib/types/billing";
+import {
+  DAILY_QUOTA_EXCEEDED,
+  INSUFFICIENT_CREDITS,
+  MODEL_NOT_ALLOWED,
+} from "@/lib/types/billing";
 import type {
   ApplicationStatus,
   JobApplication,
@@ -287,13 +291,16 @@ export function WorkspaceProvider({
           if (!result.ok) {
             const upgrade =
               result.code === INSUFFICIENT_CREDITS ||
-              result.code === MODEL_NOT_ALLOWED;
+              result.code === MODEL_NOT_ALLOWED ||
+              result.code === DAILY_QUOTA_EXCEEDED;
             toast.error(
               result.code === INSUFFICIENT_CREDITS
                 ? "No applications left"
-                : result.code === MODEL_NOT_ALLOWED
-                  ? "Model not included in your plan"
-                  : "Tailoring failed",
+                : result.code === DAILY_QUOTA_EXCEEDED
+                  ? "Daily free quota reached"
+                  : result.code === MODEL_NOT_ALLOWED
+                    ? "Model not included in your plan"
+                    : "Tailoring failed",
               {
                 description: result.error,
                 action: upgrade

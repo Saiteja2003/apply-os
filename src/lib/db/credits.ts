@@ -141,6 +141,38 @@ export async function getCreditLedger(
 }
 
 /**
+ * Counts how many times each model was tailored today (since 00:00 UTC).
+ * Used to track remaining daily quotas for FREE_FAST and FREE_STANDARD models.
+ */
+export async function getDailyQuotaUsage(
+  userId: string,
+): Promise<Record<string, number>> {
+  const store = await creditStore(userId);
+  const startOfUtcDay = new Date();
+  startOfUtcDay.setUTCHours(0, 0, 0, 0);
+
+  const { data, error } = await store
+    .from("applications")
+    .select("tailored_by_model")
+    .eq("user_id", userId)
+    .gte("updated_at", startOfUtcDay.toISOString())
+    .not("tailored_by_model", "is", null);
+
+  if (error) {
+    console.error("Could not load daily quota usage", error);
+    return {};
+  }
+
+  const usage: Record<string, number> = {};
+  for (const row of data ?? []) {
+    if (row.tailored_by_model) {
+      usage[row.tailored_by_model] = (usage[row.tailored_by_model] ?? 0) + 1;
+    }
+  }
+  return usage;
+}
+
+/**
  * Takes one credit for tailoring `applicationId`, atomically. Returns true
  * when a credit was taken, false when credits are not set up (the run is
  * then not metered). Throws InsufficientCreditsError on an empty balance.

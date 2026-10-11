@@ -1,6 +1,7 @@
 "use client";
 
-import { KeyRound } from "lucide-react";
+import { KeyRound, Sparkles, Zap } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { ByokKeyForm } from "@/components/byok-key-form";
@@ -14,29 +15,53 @@ import {
 } from "@/components/ui/dialog";
 import type { KeyHints } from "@/lib/db/api-keys";
 import type {
+  ModelDescriptor,
   ModelRegistry,
   ProviderDescriptor,
   ProviderId,
 } from "@/lib/llm/models";
+import type { UserCredits } from "@/lib/types/billing";
 import { cn } from "@/lib/utils";
 
 interface ByokKeyDialogProps {
   userId: string;
   registry: ModelRegistry;
   activeProvider: ProviderDescriptor;
+  activeModel?: ModelDescriptor;
   keyHints: KeyHints;
+  credits?: UserCredits | null;
+  dailyUsage?: Record<string, number>;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function ByokKeyDialog({
   userId,
   registry,
   activeProvider,
+  activeModel,
   keyHints,
+  credits = null,
+  dailyUsage = {},
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
 }: ByokKeyDialogProps) {
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = isControlled ? controlledOnOpenChange! : setInternalOpen;
+
   const [providerId, setProviderId] = useState<ProviderId>(activeProvider.id);
 
   const usingByok = activeProvider.id in keyHints;
+  const balance = credits?.balance ?? 0;
+  const hasCredits = balance > 0;
+
+  // Calculate remaining daily free runs for current active model
+  const quota = activeModel?.dailyFreeQuota ?? 5;
+  const runsUsed = activeModel ? (dailyUsage[activeModel.id] ?? 0) : 0;
+  const remainingFreeRuns = Math.max(0, quota - runsUsed);
+
   const byokProviders = registry.providers.filter(
     (provider) => provider.supportsByok,
   );
@@ -55,32 +80,51 @@ export function ByokKeyDialog({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          aria-label={`API keys. ${activeProvider.label} is using ${
-            usingByok ? "your own key" : "the platform key"
-          }.`}
+          className="h-8 gap-1.5 px-2.5 text-xs font-medium"
+          aria-label={
+            usingByok
+              ? `API key active. ${activeProvider.label} using BYOK.`
+              : hasCredits
+                ? `${balance} credits remaining.`
+                : `${remainingFreeRuns} daily free runs remaining.`
+          }
         >
-          <KeyRound aria-hidden />
-          <span
-            className={cn(
-              "size-2 rounded-full transition-colors",
-              usingByok ? "bg-emerald-500" : "bg-muted-foreground/50",
-            )}
-            aria-hidden
-          />
-          <span className="hidden sm:inline">
-            {activeProvider.label} · {usingByok ? "BYOK" : "Platform"}
-          </span>
+          {usingByok ? (
+            <>
+              <KeyRound className="size-3.5 text-emerald-400" aria-hidden />
+              <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden />
+              <span className="text-zinc-200">
+                {activeProvider.label} · BYOK
+              </span>
+            </>
+          ) : hasCredits ? (
+            <>
+              <Zap className="size-3.5 text-indigo-400" aria-hidden />
+              <span className="size-1.5 rounded-full bg-indigo-400" aria-hidden />
+              <span className="text-zinc-200">
+                {balance} Credits Left
+              </span>
+            </>
+          ) : (
+            <>
+              <Sparkles className="size-3.5 text-violet-400" aria-hidden />
+              <span className="size-1.5 rounded-full bg-violet-400" aria-hidden />
+              <span className="text-zinc-200">
+                {remainingFreeRuns} Daily Free Runs
+              </span>
+            </>
+          )}
         </Button>
       </DialogTrigger>
 
       <DialogContent>
         <DialogTitle className="text-base font-semibold">
-          Bring your own key
+          Bring Your Own Key (BYOK)
         </DialogTitle>
-        <DialogDescription className="mt-1 text-sm text-muted-foreground">
+        <DialogDescription className="mt-1 text-xs text-muted-foreground">
           Keys are encrypted before they are stored and are only ever used on
-          the server. Providers without a key fall back to the platform key, if
-          one is configured.
+          the server. Using your own key unlocks unlimited runs across every model
+          with zero credit debits.
         </DialogDescription>
 
         <div
@@ -96,7 +140,7 @@ export function ByokKeyDialog({
               aria-selected={entry.id === providerId}
               onClick={() => setProviderId(entry.id)}
               className={cn(
-                "flex flex-1 items-center justify-center gap-1.5 rounded px-2 py-1.5 text-sm transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "flex flex-1 items-center justify-center gap-1.5 rounded px-2 py-1.5 text-xs transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 entry.id === providerId
                   ? "bg-zinc-800 font-medium text-zinc-100 shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
@@ -114,7 +158,6 @@ export function ByokKeyDialog({
         </div>
 
         <div className="mt-4">
-          {/* Keyed so switching provider clears the typed key and any error. */}
           <ByokKeyForm
             key={provider.id}
             userId={userId}
@@ -122,6 +165,17 @@ export function ByokKeyDialog({
             hint={keyHints[provider.id]}
             autoFocus
           />
+        </div>
+
+        <div className="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3 text-xs text-zinc-400">
+          <span>Prefer not to manage API keys?</span>
+          <Link
+            href="/settings#plans"
+            onClick={() => setOpen(false)}
+            className="font-medium text-indigo-400 hover:text-indigo-300"
+          >
+            Explore Credit Bundles →
+          </Link>
         </div>
       </DialogContent>
     </Dialog>

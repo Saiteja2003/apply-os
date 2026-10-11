@@ -5,16 +5,19 @@ import { z } from "zod";
 import { getByokKeys } from "@/lib/db/api-keys";
 import { getApplication, saveTailoringResult } from "@/lib/db/applications";
 import {
+  getDailyQuotaUsage,
   getUserCredits,
   refundTailoringCredit,
   spendCreditForTailoring,
 } from "@/lib/db/credits";
 import {
+  evaluateModelAccess,
   hasOwnKeyFor,
   ModelNotAllowedError,
   platformAllows,
   runnableModelIds,
 } from "@/lib/billing/model-access";
+import { getModel } from "@/lib/llm/models";
 import { ensureMasterResume } from "@/lib/db/seed";
 import { generateStructured, type ProviderKeys } from "@/lib/llm/gateway";
 import { getSessionUser } from "@/lib/supabase/server";
@@ -239,25 +242,42 @@ export async function tailorApplication({
   // model is called and given back if the run fails.
   const onOwnKey = hasOwnKeyFor(modelConfig.modelId, byokKeys);
   let fallbackModelIds: string[] | undefined;
+  let charged = false;
+
+  const model = getModel(modelConfig.modelId);
+  if (!model) throw new ModelNotAllowedError();
+
   if (onOwnKey) {
     fallbackModelIds = modelConfig.fallbackModelIds?.filter((id) =>
       hasOwnKeyFor(id, byokKeys),
     );
   } else {
     const credits = await getUserCredits(user.id);
-    const tier = credits?.tier ?? null;
-    if (!platformAllows(tier, modelConfig.modelId)) {
-      throw new ModelNotAllowedError();
-    }
-    fallbackModelIds = runnableModelIds(modelConfig.fallbackModelIds, tier, byokKeys);
-  }
-  const charged = onOwnKey
-    ? false
-    : await spendCreditForTailoring(
+    const balance = credits?.balance ?? 0;
+    const dailyUsage = await getDailyQuotaUsage(user.id);
+
+    const access = evaluateModelAccess(
+      model,
+      byokKeys,
+      balance,
+      dailyUsage[model.id] ?? 0,
+    );
+
+    if (access.chargeCredit) {
+      charged = await spendCreditForTailoring(
         user.id,
         jobId,
-        `${job.companyName} · ${job.roleTitle}`,
+        `${job.companyName} · ${job.roleTitle} [${model.label}]`,
       );
+    }
+
+    fallbackModelIds = runnableModelIds(
+      modelConfig.fallbackModelIds,
+      balance,
+      byokKeys,
+      dailyUsage,
+    );
+  }
 
   try {
     return await runTailoring({

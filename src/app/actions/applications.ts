@@ -11,7 +11,7 @@ import {
   saveInterviewPrepProgress,
   updateApplicationStatus,
 } from "@/lib/db/applications";
-import { ModelNotAllowedError } from "@/lib/billing/model-access";
+import { DailyQuotaExceededError, ModelNotAllowedError } from "@/lib/billing/model-access";
 import { InsufficientCreditsError } from "@/lib/db/credits";
 import { describeGatewayError } from "@/lib/llm/describe-error";
 import { GatewayError } from "@/lib/llm/errors";
@@ -19,7 +19,11 @@ import { getModel } from "@/lib/llm/models";
 import { getSessionUser } from "@/lib/supabase/server";
 import { tailorApplication } from "@/lib/tailoring/engine";
 import { generateInterviewPrep } from "@/lib/tailoring/prep";
-import { INSUFFICIENT_CREDITS, MODEL_NOT_ALLOWED } from "@/lib/types/billing";
+import {
+  DAILY_QUOTA_EXCEEDED,
+  INSUFFICIENT_CREDITS,
+  MODEL_NOT_ALLOWED,
+} from "@/lib/types/billing";
 import type { QuestionProgress } from "@/lib/types/interview";
 import { APPLICATION_STATUSES, type JobApplication } from "@/lib/types/resume";
 
@@ -121,6 +125,9 @@ export async function tailorApplicationAction(
     }
     if (error instanceof ModelNotAllowedError) {
       return { ok: false, error: error.message, code: MODEL_NOT_ALLOWED };
+    }
+    if (error instanceof DailyQuotaExceededError) {
+      return { ok: false, error: error.message, code: DAILY_QUOTA_EXCEEDED };
     }
     return failure(error, "Tailoring failed.");
   }

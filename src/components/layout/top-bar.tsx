@@ -4,12 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { ByokKeyDialog } from "@/components/byok-key-dialog";
 import { ModelSelector } from "@/components/model-selector";
 import { Kbd } from "@/components/ui/kbd";
-import { fetchKeyHints, queryKeys } from "@/lib/api";
+import { fetchBilling, fetchKeyHints, queryKeys } from "@/lib/api";
 import { MODEL_REGISTRY } from "@/lib/llm/models";
 import { useGatewayStore } from "@/lib/store";
 
@@ -18,9 +18,16 @@ import { NAV_ITEMS, WORKSPACE_HREF } from "./sidebar";
 export function TopBar({ userId }: { userId: string }) {
   const pathname = usePathname();
   const activeModelId = useGatewayStore((state) => state.activeModelId);
+  const [byokDialogOpen, setByokDialogOpen] = useState(false);
+
   const { data: keyHints } = useQuery({
     queryKey: queryKeys.keyHints(userId),
     queryFn: fetchKeyHints,
+  });
+
+  const { data: billing } = useQuery({
+    queryKey: queryKeys.billing(userId),
+    queryFn: fetchBilling,
   });
 
   // Restore the model saved in this browser (see `useGatewayStore`).
@@ -34,14 +41,19 @@ export function TopBar({ userId }: { userId: string }) {
     NAV_ITEMS.find(
       (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
     )?.label ?? (pathname.startsWith("/clip") ? "Import job" : "ApplyOS");
+
   const activeModel =
     MODEL_REGISTRY.models.find(
       (model) => model.id === (activeModelId ?? MODEL_REGISTRY.defaultModelId),
     ) ?? MODEL_REGISTRY.models[0];
+
   const activeProvider =
     MODEL_REGISTRY.providers.find(
       (provider) => provider.id === activeModel.providerId,
     ) ?? MODEL_REGISTRY.providers[0];
+
+  const credits = billing?.credits ?? null;
+  const dailyUsage = billing?.dailyUsage ?? {};
 
   return (
     <header className="flex h-14 shrink-0 items-center gap-3 border-b bg-zinc-950/60 px-3 backdrop-blur-md md:px-6">
@@ -83,13 +95,26 @@ export function TopBar({ userId }: { userId: string }) {
         <span>then a letter to navigate</span>
       </p>
 
+      {/* Control Surface: Model Selector + Engine Status Pill */}
       <div className="ml-auto flex items-center gap-2 lg:ml-0">
-        <ModelSelector registry={MODEL_REGISTRY} activeModel={activeModel} />
+        <ModelSelector
+          registry={MODEL_REGISTRY}
+          activeModel={activeModel}
+          keyHints={keyHints ?? {}}
+          credits={credits}
+          dailyUsage={dailyUsage}
+          onOpenByok={() => setByokDialogOpen(true)}
+        />
         <ByokKeyDialog
           userId={userId}
           registry={MODEL_REGISTRY}
           activeProvider={activeProvider}
+          activeModel={activeModel}
           keyHints={keyHints ?? {}}
+          credits={credits}
+          dailyUsage={dailyUsage}
+          open={byokDialogOpen}
+          onOpenChange={setByokDialogOpen}
         />
       </div>
     </header>

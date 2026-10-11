@@ -1,9 +1,12 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Check, KeyRound, Plus } from "lucide-react";
-import { useState } from "react";
+import { Check, KeyRound, Loader2, Plus, Sparkles, Zap } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
+import { createCheckoutSessionAction } from "@/app/actions/checkout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,154 +20,97 @@ import { InlineAlert } from "@/components/ui/inline-alert";
 import { useWorkspace } from "@/components/workspace-provider";
 import { fetchBilling, queryKeys } from "@/lib/api";
 import { getModel } from "@/lib/llm/models";
-import type {
-  BillingSummary,
-  CreditLedgerEntry,
-  PlanTier,
+import {
+  CREDIT_BUNDLES,
+  type BillingSummary,
+  type CreditBundle,
+  type CreditBundleId,
+  type CreditLedgerEntry,
+  type PlanTier,
 } from "@/lib/types/billing";
 import { cn } from "@/lib/utils";
 
-interface Plan {
-  tier: PlanTier;
-  name: string;
-  price: string;
-  cadence: string;
-  blurb: string;
-  points: string[];
-  /** Applications in a paid pack. */
-  pack?: number;
-}
-
-const PLANS: Plan[] = [
-  {
-    tier: "free",
-    name: "Free Starter",
-    price: "$0",
-    cadence: "",
-    blurb: "Explore ApplyOS with fast AI.",
-    points: [
-      "3 tailored applications a day",
-      "Resume, cover letter and recruiter message each time",
-      "Fast default model; Claude and GPT-4o need Pro or your own key",
-      "Pipeline, calendar and interview prep",
-    ],
-  },
-  {
-    tier: "byok",
-    name: "Your own keys",
-    price: "No markup",
-    cadence: "",
-    blurb: "Connect your Anthropic, OpenAI or Google key.",
-    points: [
-      "Unlimited applications",
-      "Never uses your ApplyOS applications",
-      "Keys are encrypted and stay on the server",
-    ],
-  },
-  {
-    tier: "pro_credits",
-    name: "Pro Credit Pack",
-    price: "$19",
-    cadence: "one-time",
-    blurb: "For an active search, with no keys to manage.",
-    pack: 100,
-    points: [
-      "100 tailored applications",
-      "No API keys needed",
-      "Includes Claude and GPT-4o",
-      "Applications never expire",
-    ],
-  },
-  {
-    tier: "sprint_pass",
-    name: "Sprint Pass",
-    price: "$39",
-    cadence: "60 days",
-    blurb: "For a focused, time-boxed job hunt.",
-    pack: 250,
-    points: [
-      "250 tailored applications",
-      "Everything in Pro",
-      "Recruiter email detection (in development)",
-    ],
-  },
-];
-
 const PLAN_NAMES: Record<PlanTier, string> = {
-  free: "Free Starter",
-  byok: "Your own keys",
-  pro_credits: "Pro Credit Pack",
-  sprint_pass: "Sprint Pass",
+  free: "Daily Free Tier",
+  byok: "BYOK (Your Own Key)",
+  pro_credits: "Credit Bundle",
+  sprint_pass: "Credit Bundle",
 };
 
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 
-const plural = (count: number) =>
-  `${count} ${count === 1 ? "application" : "applications"}`;
-
-function PlanCard({
-  plan,
-  current,
-  hasOwnKey,
+function BundleCard({
+  bundle,
+  isLoading,
   onBuy,
 }: {
-  plan: Plan;
-  current: boolean;
-  hasOwnKey: boolean;
+  bundle: CreditBundle;
+  isLoading: boolean;
   onBuy: () => void;
 }) {
-  const connected = plan.tier === "byok" && hasOwnKey;
-
   return (
     <li
       className={cn(
-        "flex flex-col rounded-lg border bg-zinc-950/40 p-4 transition-colors duration-150",
-        current
-          ? "border-indigo-500/50 shadow-lg shadow-indigo-500/10"
-          : "border-zinc-800/80 hover:border-zinc-700",
+        "relative flex flex-col rounded-xl border bg-zinc-950/60 p-5 transition-all duration-150",
+        bundle.popular
+          ? "border-indigo-500/60 shadow-xl shadow-indigo-500/10 ring-1 ring-indigo-500/30"
+          : "border-zinc-800/80 hover:border-zinc-700/90",
       )}
     >
-      <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-medium">{plan.name}</h3>
-        {current && <Badge variant="accent">Current plan</Badge>}
-        {connected && <Badge variant="success">Connected</Badge>}
-      </div>
-      <p className="mt-2 flex items-baseline gap-1.5">
-        <span className="text-xl font-semibold tracking-tight">{plan.price}</span>
-        {plan.cadence && (
-          <span className="text-xs text-muted-foreground">{plan.cadence}</span>
-        )}
-      </p>
-      <p className="mt-1 text-xs text-muted-foreground">{plan.blurb}</p>
+      {bundle.popular && (
+        <span className="absolute -top-2.5 right-4 rounded-full bg-indigo-500 px-2.5 py-0.5 text-[10px] font-semibold text-white shadow-sm">
+          Most Popular
+        </span>
+      )}
 
-      <ul className="mt-3 flex-1 space-y-1.5">
-        {plan.points.map((point) => (
-          <li key={point} className="flex gap-2 text-[13px] text-zinc-300">
+      <div className="flex items-start justify-between gap-2">
+        <h3 className="text-base font-semibold text-zinc-100">{bundle.name}</h3>
+        <Badge variant="neutral" className="text-[11px] tabular-nums">
+          {bundle.credits} credits
+        </Badge>
+      </div>
+
+      <div className="mt-3 flex items-baseline gap-2">
+        <span className="text-2xl font-bold tracking-tight text-zinc-100">
+          {bundle.priceFormatted}
+        </span>
+        <span className="text-xs text-muted-foreground">one-time</span>
+        <span className="text-xs font-medium text-emerald-400">
+          ({bundle.pricePerApp})
+        </span>
+      </div>
+
+      <p className="mt-1 text-xs text-muted-foreground">{bundle.description}</p>
+
+      <ul className="mt-4 flex-1 space-y-2 border-t border-zinc-800/60 pt-4">
+        {bundle.points.map((point) => (
+          <li key={point} className="flex gap-2 text-xs text-zinc-300">
             <Check className="mt-0.5 size-3.5 shrink-0 text-indigo-400" aria-hidden />
-            {point}
+            <span>{point}</span>
           </li>
         ))}
       </ul>
 
-      {plan.tier === "byok" && (
-        <Button variant="outline" size="sm" className="mt-4" asChild>
-          <a href="#provider-keys">
-            <KeyRound aria-hidden />
-            {connected ? "Manage keys" : "Add a key"}
-          </a>
-        </Button>
-      )}
-      {plan.pack && (
-        <Button
-          variant={current ? "outline" : "default"}
-          size="sm"
-          className="mt-4"
-          onClick={onBuy}
-        >
-          Get {plan.pack} applications
-        </Button>
-      )}
+      <Button
+        variant={bundle.popular ? "default" : "outline"}
+        size="sm"
+        disabled={isLoading}
+        className={cn(
+          "mt-5 w-full",
+          bundle.popular ? "bg-indigo-600 hover:bg-indigo-500" : "",
+        )}
+        onClick={onBuy}
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="size-3.5 animate-spin" aria-hidden />
+            <span>Connecting Stripe…</span>
+          </>
+        ) : (
+          <span>Get {bundle.name}</span>
+        )}
+      </Button>
     </li>
   );
 }
@@ -178,42 +124,37 @@ function Telemetry({
   ownKeyProvider: string | null;
   onAdd: () => void;
 }) {
-  const { credits, ledger, freeDailyCredits } = billing;
-  const free = credits.tier === "free";
-  // A pack's size is the balance right after the last top-up.
-  const lastTopUp = ledger.find(
-    (entry) => entry.amount > 0 && entry.referenceType !== "REFUND",
+  const { credits, ledger } = billing;
+  const balance = credits.balance;
+
+  const lastPurchase = ledger.find(
+    (entry) => entry.referenceType === "PURCHASE" && entry.amount > 0,
   );
-  const capacity = Math.max(
-    credits.balance,
-    free ? freeDailyCredits : (lastTopUp?.balanceAfter ?? credits.balance),
-    1,
-  );
-  const percent = Math.round((credits.balance / capacity) * 100);
-  const expires = credits.tierExpiresAt
-    ? new Date(credits.tierExpiresAt).toLocaleDateString(undefined, {
-        month: "long",
-        day: "numeric",
-      })
-    : null;
+  const capacity = Math.max(balance, lastPurchase?.balanceAfter ?? balance, 1);
+  const percent = Math.min(100, Math.round((balance / capacity) * 100));
 
   return (
-    <div className="px-5 py-4">
+    <div className="px-5 py-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-xs font-medium text-zinc-400">
-            Applications left · {PLAN_NAMES[credits.tier]}
+            Institutional Credit Balance · {PLAN_NAMES[credits.tier]}
           </p>
           <p className="mt-1 flex items-baseline gap-1.5">
-            <span className="text-3xl font-semibold tracking-tight tabular-nums">
-              {credits.balance}
+            <span className="text-3xl font-semibold tracking-tight text-zinc-100 tabular-nums">
+              {balance}
             </span>
-            <span className="text-sm text-muted-foreground">of {capacity}</span>
+            <span className="text-sm text-muted-foreground">Credits available</span>
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={onAdd}>
-          <Plus aria-hidden />
-          Add more credits
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onAdd}
+          className="gap-1.5 text-xs"
+        >
+          <Plus className="size-3.5" aria-hidden />
+          <span>Buy Credit Bundle</span>
         </Button>
       </div>
 
@@ -222,30 +163,36 @@ function Telemetry({
         aria-label="Applications left"
         aria-valuemin={0}
         aria-valuemax={capacity}
-        aria-valuenow={credits.balance}
-        className="mt-3 h-1.5 overflow-hidden rounded-full bg-zinc-800"
+        aria-valuenow={balance}
+        className="mt-3.5 h-1.5 overflow-hidden rounded-full bg-zinc-800"
       >
         <div
           className={cn(
             "h-full rounded-full transition-[width] duration-200 ease-out",
-            credits.balance === 0
+            balance === 0
               ? "bg-zinc-700"
-              : percent <= 34
+              : balance <= 5
                 ? "bg-amber-400"
-                : "bg-indigo-400",
+                : "bg-indigo-500",
           )}
           style={{ width: `${percent}%` }}
         />
       </div>
 
-      <p className="mt-2 text-xs text-muted-foreground">
-        {ownKeyProvider
-          ? `Your ${ownKeyProvider} key is active, so runs with the selected model are free and leave this balance alone.`
-          : free
-            ? `Tops back up to ${freeDailyCredits} each day at midnight UTC. One application covers the resume, cover letter and recruiter message.`
-            : expires
-              ? `Your pass runs until ${expires}. One application covers the resume, cover letter and recruiter message.`
-              : "One application covers the resume, cover letter and recruiter message."}
+      <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground">
+        {ownKeyProvider ? (
+          <span>
+            Your <strong className="text-zinc-200">{ownKeyProvider}</strong> key is
+            active. Runs on your key bypass all credit requirements and leave this
+            balance untouched.
+          </span>
+        ) : (
+          <span>
+            1 credit = 1 full institutional tailored job application (Claude 3.7
+            Sonnet or GPT-4o, cover letter, and interview prep). Credits never
+            expire.
+          </span>
+        )}
       </p>
     </div>
   );
@@ -256,8 +203,9 @@ function Ledger({ entries }: { entries: CreditLedgerEntry[] }) {
 
   if (entries.length === 0) {
     return (
-      <p className="border-t border-zinc-800/80 px-5 py-6 text-center text-sm text-muted-foreground">
-        No activity yet. Tailor a job and it shows up here.
+      <p className="border-t border-zinc-800/80 px-5 py-6 text-center text-xs text-muted-foreground">
+        No credit activity yet. Tailor a job with an institutional model to see
+        ledger events here.
       </p>
     );
   }
@@ -268,10 +216,10 @@ function Ledger({ entries }: { entries: CreditLedgerEntry[] }) {
         <caption className="sr-only">Recent credit activity</caption>
         <thead>
           <tr className="text-xs text-zinc-500">
-            <th scope="col" className="px-5 py-2 font-medium">Date</th>
-            <th scope="col" className="px-2 py-2 font-medium">Activity</th>
-            <th scope="col" className="hidden px-2 py-2 font-medium sm:table-cell">Model</th>
-            <th scope="col" className="px-5 py-2 text-right font-medium">Applications</th>
+            <th scope="col" className="px-5 py-2.5 font-medium">Date</th>
+            <th scope="col" className="px-2 py-2.5 font-medium">Activity</th>
+            <th scope="col" className="hidden px-2 py-2.5 font-medium sm:table-cell">Model</th>
+            <th scope="col" className="px-5 py-2.5 text-right font-medium">Credits</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-800/60">
@@ -285,11 +233,11 @@ function Ledger({ entries }: { entries: CreditLedgerEntry[] }) {
                 application.tailoredByModel)
               : null;
             return (
-              <tr key={entry.id} className="transition-colors duration-150 hover:bg-zinc-800/30">
+              <tr key={entry.id} className="transition-colors hover:bg-zinc-800/30">
                 <td className="px-5 py-2 whitespace-nowrap text-zinc-400">
                   {formatDate(entry.createdAt)}
                 </td>
-                <td className="max-w-0 truncate px-2 py-2 sm:max-w-xs">
+                <td className="max-w-0 truncate px-2 py-2 sm:max-w-xs text-zinc-200">
                   {application
                     ? `${application.companyName} · ${application.roleTitle}`
                     : entry.description}
@@ -299,7 +247,7 @@ function Ledger({ entries }: { entries: CreditLedgerEntry[] }) {
                 </td>
                 <td
                   className={cn(
-                    "px-5 py-2 text-right tabular-nums",
+                    "px-5 py-2 text-right tabular-nums font-medium",
                     entry.amount > 0 ? "text-emerald-400" : "text-zinc-300",
                   )}
                 >
@@ -314,17 +262,22 @@ function Ledger({ entries }: { entries: CreditLedgerEntry[] }) {
   );
 }
 
-/** Plans, the credit balance and its history. Rendered inside Settings. */
+/**
+ * Overhauled BillingSection: one-time credit bundles, zero subscriptions,
+ * test-mode checkout wiring, and clear executive-tier AI value messaging.
+ */
 export function BillingSection({
   ownKeyProvider,
   hasOwnKey,
 }: {
-  /** Label of the active model's provider when it runs on the user's key. */
   ownKeyProvider: string | null;
   hasOwnKey: boolean;
 }) {
   const { userId } = useWorkspace();
-  const [buying, setBuying] = useState(false);
+  const searchParams = useSearchParams();
+  const [buyingBundleId, setBuyingBundleId] = useState<CreditBundleId | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { data, isError, refetch } = useQuery({
     queryKey: queryKeys.billing(userId),
     queryFn: fetchBilling,
@@ -332,22 +285,61 @@ export function BillingSection({
 
   const credits = data?.credits ?? null;
 
+  useEffect(() => {
+    if (searchParams.get("billing") === "success") {
+      toast.success("Payment successful", {
+        description: "Your credits have been added to your balance.",
+      });
+      void refetch();
+    } else if (searchParams.get("billing") === "cancelled") {
+      toast.info("Checkout cancelled", {
+        description: "No payment was processed.",
+      });
+    }
+  }, [searchParams, refetch]);
+
+  async function handleBuy(bundleId: CreditBundleId) {
+    setBuyingBundleId(bundleId);
+    try {
+      const result = await createCheckoutSessionAction(bundleId);
+      if (!result.ok) {
+        toast.error("Checkout unavailable", { description: result.error });
+        return;
+      }
+      window.location.href = result.data.url;
+    } catch {
+      toast.error("Checkout failed. Try again.");
+    } finally {
+      setBuyingBundleId(null);
+    }
+  }
+
+  const bundles = Object.values(CREDIT_BUNDLES);
+
   return (
     <section
       id="plans"
       aria-labelledby="plans-heading"
       className="scroll-mt-4 rounded-xl border border-zinc-800/80 bg-zinc-900/60 shadow-lg shadow-black/10 backdrop-blur-md"
     >
+      {/* Header with zero-subscription assurance */}
       <div className="border-b border-zinc-800/80 px-5 py-4">
-        <h2 id="plans-heading" className="text-sm font-medium">
-          Plans &amp; credits
-        </h2>
-        <p className="mt-0.5 text-sm text-muted-foreground">
-          One application is one tailored job: resume, cover letter and
-          recruiter message. Runs on your own API key are always free.
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 id="plans-heading" className="text-sm font-semibold text-zinc-100">
+            One-Time Credit Bundles
+          </h2>
+          <Badge variant="outline" className="text-xs text-indigo-400">
+            Zero Monthly Subscriptions
+          </Badge>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">
+          No monthly commitments or auto-renewing subscriptions. Purchase credits
+          as needed for institutional Claude &amp; GPT-4o models, or use your own
+          API keys for unlimited free runs.
         </p>
       </div>
 
+      {/* Telemetry and Ledger */}
       {data === undefined ? (
         isError ? (
           <div className="flex flex-wrap items-center gap-3 px-5 py-4 [&>div]:flex-1">
@@ -367,68 +359,117 @@ export function BillingSection({
           <Telemetry
             billing={{ ...data, credits }}
             ownKeyProvider={ownKeyProvider}
-            onAdd={() => setBuying(true)}
+            onAdd={() => setModalOpen(true)}
           />
           <Ledger entries={data.ledger} />
         </>
       ) : (
-        <p className="m-5 rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-sm text-amber-200">
-          Credits are not switched on for this workspace yet, so runs are not
-          being counted. Run{" "}
+        <p className="m-5 rounded-md border border-amber-500/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+          Credits ledger is not switched on for this workspace yet. Run{" "}
           <code className="font-mono text-xs">
             supabase/migrations/004_billing_and_credit_ledger.sql
           </code>{" "}
-          in the Supabase SQL editor to turn them on.
+          in your Supabase SQL editor.
         </p>
       )}
 
-      <ul className="grid gap-3 border-t border-zinc-800/80 p-5 sm:grid-cols-2">
-        {PLANS.map((plan) => (
-          <PlanCard
-            key={plan.tier}
-            plan={plan}
-            current={credits?.tier === plan.tier}
-            hasOwnKey={hasOwnKey}
-            onBuy={() => setBuying(true)}
+      {/* Value messaging callout */}
+      <div className="border-t border-zinc-800/80 bg-zinc-950/40 px-5 py-4">
+        <div className="flex items-start gap-3">
+          <Sparkles className="mt-0.5 size-4 shrink-0 text-indigo-400" aria-hidden />
+          <div className="text-xs leading-relaxed text-zinc-300">
+            <strong className="font-medium text-zinc-100">
+              Why Claude 3.5 Sonnet &amp; GPT-4o?
+            </strong>{" "}
+            Institutional reasoning, zero conversational fluff, and
+            executive-level tone calibration for competitive tech roles. Verified
+            against your master resume AST with zero hallucination.
+          </div>
+        </div>
+      </div>
+
+      {/* Bundles Grid */}
+      <ul className="grid gap-3.5 border-t border-zinc-800/80 p-5 md:grid-cols-3">
+        {bundles.map((bundle) => (
+          <BundleCard
+            key={bundle.id}
+            bundle={bundle}
+            isLoading={buyingBundleId === bundle.id}
+            onBuy={() => handleBuy(bundle.id)}
           />
         ))}
       </ul>
 
-      <Dialog open={buying} onOpenChange={setBuying}>
-        <DialogContent>
+      {/* Free & BYOK baseline info footer */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-zinc-800/80 bg-zinc-950/20 px-5 py-3.5 text-xs text-zinc-400">
+        <div className="flex items-center gap-1.5">
+          <Zap className="size-3.5 text-indigo-400" />
+          <span>
+            Daily Free Quota: <strong>5 runs/day</strong> Gemini Flash Lite ·{" "}
+            <strong>3 runs/day</strong> Gemini Flash (resets 00:00 UTC)
+          </span>
+        </div>
+        <a
+          href="#provider-keys"
+          className="flex items-center gap-1 font-medium text-indigo-400 hover:text-indigo-300"
+        >
+          <KeyRound className="size-3" />
+          <span>{hasOwnKey ? "Manage BYOK Keys (Unlimited)" : "Add BYOK Key (Free)"}</span>
+        </a>
+      </div>
+
+      {/* Quick Add Modal */}
+      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
+        <DialogContent className="sm:max-w-md">
           <DialogTitle className="text-base font-semibold">
-            Add more credits
+            Add Credit Bundle
           </DialogTitle>
-          <DialogDescription className="mt-1 text-sm text-muted-foreground">
-            Checkout is not connected yet, so packs cannot be bought from here
-            today. Nothing will be charged.
+          <DialogDescription className="text-xs text-muted-foreground">
+            Choose a bundle to unlock Claude 3.7 Sonnet &amp; GPT-4o instantly.
+            One-time purchase, test-mode payment enabled.
           </DialogDescription>
 
-          <ul className="mt-4 space-y-2">
-            {PLANS.filter((plan) => plan.pack).map((plan) => (
+          <ul className="mt-4 space-y-2.5">
+            {bundles.map((bundle) => (
               <li
-                key={plan.tier}
-                className="flex items-center justify-between gap-3 rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2.5"
+                key={bundle.id}
+                className="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-900/80 p-3"
               >
-                <div className="min-w-0">
-                  <p className="text-sm font-medium">{plan.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {plural(plan.pack ?? 0)} · {plan.cadence}
-                  </p>
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-semibold text-zinc-100">
+                      {bundle.name}
+                    </span>
+                    {bundle.popular && (
+                      <span className="rounded bg-indigo-500/20 px-1.5 py-0.2 text-[10px] font-medium text-indigo-300">
+                        Popular
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-xs text-zinc-400">
+                    {bundle.credits} credits · {bundle.pricePerApp}
+                  </div>
                 </div>
-                <span className="text-sm font-medium tabular-nums">{plan.price}</span>
+
+                <Button
+                  size="sm"
+                  disabled={buyingBundleId === bundle.id}
+                  onClick={() => handleBuy(bundle.id)}
+                  className="h-8 gap-1 text-xs"
+                >
+                  {buyingBundleId === bundle.id ? (
+                    <Loader2 className="size-3 animate-spin" />
+                  ) : (
+                    <span>Buy {bundle.priceFormatted}</span>
+                  )}
+                </Button>
               </li>
             ))}
           </ul>
 
-          <p className="mt-4 text-sm text-muted-foreground">
-            Until then, add your own API key under Provider keys for unlimited
-            runs, or come back tomorrow for your free applications.
-          </p>
-
           <div className="mt-4 flex justify-end">
             <DialogClose asChild>
-              <Button variant="outline" autoFocus>
+              <Button variant="ghost" size="sm">
                 Close
               </Button>
             </DialogClose>
