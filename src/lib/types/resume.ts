@@ -201,6 +201,11 @@ export interface InterviewPrep {
   technicalQuestions: InterviewQuestion[];
   behavioralQuestions: InterviewQuestion[];
   reviewTopics: ReviewTopic[];
+  /**
+   * Per-question practice telemetry — persisted inside this same JSONB blob.
+   * Absent on rows generated before the studio was introduced.
+   */
+  progress?: import("@/lib/types/interview").InterviewPrepProgress;
 }
 
 // ---------------------------------------------------------------------------

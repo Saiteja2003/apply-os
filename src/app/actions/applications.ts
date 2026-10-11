@@ -8,6 +8,7 @@ import {
   createApplication,
   getApplication,
   saveCoverLetter,
+  saveInterviewPrepProgress,
   updateApplicationStatus,
 } from "@/lib/db/applications";
 import { ModelNotAllowedError } from "@/lib/billing/model-access";
@@ -19,6 +20,7 @@ import { getSessionUser } from "@/lib/supabase/server";
 import { tailorApplication } from "@/lib/tailoring/engine";
 import { generateInterviewPrep } from "@/lib/tailoring/prep";
 import { INSUFFICIENT_CREDITS, MODEL_NOT_ALLOWED } from "@/lib/types/billing";
+import type { QuestionProgress } from "@/lib/types/interview";
 import { APPLICATION_STATUSES, type JobApplication } from "@/lib/types/resume";
 
 const SIGNED_OUT = "You are signed out. Sign in and try again.";
@@ -212,5 +214,51 @@ export async function updateApplicationStatusAction(
     };
   } catch (error) {
     return failure(error, "Could not update the status.");
+  }
+}
+
+const confidenceLevelSchema = z.enum(["needs_work", "solid", "mastered"]);
+
+/**
+ * Persists a single question's practice confidence and optional notes into the
+ * `interview_prep.progress` sub-key without destroying existing prep data.
+ */
+export async function updateInterviewPrepProgressAction(
+  applicationId: string,
+  questionId: string,
+  progress: QuestionProgress,
+): Promise<ActionResult<JobApplication>> {
+  const user = await getSessionUser();
+  if (!user) return { ok: false, error: SIGNED_OUT };
+
+  if (!applicationId || !questionId) {
+    return { ok: false, error: "Invalid application or question id." };
+  }
+
+  const confidenceParsed = confidenceLevelSchema.safeParse(progress.confidence);
+  if (!confidenceParsed.success) {
+    return { ok: false, error: "Invalid confidence level." };
+  }
+
+  const safeProgress: QuestionProgress = {
+    confidence: confidenceParsed.data,
+    notes: progress.notes
+      ? z.string().trim().max(500).parse(progress.notes)
+      : undefined,
+    practicedAt: new Date().toISOString(),
+  };
+
+  try {
+    return {
+      ok: true,
+      data: await saveInterviewPrepProgress(
+        user.id,
+        applicationId,
+        questionId,
+        safeProgress,
+      ),
+    };
+  } catch (error) {
+    return failure(error, "Could not save practice progress.");
   }
 }

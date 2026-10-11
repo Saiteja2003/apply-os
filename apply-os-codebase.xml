@@ -1,0 +1,5256 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files and files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where line numbers have been added, content has been compressed (code blocks are separated by ⋮---- delimiter).
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: package.json, tsconfig.json, next.config.*, *.config.*, src/**/*.{ts,tsx,js,jsx}, app/**/*.{ts,tsx,js,jsx}, components/**/*.{ts,tsx,js,jsx}, lib/**/*.{ts,tsx,js,jsx}, hooks/**/*.{ts,tsx,js,jsx}
+- Files matching these patterns are excluded: node_modules/**, .next/**, dist/**, build/**, .git/**, coverage/**, *.lock, .env, .env.*, *.pem, *.key, **/*.{mp3,wav,m4a,ogg,flac,mp4,mov,avi,webm,png,jpg,jpeg,gif,webp,svg,ico,woff,woff2,ttf,otf,zip,pdf}
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Line numbers have been added to the beginning of each line
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+src/
+  app/
+    (app)/
+      applications/
+        page.tsx
+      calendar/
+        page.tsx
+      clip/
+        page.tsx
+      dashboard/
+        page.tsx
+      resume/
+        page.tsx
+      settings/
+        page.tsx
+      workspace/
+        page.tsx
+      layout.tsx
+    actions/
+      api-keys.ts
+      applications.ts
+      auth.ts
+      billing.ts
+      calendar.ts
+      email.ts
+      resume.ts
+    api/
+      ingest/
+        route.ts
+      webhooks/
+        email/
+          route.ts
+    auth/
+      callback/
+        route.ts
+    login/
+      login-form.tsx
+      page.tsx
+    layout.tsx
+    page.tsx
+    providers.tsx
+  components/
+    calendar/
+      add-event-dialog.tsx
+      calendar-view.tsx
+    kanban/
+      application-card.tsx
+      kanban-board.tsx
+    layout/
+      sidebar.tsx
+      top-bar.tsx
+    resume/
+      entry-section.tsx
+      fields.tsx
+      quick-import-dialog.tsx
+      resume-editor.tsx
+      sortable-list.tsx
+      version-menu.tsx
+    ui/
+      badge.tsx
+      button.tsx
+      dialog.tsx
+      dropdown-menu.tsx
+      inline-alert.tsx
+      input.tsx
+      kbd.tsx
+      password-input.tsx
+      select.tsx
+      textarea.tsx
+      tooltip.tsx
+    add-job-dialog.tsx
+    application-assets.tsx
+    application-communications.tsx
+    application-drawer.tsx
+    billing-section.tsx
+    byok-key-dialog.tsx
+    byok-key-form.tsx
+    clip-import.tsx
+    dashboard-view.tsx
+    interview-prep.tsx
+    match-score.tsx
+    model-selector.tsx
+    resume-diff-viewer.tsx
+    resume-preview.tsx
+    settings-view.tsx
+    status-badge.tsx
+    workspace-provider.tsx
+    workspace-skeleton.tsx
+    workspace-view.tsx
+  lib/
+    billing/
+      model-access.ts
+    calendar/
+      items.ts
+    db/
+      api-keys.ts
+      applications.ts
+      calendar-events.ts
+      credits.ts
+      email-interactions.ts
+      mappers.ts
+      master-resume.ts
+      seed.ts
+    inbound/
+      draft-reply.ts
+      email.ts
+    llm/
+      providers/
+        anthropic.ts
+        google.ts
+        openai.ts
+        types.ts
+      describe-error.ts
+      errors.ts
+      gateway.ts
+      key-vault.ts
+      models.ts
+    pdf/
+      cover-letter.tsx
+      extract-text.ts
+      merge.ts
+      render.tsx
+      resume-document.tsx
+    resume/
+      bullet-quality.ts
+      ids.ts
+      json-import.ts
+      schema.ts
+      text-import.ts
+      verbatim-guard.ts
+    supabase/
+      admin.ts
+      client.ts
+      env.ts
+      server.ts
+    tailoring/
+      engine.ts
+      guard.ts
+      prep.ts
+    types/
+      billing.ts
+      calendar.ts
+      email.ts
+      resume.ts
+    action-result.ts
+    api.ts
+    diff.ts
+    store.ts
+    utils.ts
+  middleware.ts
+next.config.ts
+package.json
+postcss.config.mjs
+tsconfig.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/app/(app)/applications/page.tsx">
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+⋮----
+import { MatchScore } from "@/components/match-score";
+import { StatusBadge } from "@/components/status-badge";
+import { useWorkspace } from "@/components/workspace-provider";
+import { formatDate } from "@/lib/utils";
+⋮----
+{/* The button gives keyboard users the same action as a row click. */}
+</file>
+
+<file path="src/app/(app)/calendar/page.tsx">
+import type { Metadata } from "next";
+⋮----
+import { CalendarView } from "@/components/calendar/calendar-view";
+⋮----
+export default function CalendarPage()
+</file>
+
+<file path="src/app/(app)/clip/page.tsx">
+import type { Metadata } from "next";
+⋮----
+import { ClipImport } from "@/components/clip-import";
+⋮----
+export default function ClipPage()
+</file>
+
+<file path="src/app/(app)/dashboard/page.tsx">
+import { DashboardView } from "@/components/dashboard-view";
+⋮----
+export default function DashboardPage()
+</file>
+
+<file path="src/app/(app)/resume/page.tsx">
+import type { Metadata } from "next";
+⋮----
+import { ResumeEditor } from "@/components/resume/resume-editor";
+⋮----
+export default function ResumePage()
+</file>
+
+<file path="src/app/(app)/settings/page.tsx">
+import type { Metadata } from "next";
+⋮----
+import { SettingsView } from "@/components/settings-view";
+import { getSessionUser } from "@/lib/supabase/server";
+⋮----
+export default async function SettingsPage()
+⋮----
+// The layout has already redirected signed-out visitors.
+</file>
+
+<file path="src/app/(app)/workspace/page.tsx">
+import { WorkspaceView } from "@/components/workspace-view";
+⋮----
+export default function WorkspacePage()
+</file>
+
+<file path="src/app/(app)/layout.tsx">
+import { redirect } from "next/navigation";
+import { Suspense, type ReactNode } from "react";
+⋮----
+import { Sidebar } from "@/components/layout/sidebar";
+import { TopBar } from "@/components/layout/top-bar";
+import { WorkspaceProvider } from "@/components/workspace-provider";
+import { WorkspaceSkeleton } from "@/components/workspace-skeleton";
+import { listApplications } from "@/lib/db/applications";
+import { ensureMasterResume } from "@/lib/db/seed";
+import { getSessionUser } from "@/lib/supabase/server";
+⋮----
+// Tailoring, interview prep and resume import run as server actions from
+// these pages and wait on an LLM.
+⋮----
+async function WorkspaceLoader({
+  userId,
+  children,
+}: {
+  userId: string;
+  children: ReactNode;
+})
+⋮----
+export default async function AppLayout(
+⋮----
+{/* The shell paints first; pages stream in with their data. */}
+</file>
+
+<file path="src/app/actions/api-keys.ts">
+import { z } from "zod";
+⋮----
+import type { ActionResult } from "@/lib/action-result";
+import {
+  deleteByokKey,
+  getKeyHints,
+  KeyStoreError,
+  saveByokKey,
+  type KeyHints,
+} from "@/lib/db/api-keys";
+import { PROVIDER_IDS } from "@/lib/llm/models";
+import { getSessionUser } from "@/lib/supabase/server";
+⋮----
+function failure(error: unknown, fallback: string):
+⋮----
+/** Which providers have a stored key (last four characters only). */
+export async function getKeyHintsAction(): Promise<ActionResult<KeyHints>>
+⋮----
+export async function saveByokKeyAction(
+  providerId: string,
+  apiKey: string,
+): Promise<ActionResult<KeyHints>>
+⋮----
+export async function deleteByokKeyAction(
+  providerId: string,
+): Promise<ActionResult<KeyHints>>
+</file>
+
+<file path="src/app/actions/applications.ts">
+import { z } from "zod";
+⋮----
+import type { ActionResult } from "@/lib/action-result";
+import {
+  AssetsNotProvisionedError,
+  createApplication,
+  getApplication,
+  saveCoverLetter,
+  updateApplicationStatus,
+} from "@/lib/db/applications";
+import { ModelNotAllowedError } from "@/lib/billing/model-access";
+import { InsufficientCreditsError } from "@/lib/db/credits";
+import { describeGatewayError } from "@/lib/llm/describe-error";
+import { GatewayError } from "@/lib/llm/errors";
+import { getModel } from "@/lib/llm/models";
+import { getSessionUser } from "@/lib/supabase/server";
+import { tailorApplication } from "@/lib/tailoring/engine";
+import { generateInterviewPrep } from "@/lib/tailoring/prep";
+import { INSUFFICIENT_CREDITS, MODEL_NOT_ALLOWED } from "@/lib/types/billing";
+import { APPLICATION_STATUSES, type JobApplication } from "@/lib/types/resume";
+⋮----
+const optionalText = (max: number)
+⋮----
+export type NewApplicationInput = z.input<typeof newApplicationSchema>;
+⋮----
+function failure(error: unknown, fallback: string):
+⋮----
+export async function createApplicationAction(
+  input: NewApplicationInput,
+): Promise<ActionResult<JobApplication>>
+⋮----
+export interface TailorActionData {
+  application: JobApplication;
+  /** How many model-proposed changes the verification guard discarded. */
+  rejectedChanges: number;
+}
+⋮----
+/** How many model-proposed changes the verification guard discarded. */
+⋮----
+export async function tailorApplicationAction(
+  applicationId: string,
+  modelConfig: { modelId: string; fallbackModelIds?: string[] },
+): Promise<ActionResult<TailorActionData>>
+⋮----
+export async function generateInterviewPrepAction(
+  applicationId: string,
+  modelConfig: { modelId: string; fallbackModelIds?: string[] },
+): Promise<ActionResult<JobApplication>>
+⋮----
+/** Saves the user's edits to the cover letter body. */
+export async function updateCoverLetterAction(
+  applicationId: string,
+  content: string,
+): Promise<ActionResult<JobApplication>>
+⋮----
+export async function updateApplicationStatusAction(
+  applicationId: string,
+  status: string,
+): Promise<ActionResult<JobApplication>>
+</file>
+
+<file path="src/app/actions/auth.ts">
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { z } from "zod";
+⋮----
+import { createClient } from "@/lib/supabase/server";
+⋮----
+export interface AuthFormState {
+  error: string | null;
+  notice: string | null;
+}
+⋮----
+function readCredentials(formData: FormData)
+⋮----
+export async function signInAction(
+  _previous: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState>
+⋮----
+export async function signUpAction(
+  _previous: AuthFormState,
+  formData: FormData,
+): Promise<AuthFormState>
+⋮----
+// With email confirmation on, there is no session until the link is opened.
+⋮----
+export async function signOutAction(): Promise<void>
+</file>
+
+<file path="src/app/actions/billing.ts">
+import type { ActionResult } from "@/lib/action-result";
+import { getCreditLedger, getUserCredits } from "@/lib/db/credits";
+import { getSessionUser } from "@/lib/supabase/server";
+import { FREE_DAILY_CREDITS, type BillingSummary } from "@/lib/types/billing";
+⋮----
+/** The signed-in user's balance, plan and recent credit history. */
+export async function getBillingAction(): Promise<ActionResult<BillingSummary>>
+</file>
+
+<file path="src/app/actions/calendar.ts">
+import { z } from "zod";
+⋮----
+import type { ActionResult } from "@/lib/action-result";
+import { getApplication } from "@/lib/db/applications";
+import {
+  CalendarNotProvisionedError,
+  createCalendarEvent,
+  deleteCalendarEvent,
+  listCalendarEvents,
+} from "@/lib/db/calendar-events";
+import { getSessionUser } from "@/lib/supabase/server";
+import {
+  CALENDAR_EVENT_TYPES,
+  type CalendarEvent,
+  type CalendarEventsResult,
+} from "@/lib/types/calendar";
+⋮----
+export type NewCalendarEventInput = z.input<typeof newEventSchema>;
+⋮----
+function failure(error: unknown, fallback: string):
+⋮----
+export async function listCalendarEventsAction(): Promise<
+  ActionResult<CalendarEventsResult>
+> {
+  const user = await getSessionUser();
+⋮----
+// Before the migration the calendar still works from application dates.
+⋮----
+export async function createCalendarEventAction(
+  input: NewCalendarEventInput,
+): Promise<ActionResult<CalendarEvent>>
+⋮----
+export async function deleteCalendarEventAction(
+  eventId: string,
+): Promise<ActionResult<
+</file>
+
+<file path="src/app/actions/email.ts">
+import { z } from "zod";
+⋮----
+import type { ActionResult } from "@/lib/action-result";
+import { getByokKeys } from "@/lib/db/api-keys";
+import { getApplication } from "@/lib/db/applications";
+import { getUserCredits } from "@/lib/db/credits";
+import {
+  EmailStoreError,
+  getEmailInteraction,
+  listEmailInteractions,
+  saveDraftResponse,
+} from "@/lib/db/email-interactions";
+import { ensureMasterResume } from "@/lib/db/seed";
+import { draftReply, pickDraftModel } from "@/lib/inbound/draft-reply";
+import { describeGatewayError } from "@/lib/llm/describe-error";
+import { GatewayError } from "@/lib/llm/errors";
+import { getSessionUser } from "@/lib/supabase/server";
+import type { EmailInteraction } from "@/lib/types/email";
+⋮----
+function failure(error: unknown, fallback: string):
+⋮----
+/** Recruiter emails for one application, newest first. */
+export async function listEmailInteractionsAction(
+  applicationId: string,
+): Promise<ActionResult<EmailInteraction[]>>
+⋮----
+/** Saves the user's edits to a draft reply. Never sends anything. */
+export async function updateDraftResponseAction(
+  interactionId: string,
+  draftResponse: string,
+): Promise<ActionResult<EmailInteraction>>
+⋮----
+/**
+ * Drafts a reply for an email that has none yet, on the user's own key if
+ * they have one for the model. Costs no credit. An existing draft is never
+ * replaced.
+ */
+export async function generateDraftResponseAction(
+  interactionId: string,
+): Promise<ActionResult<EmailInteraction>>
+</file>
+
+<file path="src/app/actions/resume.ts">
+import { z } from "zod";
+⋮----
+import type { ActionResult } from "@/lib/action-result";
+import {
+  getMasterResumeVersion,
+  listMasterResumeVersions,
+  saveMasterResume,
+} from "@/lib/db/master-resume";
+import { describeGatewayError } from "@/lib/llm/describe-error";
+import { GatewayError } from "@/lib/llm/errors";
+import { getModel } from "@/lib/llm/models";
+import { masterResumeSchema } from "@/lib/resume/schema";
+import { importResumeFromText } from "@/lib/resume/text-import";
+import type { VerbatimGuardResult } from "@/lib/resume/verbatim-guard";
+import { getSessionUser } from "@/lib/supabase/server";
+import type {
+  MasterResume,
+  MasterResumeVersion,
+  MasterResumeVersionSummary,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Saves the resume as a new version. Earlier versions are never modified:
+ * the table is append-only and the database rejects updates.
+ */
+export async function saveMasterResumeAction(
+  resume: MasterResume,
+): Promise<ActionResult<MasterResumeVersion>>
+⋮----
+export async function listResumeVersionsAction(): Promise<
+  ActionResult<MasterResumeVersionSummary[]>
+> {
+  const user = await getSessionUser();
+⋮----
+/** One saved version, read-only, for inspecting an earlier snapshot. */
+export async function getResumeVersionAction(
+  versionId: string,
+): Promise<ActionResult<MasterResumeVersion>>
+⋮----
+/** Structures pasted resume text into a draft. Nothing is saved. */
+export async function importResumeTextAction(
+  text: string,
+  modelConfig: { modelId: string; fallbackModelIds?: string[] },
+): Promise<ActionResult<VerbatimGuardResult>>
+</file>
+
+<file path="src/app/auth/callback/route.ts">
+import { NextResponse, type NextRequest } from "next/server";
+⋮----
+import { createClient } from "@/lib/supabase/server";
+⋮----
+/** Landing point for the email confirmation link: trades the code for a session. */
+export async function GET(request: NextRequest)
+</file>
+
+<file path="src/app/login/login-form.tsx">
+import { Loader2 } from "lucide-react";
+import { useActionState, useState } from "react";
+⋮----
+import {
+  signInAction,
+  signUpAction,
+  type AuthFormState,
+} from "@/app/actions/auth";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+⋮----
+type Mode = "sign-in" | "sign-up";
+⋮----
+function CredentialsForm(
+⋮----
+{/* Keyed so switching mode resets the form and its action state. */}
+</file>
+
+<file path="src/app/login/page.tsx">
+import type { Metadata } from "next";
+⋮----
+import { LoginForm } from "./login-form";
+⋮----
+export default function LoginPage()
+</file>
+
+<file path="src/app/layout.tsx">
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+⋮----
+import { Providers } from "./providers";
+⋮----
+export default function RootLayout(
+</file>
+
+<file path="src/app/page.tsx">
+import { redirect } from "next/navigation";
+⋮----
+export default function Home()
+</file>
+
+<file path="src/app/providers.tsx">
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState, type ReactNode } from "react";
+import { Toaster } from "sonner";
+⋮----
+export function Providers(
+</file>
+
+<file path="src/components/calendar/add-event-dialog.tsx">
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+import { useState, type FormEvent } from "react";
+⋮----
+import {
+  createCalendarEventAction,
+  type NewCalendarEventInput,
+} from "@/app/actions/calendar";
+import { Field, TextField } from "@/components/resume/fields";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import type { ActionResult } from "@/lib/action-result";
+import { dayKey } from "@/lib/calendar/items";
+import {
+  CALENDAR_EVENT_TYPES,
+  type CalendarEvent,
+  type CalendarEventType,
+} from "@/lib/types/calendar";
+import type { JobApplication } from "@/lib/types/resume";
+import { cn } from "@/lib/utils";
+⋮----
+interface AddEventDialogProps {
+  /** The day the event is being added to, or `null` when closed. */
+  date: Date | null;
+  applications: JobApplication[];
+  onClose: () => void;
+  onCreated: (event: CalendarEvent) => void;
+}
+⋮----
+/** The day the event is being added to, or `null` when closed. */
+⋮----
+/** Mount with a `key` per opening so the form starts clean each time. */
+⋮----
+async function handleSubmit(event: FormEvent)
+⋮----
+// Entered in local time; stored as an instant.
+⋮----
+className=
+⋮----
+onChange=
+</file>
+
+<file path="src/components/calendar/calendar-view.tsx">
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  BellRing,
+  Bookmark,
+  ChevronLeft,
+  ChevronRight,
+  MessagesSquare,
+  Phone,
+  Plus,
+  Send,
+  StickyNote,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+⋮----
+import {
+  createCalendarEventAction,
+  deleteCalendarEventAction,
+} from "@/app/actions/calendar";
+import { isTypingTarget } from "@/components/layout/sidebar";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Kbd } from "@/components/ui/kbd";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useWorkspace } from "@/components/workspace-provider";
+import type { ActionResult } from "@/lib/action-result";
+import { fetchCalendarEvents, queryKeys } from "@/lib/api";
+import {
+  addDays,
+  addMonths,
+  buildCalendarItems,
+  dayKey,
+  FOLLOW_UP_DAYS,
+  monthGrid,
+  startOfDay,
+  weekDays,
+  type CalendarItem,
+  type CalendarItemKind,
+} from "@/lib/calendar/items";
+import type { CalendarEvent, CalendarEventsResult } from "@/lib/types/calendar";
+import { cn } from "@/lib/utils";
+⋮----
+import { AddEventDialog } from "./add-event-dialog";
+⋮----
+type View = "month" | "week";
+⋮----
+const timeLabel = (item: CalendarItem)
+⋮----
+interface ItemHandlers {
+  onOpen: (item: CalendarItem) => void;
+  onDelete: (event: CalendarEvent) => void;
+}
+⋮----
+/** What a chip stands for, shown on hover and on keyboard focus. */
+⋮----
+<span className=
+⋮----
+/** One line in a month cell. */
+⋮----
+/** One row in the week agenda. */
+⋮----
+<div key=
+⋮----
+{/* The whole cell adds an event; chips sit above it. */}
+⋮----
+className=
+⋮----
+// The calendar depends on the viewer's time zone, so "today" is only
+// known in the browser. Until then a skeleton is shown.
+⋮----
+// T: today, M: month, W: week, arrows: previous / next.
+⋮----
+function onKeyDown(event: KeyboardEvent)
+⋮----
+// Interviews and calls open on Interview Prep; everything else on the diff.
+⋮----
+{/* Segmented switch: the thumb slides between the two views. */}
+⋮----
+// Keyed so switching view or period fades the new grid in.
+⋮----
+todayKey=
+⋮----
+setAnchor(day);
+setView("week");
+⋮----
+key=
+⋮----
+addToCache(event);
+setAddDate(null);
+toast.success("Added to your calendar",
+</file>
+
+<file path="src/components/kanban/kanban-board.tsx">
+import {
+  closestCorners,
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
+import {
+  Bookmark,
+  CircleSlash,
+  MessagesSquare,
+  Plus,
+  Send,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
+import { useState, type ReactNode } from "react";
+⋮----
+import { STATUS_LABELS } from "@/components/status-badge";
+import {
+  APPLICATION_STATUSES,
+  type ApplicationStatus,
+  type JobApplication,
+} from "@/lib/types/resume";
+import { cn } from "@/lib/utils";
+⋮----
+import { ApplicationCard, ApplicationCardBody } from "./application-card";
+⋮----
+interface KanbanBoardProps {
+  applications: JobApplication[];
+  /** Applications with a tailoring run in flight. */
+  tailoringIds: ReadonlySet<string>;
+  onSelect: (applicationId: string) => void;
+  onMove: (applicationId: string, status: ApplicationStatus) => void;
+  onAdd: () => void;
+}
+⋮----
+/** Applications with a tailoring run in flight. */
+⋮----
+function EmptyColumn(
+⋮----
+function isStatus(value: unknown): value is ApplicationStatus
+⋮----
+function Column({
+  status,
+  count,
+  children,
+}: {
+  status: ApplicationStatus;
+  count: number;
+  children: ReactNode;
+})
+⋮----
+className=
+⋮----
+// When a card lands in another column it is already rendered there, so
+// the overlay must not glide back to where the card used to be.
+⋮----
+// A small drag threshold keeps a plain click opening the detail drawer.
+⋮----
+function handleDragStart(event: DragStartEvent)
+⋮----
+function handleDragEnd(event: DragEndEvent)
+⋮----
+// Optimistic: the card is in its new column in this same render.
+⋮----
+onDragCancel=
+</file>
+
+<file path="src/components/layout/sidebar.tsx">
+import {
+  Briefcase,
+  CalendarDays,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Settings,
+  type LucideIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
+⋮----
+import { signOutAction } from "@/app/actions/auth";
+import { Kbd } from "@/components/ui/kbd";
+import { cn } from "@/lib/utils";
+⋮----
+interface NavItem {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  /** Pressed after `G` to jump to this page. */
+  shortcut: string;
+}
+⋮----
+/** Pressed after `G` to jump to this page. */
+⋮----
+/** The overview that every section sits under. Reached with `G` then `W`. */
+⋮----
+export function isTypingTarget(target: EventTarget | null): boolean
+⋮----
+/** `G` then a letter navigates, as in Linear. */
+function useNavigationShortcuts()
+⋮----
+function onKeyDown(event: KeyboardEvent)
+</file>
+
+<file path="src/components/layout/top-bar.tsx">
+import { useQuery } from "@tanstack/react-query";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+⋮----
+import { ByokKeyDialog } from "@/components/byok-key-dialog";
+import { ModelSelector } from "@/components/model-selector";
+import { Kbd } from "@/components/ui/kbd";
+import { fetchKeyHints, queryKeys } from "@/lib/api";
+import { MODEL_REGISTRY } from "@/lib/llm/models";
+import { useGatewayStore } from "@/lib/store";
+⋮----
+import { NAV_ITEMS, WORKSPACE_HREF } from "./sidebar";
+⋮----
+// Restore the model saved in this browser (see `useGatewayStore`).
+⋮----
+// The workspace overview is the root of the breadcrumb trail.
+</file>
+
+<file path="src/components/resume/entry-section.tsx">
+import { ChevronDown, Hash, Plus, Trash2, TriangleAlert } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { toast } from "sonner";
+⋮----
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  assessBullet,
+  BULLET_MAX_CHARS,
+  type BulletLength,
+} from "@/lib/resume/bullet-quality";
+import { ID_PREFIX } from "@/lib/resume/ids";
+import type { ResumeBullet } from "@/lib/types/resume";
+import { cn } from "@/lib/utils";
+⋮----
+import {
+  Collapse,
+  CommaListField,
+  IdChip,
+  SectionCard,
+  TextField,
+} from "./fields";
+import { moveById, SortableList } from "./sortable-list";
+⋮----
+interface FieldBase {
+  /** Key in the entry, used to look up validation issues. */
+  name: string;
+  label: string;
+  hint?: string;
+  placeholder?: string;
+  /** Span both columns. */
+  wide?: boolean;
+}
+⋮----
+/** Key in the entry, used to look up validation issues. */
+⋮----
+/** Span both columns. */
+⋮----
+export type EntryField<T> = FieldBase &
+  (
+    | {
+        kind?: "text";
+        get: (entry: T) => string;
+        set: (entry: T, value: string) => T;
+      }
+    | {
+        kind: "list";
+        get: (entry: T) => string[];
+        set: (entry: T, value: string[]) => T;
+      }
+  );
+⋮----
+type Entry = { id: string; bullets: ResumeBullet[] };
+⋮----
+interface EntrySectionProps<T extends Entry> {
+  /** Path of the entry list in the resume, e.g. `experience`. */
+  section: string;
+  title: string;
+  /** Singular name of one entry, e.g. "role". */
+  itemLabel: string;
+  addLabel: string;
+  emptyHint: string;
+  /** Shown when an entry has no heading yet, e.g. "New role". */
+  untitled: string;
+  entries: T[];
+  fields: EntryField<T>[];
+  heading: (entry: T) => string;
+  subheading: (entry: T) => string;
+  idPrefix: string;
+  create: (id: string) => T;
+  /** A new id that no node in the resume has ever used. */
+  makeId: (prefix: string) => string;
+  /** Validation issues by dotted path. */
+  issues: ReadonlyMap<string, string>;
+  onChange: (update: (entries: T[]) => T[]) => void;
+  /** Extra controls above the entries, e.g. a field for the section's title. */
+  preface?: ReactNode;
+  /** Extra controls in the section header, e.g. Remove section. */
+  headerAction?: ReactNode;
+  /** Other issues that belong to this section but not to one entry. */
+  extraIssueCount?: number;
+}
+⋮----
+/** Path of the entry list in the resume, e.g. `experience`. */
+⋮----
+/** Singular name of one entry, e.g. "role". */
+⋮----
+/** Shown when an entry has no heading yet, e.g. "New role". */
+⋮----
+/** A new id that no node in the resume has ever used. */
+⋮----
+/** Validation issues by dotted path. */
+⋮----
+/** Extra controls above the entries, e.g. a field for the section's title. */
+⋮----
+/** Extra controls in the section header, e.g. Remove section. */
+⋮----
+/** Other issues that belong to this section but not to one entry. */
+⋮----
+const insertAt = <V,>(list: V[], index: number, value: V)
+⋮----
+/** Length and impact signals for one bullet. Hints only; they never block saving. */
+function BulletMeter(
+⋮----
+className=
+⋮----
+onClick=
+</file>
+
+<file path="src/components/resume/fields.tsx">
+import { ChevronDown } from "lucide-react";
+import {
+  useId,
+  useState,
+  type InputHTMLAttributes,
+  type ReactNode,
+} from "react";
+⋮----
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+⋮----
+/** Animates height open and closed without measuring the content. */
+export function Collapse({
+  open,
+  id,
+  children,
+}: {
+  open: boolean;
+  id?: string;
+  children: ReactNode;
+})
+⋮----
+interface FieldProps {
+  label: string;
+  hint?: string;
+  error?: string;
+  className?: string;
+  children: ReactNode;
+}
+⋮----
+/** A labelled control. The whole label is a click target for its input. */
+⋮----
+<label className=
+⋮----
+const parseList = (text: string)
+⋮----
+/**
+ * Edits a string list as comma-separated text. The raw text is kept
+ * locally so typing a comma or a space never moves the caret.
+ */
+⋮----
+/** The permanent id of a resume node. Shown, never editable. */
+⋮----
+/** Validation problems inside this section. */
+⋮----
+/** A control shown at the right of the header, e.g. an Add button. */
+</file>
+
+<file path="src/components/resume/quick-import-dialog.tsx">
+import {
+  CircleCheck,
+  FileJson,
+  FileText,
+  Loader2,
+  Sparkles,
+  Type,
+  Upload,
+  type LucideIcon,
+} from "lucide-react";
+import { useEffect, useRef, useState, type DragEvent } from "react";
+⋮----
+import { importResumeTextAction } from "@/app/actions/resume";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Textarea } from "@/components/ui/textarea";
+import type { ActionResult } from "@/lib/action-result";
+import { getModel } from "@/lib/llm/models";
+import { formatBytes, PdfTextError } from "@/lib/pdf/extract-text";
+import type { ImportedResume } from "@/lib/resume/ids";
+import { parseResumeJson, ResumeImportError } from "@/lib/resume/json-import";
+import type { VerbatimGuardResult } from "@/lib/resume/verbatim-guard";
+import { useModelConfig } from "@/lib/store";
+import { cn } from "@/lib/utils";
+⋮----
+interface QuickImportDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  /** A file dropped on the page: the dialog opens already importing it. */
+  initialFile?: File | null;
+  /**
+   * Receives the parsed resume and the labels of anything the verification
+   * guard left out. The caller decides what to do with it; nothing is saved.
+   */
+  onImport: (resume: ImportedResume, dropped: string[]) => void;
+}
+⋮----
+/** A file dropped on the page: the dialog opens already importing it. */
+⋮----
+/**
+   * Receives the parsed resume and the labels of anything the verification
+   * guard left out. The caller decides what to do with it; nothing is saved.
+   */
+⋮----
+type Mode = "pdf" | "text" | "json";
+⋮----
+/** Where a PDF import currently is. */
+type PdfStage = "reading" | "structuring";
+⋮----
+interface PdfJob {
+  name: string;
+  size: number;
+  pages: number | null;
+  stage: PdfStage;
+}
+⋮----
+export const isPdf = (file: File)
+export const isJson = (file: File)
+⋮----
+function Dropzone({
+  icon: Icon,
+  title,
+  hint,
+  accept,
+  disabled,
+  onFile,
+}: {
+  icon: LucideIcon;
+  title: string;
+  hint: string;
+  accept: string;
+  disabled?: boolean;
+onFile: (file: File)
+⋮----
+function handleDrop(event: DragEvent)
+⋮----
+className=
+⋮----
+
+⋮----
+function close()
+⋮----
+function finish(resume: ImportedResume, dropped: string[])
+⋮----
+/** Sends resume text to the model, then on to the editor. */
+async function structure(source: string): Promise<boolean>
+⋮----
+function importJson(source: string)
+⋮----
+async function importPdf(file: File)
+⋮----
+// The PDF engine is loaded only when a PDF is actually imported.
+⋮----
+async function importJsonFile(file: File)
+⋮----
+async function importText()
+⋮----
+// Pasted JSON does not need a model.
+⋮----
+// A file dropped on the page starts importing as the dialog opens. The ref
+// makes sure each dropped file is imported once, however often this runs.
+⋮----
+// eslint-disable-next-line react-hooks/exhaustive-deps
+⋮----
+// Closing mid-import would discard the result.
+⋮----
+onClick=
+</file>
+
+<file path="src/components/resume/resume-editor.tsx">
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  ArrowDown,
+  ArrowUp,
+  Eye,
+  EyeOff,
+  Loader2,
+  Plus,
+  Redo2,
+  RotateCcw,
+  Save,
+  Trash2,
+  Undo2,
+  Upload,
+  X,
+} from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+  type DragEvent,
+} from "react";
+import { toast } from "sonner";
+⋮----
+import { saveMasterResumeAction } from "@/app/actions/resume";
+import { ResumePreview } from "@/components/resume-preview";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Kbd } from "@/components/ui/kbd";
+import { Textarea } from "@/components/ui/textarea";
+import { useWorkspace } from "@/components/workspace-provider";
+import type { ActionResult } from "@/lib/action-result";
+import { fetchResumeVersion, fetchResumeVersions, queryKeys } from "@/lib/api";
+import {
+  collectIds,
+  ID_PREFIX,
+  newId,
+  toMasterResume,
+  type ImportedResume,
+} from "@/lib/resume/ids";
+import { validateResume } from "@/lib/resume/schema";
+import { resumeDraftStorageKey, useResumeDraftStore } from "@/lib/store";
+import type {
+  MasterResume,
+  MasterResumeVersion,
+  MasterResumeVersionSummary,
+  ResumeCustomEntry,
+  ResumeCustomSection,
+  ResumeEducation,
+  ResumeExperience,
+  ResumeProject,
+} from "@/lib/types/resume";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+import { EntrySection, type EntryField } from "./entry-section";
+import { CommaListField, Field, IdChip, SectionCard, TextField } from "./fields";
+import { isJson, isPdf, QuickImportDialog } from "./quick-import-dialog";
+import { moveById } from "./sortable-list";
+import { VersionMenu } from "./version-menu";
+⋮----
+/** Section headings offered in the Add custom section menu. */
+⋮----
+/** `experience.1.bullets.0.text` -> "Experience 2 › bullet 1". */
+function describeIssuePath(path: string): string
+⋮----
+/**
+ * Whether a value read back from localStorage is a draft the editor can
+ * open. It came from disk, so its shape is checked before it is trusted.
+ */
+function isStoredDraft(
+  value: unknown,
+): value is
+⋮----
+function useDebouncedValue<T>(value: T, delayMs: number): T
+⋮----
+// A draft belongs to the version it was started from; otherwise show
+// the saved resume.
+⋮----
+// Bumped when the draft is replaced wholesale, to reset per-field state.
+⋮----
+// Side-by-side preview is on by default where there is room for it.
+⋮----
+// A saved version never changes.
+⋮----
+/** A new id that neither the draft nor the saved version has used. */
+⋮----
+/**
+   * Swaps the whole draft (import, discard, restore). The previous state
+   * goes onto the undo stack, so none of these can lose work.
+   */
+⋮----
+// Mirror the unsaved draft to localStorage, so a refresh, a crash or a
+// dropped connection cannot lose edits or an imported resume.
+⋮----
+// Unreadable or blocked storage: carry on with the saved version.
+⋮----
+// Storage full or blocked: the in-memory draft still works.
+⋮----
+// Ctrl/Cmd+S saves. Leaving the tab with unsaved edits asks first.
+⋮----
+function onKeyDown(event: KeyboardEvent)
+⋮----
+// Undo and redo act on the whole resume, not one text field. Dialogs
+// (import, key entry) keep the browser's own undo.
+⋮----
+function onBeforeUnload(event: BeforeUnloadEvent)
+⋮----
+function handleImport(imported: ImportedResume, dropped: string[])
+⋮----
+// ---- dropping a file anywhere on the page -------------------------------
+⋮----
+const carriesFiles = (event: DragEvent)
+⋮----
+function handlePageDrop(event: DragEvent)
+⋮----
+// ---- custom sections -----------------------------------------------------
+⋮----
+function addCustomSection(title: string)
+⋮----
+function removeCustomSection(index: number)
+⋮----
+function moveCustomSection(id: string, direction: -1 | 1)
+⋮----
+const issuesUnder = (prefix: string)
+⋮----
+className=
+⋮----
+// Not destructive: the draft moves onto the undo stack.
+⋮----
+
+⋮----
+mutate((current) => (
+⋮----
+subheading=
+⋮----
+[entry.subtitle, entry.date].filter(Boolean).join(" · ")
+⋮----
+setCustomSections((current)
+⋮----
+onClick=
+⋮----
+<DropdownMenuItem onSelect=
+⋮----
+{/* Outside the drop target above, so drops inside the dialog are its own. */}
+</file>
+
+<file path="src/components/resume/sortable-list.tsx">
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type Modifier,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { GripVertical } from "lucide-react";
+import { useId, type ReactNode } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+const verticalOnly: Modifier = (
+⋮----
+interface SortableListProps<T extends { id: string }> {
+  items: T[];
+  /** What one item is called, for the handle's label: "bullet", "role". */
+  itemLabel: string;
+  /** Move the item with id `fromId` to where `toId` currently sits. */
+  onMove: (fromId: string, toId: string) => void;
+  className?: string;
+  /** Render one item. Place `handle` wherever the grip should appear. */
+  children: (item: T, index: number, handle: ReactNode) => ReactNode;
+}
+⋮----
+/** What one item is called, for the handle's label: "bullet", "role". */
+⋮----
+/** Move the item with id `fromId` to where `toId` currently sits. */
+⋮----
+/** Render one item. Place `handle` wherever the grip should appear. */
+⋮----
+className=
+⋮----
+/** A vertical list whose items can be dragged, or keyboard-moved, into a new order. */
+⋮----
+function handleDragEnd(
+⋮----
+/** `list` with the item `fromId` moved to the position of `toId`. */
+</file>
+
+<file path="src/components/resume/version-menu.tsx">
+import { ChevronDown, History } from "lucide-react";
+⋮----
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import type { MasterResumeVersionSummary } from "@/lib/types/resume";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+interface VersionMenuProps {
+  /** The version tailoring uses: the latest one. `null` before the first save. */
+  active: MasterResumeVersionSummary | null;
+  /** All saved versions, newest first. `undefined` while loading. */
+  versions: MasterResumeVersionSummary[] | undefined;
+  /** The earlier version being inspected, if any. */
+  inspectingId: string | null;
+  /** Called with a version id to inspect it, or `null` to return to the active one. */
+  onInspect: (versionId: string | null) => void;
+  loadFailed: boolean;
+}
+⋮----
+/** The version tailoring uses: the latest one. `null` before the first save. */
+⋮----
+/** All saved versions, newest first. `undefined` while loading. */
+⋮----
+/** The earlier version being inspected, if any. */
+⋮----
+/** Called with a version id to inspect it, or `null` to return to the active one. */
+⋮----
+/** The `v3 (Active)` badge: a read-only window onto every saved version. */
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/badge.tsx">
+import { cva, type VariantProps } from "class-variance-authority";
+import type { HTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export interface BadgeProps
+  extends HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof badgeVariants> {}
+⋮----
+export function Badge(
+⋮----
+return <span className=
+</file>
+
+<file path="src/components/ui/button.tsx">
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
+import type { ButtonHTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export interface ButtonProps
+  extends ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
+⋮----
+export function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: ButtonProps)
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/dialog.tsx">
+import { X } from "lucide-react";
+import type { ComponentProps } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export function DialogContent({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Content>)
+⋮----
+className=
+⋮----
+/** Dialog variant that slides in from the right edge. */
+export function SheetContent({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Content>)
+</file>
+
+<file path="src/components/ui/dropdown-menu.tsx">
+import { Check } from "lucide-react";
+import type { ComponentProps } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export function DropdownMenuItem({
+  className,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Item>)
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/inline-alert.tsx">
+import { CircleAlert, CircleCheck } from "lucide-react";
+import type { ReactNode } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+interface InlineAlertProps {
+  tone: "error" | "success";
+  children: ReactNode;
+  className?: string;
+}
+</file>
+
+<file path="src/components/ui/input.tsx">
+import type { InputHTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export function Input({
+  className,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement>)
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/kbd.tsx">
+import type { HTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export function Kbd(
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/password-input.tsx">
+import { Eye, EyeOff } from "lucide-react";
+import { useState, type InputHTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+import { Input } from "./input";
+⋮----
+/** Credential field with a show/hide toggle. */
+export function PasswordInput({
+  className,
+  ...props
+}: Omit<InputHTMLAttributes<HTMLInputElement>, "type">)
+⋮----
+onClick=
+</file>
+
+<file path="src/components/ui/select.tsx">
+import type { SelectHTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/textarea.tsx">
+import type { TextareaHTMLAttributes } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+className=
+</file>
+
+<file path="src/components/ui/tooltip.tsx">
+import type { ComponentProps } from "react";
+⋮----
+import { cn } from "@/lib/utils";
+⋮----
+export function TooltipContent({
+  className,
+  sideOffset = 6,
+  ...props
+}: ComponentProps<typeof TooltipPrimitive.Content>)
+</file>
+
+<file path="src/components/add-job-dialog.tsx">
+import { Loader2, Sparkles } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+⋮----
+import { createApplicationAction } from "@/app/actions/applications";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogDescription,
+  DialogTitle,
+  SheetContent,
+} from "@/components/ui/dialog";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import type { ActionResult } from "@/lib/action-result";
+import { getModel } from "@/lib/llm/models";
+import { useModelConfig } from "@/lib/store";
+import type { JobApplication } from "@/lib/types/resume";
+⋮----
+interface AddJobDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  /** Called as soon as the job is saved, before tailoring starts. */
+  onCreated: (application: JobApplication) => void;
+  tailor: (applicationId: string) => Promise<ActionResult<JobApplication>>;
+  /** Called with the application id once tailoring succeeds. */
+  onTailored: (applicationId: string) => void;
+}
+⋮----
+/** Called as soon as the job is saved, before tailoring starts. */
+⋮----
+/** Called with the application id once tailoring succeeds. */
+⋮----
+type Phase =
+  | { step: "form"; error: string | null }
+  | { step: "saving" }
+  | { step: "tailoring"; applicationId: string }
+  | { step: "failed"; applicationId: string; error: string };
+⋮----
+function TailoringProgress(
+⋮----
+function close()
+⋮----
+async function runTailoring(applicationId: string)
+⋮----
+async function handleSubmit(event: FormEvent)
+⋮----
+const field = (name: keyof typeof EMPTY_FORM) => (
+⋮----
+// Closing mid-run would hide the result; the run itself continues.
+</file>
+
+<file path="src/components/application-assets.tsx">
+import { Check, Copy, Download, Loader2, Save } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+⋮----
+import { updateCoverLetterAction } from "@/app/actions/applications";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import type { ActionResult } from "@/lib/action-result";
+import type { JobApplication, MasterResumeVersion } from "@/lib/types/resume";
+import { cn } from "@/lib/utils";
+⋮----
+interface ApplicationAssetsProps {
+  application: JobApplication;
+  master: MasterResumeVersion | null;
+  isTailoring: boolean;
+  onTailor: () => void;
+  /** Called with the saved row after the cover letter is edited. */
+  onSaved: (application: JobApplication) => void;
+}
+⋮----
+/** Called with the saved row after the cover letter is edited. */
+⋮----
+const wordCount = (text: string)
+⋮----
+/** Copies `text`; the icon turns into a check for a moment to confirm. */
+⋮----
+async function copy()
+⋮----
+className=
+⋮----
+// A fresh tailoring run replaces the letter: show the new text.
+⋮----
+// The PDF engine is large, so it is loaded on demand.
+⋮----
+onClick=
+</file>
+
+<file path="src/components/application-communications.tsx">
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  Check,
+  ChevronDown,
+  Copy,
+  Loader2,
+  Mail,
+  Save,
+  Sparkles,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+⋮----
+import {
+  generateDraftResponseAction,
+  updateDraftResponseAction,
+} from "@/app/actions/email";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Textarea } from "@/components/ui/textarea";
+import { useWorkspace } from "@/components/workspace-provider";
+import type { ActionResult } from "@/lib/action-result";
+import { fetchEmailInteractions, queryKeys } from "@/lib/api";
+import type { EmailIntent, EmailInteraction } from "@/lib/types/email";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+/** A fresh email gets its draft within about this long, if one is coming. */
+⋮----
+/**
+ * The emails received for one application. Shared by the drawer's tab label
+ * (the count) and the tab itself, so they read one cache entry. Refetches on
+ * every open, and while a draft is still being written.
+ */
+export function useEmailInteractions(applicationId: string)
+⋮----
+// A draft that arrives from the server (the webhook, or Draft a reply)
+// replaces the box, unless the user has started typing their own.
+⋮----
+async function run(
+    task: () => Promise<ActionResult<EmailInteraction>>,
+    success: string,
+    failure: string,
+)
+⋮----
+async function save()
+⋮----
+async function generate()
+⋮----
+async function copy()
+⋮----
+onClick=
+⋮----
+className=
+⋮----
+className={cn(
+                "size-3.5 transition-transform duration-150",
+                open && "rotate-180",
+              )}
+              aria-hidden
+            />
+          </button>
+        ) : null}
+      </div>
+
+      <DraftCard interaction={interaction} onSaved={onSaved} />
+    </li>
+  );
+⋮----
+/** The Communications tab: recruiter emails and the replies drafted for them. */
+⋮----
+// A failed refresh keeps showing what was already loaded.
+</file>
+
+<file path="src/components/billing-section.tsx">
+import { useQuery } from "@tanstack/react-query";
+import { Check, KeyRound, Plus } from "lucide-react";
+import { useState } from "react";
+⋮----
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { useWorkspace } from "@/components/workspace-provider";
+import { fetchBilling, queryKeys } from "@/lib/api";
+import { getModel } from "@/lib/llm/models";
+import type {
+  BillingSummary,
+  CreditLedgerEntry,
+  PlanTier,
+} from "@/lib/types/billing";
+import { cn } from "@/lib/utils";
+⋮----
+interface Plan {
+  tier: PlanTier;
+  name: string;
+  price: string;
+  cadence: string;
+  blurb: string;
+  points: string[];
+  /** Applications in a paid pack. */
+  pack?: number;
+}
+⋮----
+/** Applications in a paid pack. */
+⋮----
+const formatDate = (iso: string)
+⋮----
+const plural = (count: number)
+⋮----
+className=
+⋮----
+// A pack's size is the balance right after the last top-up.
+⋮----
+/** Plans, the credit balance and its history. Rendered inside Settings. */
+⋮----
+/** Label of the active model's provider when it runs on the user's key. */
+⋮----
+<Button variant="outline" size="sm" onClick=
+</file>
+
+<file path="src/components/byok-key-dialog.tsx">
+import { KeyRound } from "lucide-react";
+import { useState } from "react";
+⋮----
+import { ByokKeyForm } from "@/components/byok-key-form";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import type { KeyHints } from "@/lib/db/api-keys";
+import type {
+  ModelRegistry,
+  ProviderDescriptor,
+  ProviderId,
+} from "@/lib/llm/models";
+import { cn } from "@/lib/utils";
+⋮----
+interface ByokKeyDialogProps {
+  userId: string;
+  registry: ModelRegistry;
+  activeProvider: ProviderDescriptor;
+  keyHints: KeyHints;
+}
+⋮----
+setOpen(next);
+setProviderId(activeProvider.id);
+⋮----
+className=
+⋮----
+{/* Keyed so switching provider clears the typed key and any error. */}
+</file>
+
+<file path="src/components/byok-key-form.tsx">
+import { useQueryClient } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { useState, useTransition, type FormEvent } from "react";
+import { toast } from "sonner";
+⋮----
+import { deleteByokKeyAction, saveByokKeyAction } from "@/app/actions/api-keys";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { PasswordInput } from "@/components/ui/password-input";
+import type { ActionResult } from "@/lib/action-result";
+import { queryKeys } from "@/lib/api";
+import type { KeyHints } from "@/lib/db/api-keys";
+import type { ProviderDescriptor } from "@/lib/llm/models";
+⋮----
+interface ByokKeyFormProps {
+  userId: string;
+  provider: ProviderDescriptor;
+  /** Last four characters of the stored key, if there is one. */
+  hint: string | undefined;
+  autoFocus?: boolean;
+}
+⋮----
+/** Last four characters of the stored key, if there is one. */
+⋮----
+/**
+ * Saves or removes one provider's key. The key itself only travels to the
+ * server action; the browser only ever gets the last four characters back.
+ */
+⋮----
+function run(action: () => Promise<ActionResult<KeyHints>>)
+⋮----
+// A server action rejects (rather than returning) when the request
+// itself fails, e.g. the network drops.
+⋮----
+function handleSubmit(event: FormEvent)
+</file>
+
+<file path="src/components/clip-import.tsx">
+import { ClipboardPaste, Loader2, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, type FormEvent } from "react";
+import { toast } from "sonner";
+⋮----
+import { createApplicationAction } from "@/app/actions/applications";
+import { Field, TextField } from "@/components/resume/fields";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { Textarea } from "@/components/ui/textarea";
+import { useWorkspace } from "@/components/workspace-provider";
+import type { ActionResult } from "@/lib/action-result";
+import { getModel } from "@/lib/llm/models";
+import { useModelConfig } from "@/lib/store";
+import type { JobApplication } from "@/lib/types/resume";
+⋮----
+/**
+ * Landing page for the bookmarklet. The clipped job arrives in the URL
+ * fragment (which never reaches the server or its logs) and is shown for
+ * one-click confirmation. It is never imported automatically: a link that
+ * could create jobs and spend model credit just by being opened would be
+ * an open door for any website.
+ */
+⋮----
+interface Clip {
+  company: string;
+  role: string;
+  location: string;
+  url: string;
+  jobDescription: string;
+}
+⋮----
+type FieldErrors = Partial<Record<keyof Clip, string>>;
+⋮----
+function validate(clip: Clip): FieldErrors
+⋮----
+/** Decodes a fragment value, tolerating a stray "%" that is not an escape. */
+function decodeFragment(raw: string): string
+⋮----
+/**
+ * Reads `#data=<encodeURIComponent(JSON)>`. The value is taken as everything
+ * after `data=` rather than through URLSearchParams, which would turn a bare
+ * "+" into a space and stop at an unescaped "&".
+ */
+function readClip(hash: string):
+⋮----
+const text = (key: string, max: number) =>
+⋮----
+// In development React runs this effect twice, and the address bar is
+// cleared below, so the second pass sees no data: keep the first read.
+⋮----
+// The job is in state now; keep it out of history and the address bar.
+⋮----
+const set = (key: keyof Clip) => (value: string) =>
+⋮----
+/** Required fields the page did not give us, named for the note above the form. */
+⋮----
+async function handleSubmit(event: FormEvent)
+⋮----
+// Runs in the workspace, so it carries on while the dashboard opens.
+</file>
+
+<file path="src/components/dashboard-view.tsx">
+import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+⋮----
+import { AddJobDialog } from "@/components/add-job-dialog";
+import { KanbanBoard } from "@/components/kanban/kanban-board";
+import { isTypingTarget } from "@/components/layout/sidebar";
+import { Button } from "@/components/ui/button";
+import { Kbd } from "@/components/ui/kbd";
+import { useWorkspace } from "@/components/workspace-provider";
+⋮----
+export function DashboardView()
+⋮----
+// `N` opens the Add job drawer, unless the user is typing or one is open.
+⋮----
+function onKeyDown(event: KeyboardEvent)
+⋮----
+<Button onClick=
+</file>
+
+<file path="src/components/interview-prep.tsx">
+import { BookOpen, ChevronDown, Loader2, Sparkles } from "lucide-react";
+import { useState } from "react";
+⋮----
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import type {
+  InterviewPrep as InterviewPrepData,
+  InterviewQuestion,
+  JobApplication,
+} from "@/lib/types/resume";
+import { cn } from "@/lib/utils";
+⋮----
+interface InterviewPrepProps {
+  application: JobApplication;
+  /** A briefing is being generated for this application. */
+  isPreparing: boolean;
+  onGenerate: () => void;
+}
+⋮----
+/** A briefing is being generated for this application. */
+⋮----
+function scoreTone(score: number): string
+⋮----
+function MatchBreakdown({
+  score,
+  prep,
+}: {
+  score: number | null;
+  prep: InterviewPrepData;
+})
+⋮----
+className=
+⋮----
+{/* Grid rows animate the height without measuring the content. */}
+</file>
+
+<file path="src/components/match-score.tsx">
+import { Badge } from "@/components/ui/badge";
+⋮----
+export function MatchScore(
+</file>
+
+<file path="src/components/model-selector.tsx">
+import type { ModelDescriptor, ModelRegistry } from "@/lib/llm/models";
+import { ChevronDown, Sparkles } from "lucide-react";
+⋮----
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useGatewayStore } from "@/lib/store";
+⋮----
+interface ModelSelectorProps {
+  registry: ModelRegistry;
+  activeModel: ModelDescriptor;
+}
+</file>
+
+<file path="src/components/resume-diff-viewer.tsx">
+import type {
+  ExperienceOverride,
+  MasterResume,
+  PatchDocument,
+  ResumeExperience,
+} from "@/lib/types/resume";
+import { ArrowUp } from "lucide-react";
+import type { ReactNode } from "react";
+⋮----
+import { Badge } from "@/components/ui/badge";
+import { diffWords, type DiffToken } from "@/lib/diff";
+import { cn } from "@/lib/utils";
+⋮----
+interface ResumeDiffViewerProps {
+  master: MasterResume;
+  patch: PatchDocument;
+}
+⋮----
+interface BulletRow {
+  id: string;
+  original: string;
+  tailored: string | null;
+  promoted: boolean;
+}
+⋮----
+/** Bullets in tailored display order: promoted first, the rest in master order. */
+function buildRows(
+  experience: ResumeExperience,
+  override: ExperienceOverride,
+): BulletRow[]
+⋮----
+className=
+⋮----
+/** Stable master id of the node this row shows. */
+</file>
+
+<file path="src/components/resume-preview.tsx">
+import { Download, FileWarning, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+⋮----
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import type { MasterResume, PatchDocument } from "@/lib/types/resume";
+⋮----
+interface ResumePreviewProps {
+  master: MasterResume;
+  /** `null` previews the master resume as it is. */
+  patch: PatchDocument | null;
+  companyName: string | null;
+}
+⋮----
+/** `null` previews the master resume as it is. */
+⋮----
+type PreviewState =
+  | { status: "rendering" }
+  | { status: "ready"; url: string; pages: number; fileName: string }
+  | { status: "error" };
+⋮----
+// The PDF engine is large, so it is loaded only when a preview is opened.
+</file>
+
+<file path="src/components/status-badge.tsx">
+import type { ApplicationStatus } from "@/lib/types/resume";
+⋮----
+import { Badge, type BadgeProps } from "@/components/ui/badge";
+⋮----
+export function StatusBadge(
+</file>
+
+<file path="src/components/workspace-provider.tsx">
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+import { toast } from "sonner";
+⋮----
+import {
+  generateInterviewPrepAction,
+  tailorApplicationAction,
+  updateApplicationStatusAction,
+} from "@/app/actions/applications";
+import {
+  ApplicationDrawer,
+  type DrawerTab,
+} from "@/components/application-drawer";
+import type { ActionResult } from "@/lib/action-result";
+import { fetchApplications, fetchMasterResume, queryKeys } from "@/lib/api";
+import { useModelConfig } from "@/lib/store";
+import { INSUFFICIENT_CREDITS, MODEL_NOT_ALLOWED } from "@/lib/types/billing";
+import type {
+  ApplicationStatus,
+  JobApplication,
+  MasterResumeVersion,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Shared state for every page inside the app shell: the user's applications
+ * and master resume, the actions on them, and the one Application Detail
+ * Drawer that any page can open.
+ */
+interface WorkspaceValue {
+  userId: string;
+  applications: JobApplication[];
+  master: MasterResumeVersion | null;
+  /** Applications with a tailoring run in flight. */
+  tailoringIds: ReadonlySet<string>;
+  /** Applications with an interview briefing being generated. */
+  preparingIds: ReadonlySet<string>;
+  upsertApplication: (application: JobApplication) => void;
+  /** Call after saving a new master resume version. */
+  setMaster: (version: MasterResumeVersion) => void;
+  tailor: (applicationId: string) => Promise<ActionResult<JobApplication>>;
+  prepare: (applicationId: string, options?: { quiet?: boolean }) => Promise<void>;
+  moveApplication: (applicationId: string, status: ApplicationStatus) => Promise<void>;
+  openApplication: (applicationId: string, tab?: DrawerTab) => void;
+}
+⋮----
+/** Applications with a tailoring run in flight. */
+⋮----
+/** Applications with an interview briefing being generated. */
+⋮----
+/** Call after saving a new master resume version. */
+⋮----
+export function useWorkspace(): WorkspaceValue
+⋮----
+interface Selection {
+  applicationId: string;
+  tab: DrawerTab;
+  /** Bumped on every open so the drawer resets to the requested tab. */
+  nonce: number;
+}
+⋮----
+/** Bumped on every open so the drawer resets to the requested tab. */
+⋮----
+const withId = (ids: ReadonlySet<string>, id: string)
+const withoutId = (ids: ReadonlySet<string>, id: string) =>
+⋮----
+interface WorkspaceProviderProps {
+  userId: string;
+  initialApplications: JobApplication[];
+  initialMaster: MasterResumeVersion;
+  children: ReactNode;
+}
+⋮----
+export function WorkspaceProvider({
+  userId,
+  initialApplications,
+  initialMaster,
+  children,
+}: WorkspaceProviderProps)
+⋮----
+// Second stage of the pipeline: runs in the background so the diff
+// is usable straight away.
+⋮----
+// A run may have spent (or been refunded) a credit.
+⋮----
+// Optimistic: move the card now, reconcile with the saved row after.
+⋮----
+onTailor=
+</file>
+
+<file path="src/components/workspace-skeleton.tsx">
+/** Shown in the content area while the workspace data loads. */
+</file>
+
+<file path="src/components/workspace-view.tsx">
+import { useQuery } from "@tanstack/react-query";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BellRing,
+  CalendarClock,
+  CheckCircle2,
+  MessagesSquare,
+  Send,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+⋮----
+import type { DrawerTab } from "@/components/application-drawer";
+import { NAV_ITEMS } from "@/components/layout/sidebar";
+import { STATUS_LABELS } from "@/components/status-badge";
+import { Button } from "@/components/ui/button";
+import { Kbd } from "@/components/ui/kbd";
+import { useWorkspace } from "@/components/workspace-provider";
+import { fetchCalendarEvents, queryKeys } from "@/lib/api";
+import {
+  addDays,
+  buildCalendarItems,
+  dayKey,
+  startOfDay,
+  type CalendarItem,
+} from "@/lib/calendar/items";
+import {
+  APPLICATION_STATUSES,
+  type ApplicationStatus,
+  type JobApplication,
+} from "@/lib/types/resume";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+/** How far ahead the "Coming up" list looks. */
+⋮----
+// Same stage colours as the pipeline board.
+⋮----
+interface NextAction {
+  key: string;
+  icon: LucideIcon;
+  tone: string;
+  title: string;
+  detail: string;
+  applicationId: string;
+  tab: DrawerTab;
+}
+⋮----
+/**
+ * What to do next, most urgent first. Every entry is derived from the state
+ * of a tracked application; nothing here is generated.
+ */
+function buildNextActions(
+  applications: JobApplication[],
+  dueFollowUps: CalendarItem[],
+): NextAction[]
+⋮----
+function timeLabel(minutes: number): string | null
+⋮----
+function Panel({
+  title,
+  action,
+  className,
+  children,
+}: {
+  title: string;
+  action?: ReactNode;
+  className?: string;
+  children: ReactNode;
+})
+⋮----
+function PanelLink(
+⋮----
+function EmptyNote(
+⋮----
+function Stat({
+  label,
+  value,
+  hint,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+})
+⋮----
+<div className=
+⋮----
+// "Today" depends on the viewer's time zone, so it is only known in the
+// browser (same approach as the calendar).
+⋮----
+className=
+</file>
+
+<file path="src/lib/billing/model-access.ts">
+import type { ProviderKeys } from "@/lib/llm/gateway";
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import type { PlanTier } from "@/lib/types/billing";
+⋮----
+/**
+ * Which models a run may use. A model on the user's own API key is always
+ * allowed and free. A model on ApplyOS's platform keys is limited to the
+ * default fast model unless the user holds a paid plan.
+ */
+⋮----
+/** The chosen model is not available to this account on platform keys. */
+export class ModelNotAllowedError extends Error
+⋮----
+constructor()
+⋮----
+/** True when the user has a stored key for the model's provider. */
+export function hasOwnKeyFor(modelId: string, byokKeys: ProviderKeys): boolean
+⋮----
+/**
+ * Whether ApplyOS's platform key may run `modelId` for this plan. `null`
+ * (credits not set up, or unknown) is treated as the free plan, so an
+ * unprovisioned workspace cannot spend platform money on dearer models.
+ */
+export function platformAllows(tier: PlanTier | null, modelId: string): boolean
+⋮----
+/** The ids the user may actually run: own-key models and allowed platform ones. */
+export function runnableModelIds(
+  modelIds: readonly string[] | undefined,
+  tier: PlanTier | null,
+  byokKeys: ProviderKeys,
+): string[]
+</file>
+
+<file path="src/lib/calendar/items.ts">
+import type { CalendarEvent } from "@/lib/types/calendar";
+import type { JobApplication } from "@/lib/types/resume";
+⋮----
+/**
+ * Pure date helpers and the projection from applications + events to what
+ * the calendar shows. Everything works in the viewer's local time zone.
+ */
+⋮----
+/** 0 = Sunday, 1 = Monday. */
+⋮----
+/** Business days after submission at which an unanswered application is flagged. */
+⋮----
+export function startOfDay(date: Date): Date
+⋮----
+export function addDays(date: Date, days: number): Date
+⋮----
+/** `date` moved forward by whole working days, skipping Saturdays and Sundays. */
+export function addBusinessDays(date: Date, days: number): Date
+⋮----
+export function addMonths(date: Date, months: number): Date
+⋮----
+/** Local calendar day as `YYYY-MM-DD`. */
+export function dayKey(date: Date): string
+⋮----
+export function startOfWeek(date: Date): Date
+⋮----
+export function weekDays(anchor: Date): Date[]
+⋮----
+/** Whole weeks covering the anchor's month: 28, 35 or 42 days. */
+export function monthGrid(anchor: Date): Date[]
+⋮----
+export type CalendarItemKind =
+  | "saved"
+  | "applied"
+  | "follow_up"
+  | "screening"
+  | "interview"
+  | "note";
+⋮----
+export interface CalendarItem {
+  key: string;
+  kind: CalendarItemKind;
+  dayKey: string;
+  /** Minutes after local midnight, or -1 for items without a time. */
+  minutes: number;
+  title: string;
+  detail: string;
+  applicationId: string;
+  company: string;
+  role: string;
+  /** Set for user-created events, which can be deleted. */
+  event: CalendarEvent | null;
+  /** Follow-ups only: the follow-up date has arrived. */
+  due: boolean;
+}
+⋮----
+/** Minutes after local midnight, or -1 for items without a time. */
+⋮----
+/** Set for user-created events, which can be deleted. */
+⋮----
+/** Follow-ups only: the follow-up date has arrived. */
+⋮----
+/** Calendar items grouped by local day key, each day sorted for display. */
+export function buildCalendarItems(
+  applications: JobApplication[],
+  events: CalendarEvent[],
+  now: Date,
+): Map<string, CalendarItem[]>
+⋮----
+// Still waiting on a reply: flag the follow-up.
+</file>
+
+<file path="src/lib/db/api-keys.ts">
+import type { SupabaseClient } from "@supabase/supabase-js";
+⋮----
+import type { ProviderKeys } from "@/lib/llm/gateway";
+import { decryptApiKey, encryptApiKey, keyHint } from "@/lib/llm/key-vault";
+import { PROVIDER_IDS, type ProviderId } from "@/lib/llm/models";
+import { getAdminClient } from "@/lib/supabase/admin";
+import { createClient, getSessionUser } from "@/lib/supabase/server";
+⋮----
+/**
+ * BYOK key storage. Keys are AES-256-GCM encrypted with BYOK_ENCRYPTION_KEY
+ * before they leave this module; the database only ever holds ciphertext.
+ *
+ * Every function re-checks that `userId` is the signed-in user, then talks
+ * to `user_api_keys` through the service-role client. If no service-role
+ * key is configured it falls back to the user's own session, which the
+ * owner-only RLS policies on the table allow.
+ */
+⋮----
+/** An error whose message is safe to show to the user. */
+export class KeyStoreError extends Error
+⋮----
+constructor(message: string, options?: ErrorOptions)
+⋮----
+interface ApiKeyRow {
+  provider: string;
+  encrypted_key: string;
+  key_hint: string;
+}
+⋮----
+/** Last four characters of each stored key, by provider. Safe for the browser. */
+export type KeyHints = Partial<Record<ProviderId, string>>;
+⋮----
+function isProviderId(value: string): value is ProviderId
+⋮----
+async function keyStore(userId: string): Promise<SupabaseClient>
+⋮----
+function storageError(
+  action: string,
+  error: { code?: string; message: string },
+): KeyStoreError
+⋮----
+async function loadRows(userId: string): Promise<ApiKeyRow[]>
+⋮----
+export async function getKeyHints(userId: string): Promise<KeyHints>
+⋮----
+/** Decrypted keys for the gateway. Never return these to the browser. */
+export async function getByokKeys(userId: string): Promise<ProviderKeys>
+⋮----
+// Unreadable (e.g. the encryption key was rotated): treat as absent so
+// the gateway reports a missing key instead of failing obscurely.
+⋮----
+export async function saveByokKey(
+  userId: string,
+  providerId: ProviderId,
+  apiKey: string,
+): Promise<void>
+⋮----
+export async function deleteByokKey(
+  userId: string,
+  providerId: ProviderId,
+): Promise<void>
+</file>
+
+<file path="src/lib/db/applications.ts">
+import { createClient } from "@/lib/supabase/server";
+import type {
+  ApplicationStatus,
+  AtsKeywords,
+  CoverLetter,
+  InterviewPrep,
+  JobApplication,
+  PatchDocument,
+  RecruiterOutreach,
+} from "@/lib/types/resume";
+⋮----
+import {
+  toCoverLetterJson,
+  toJobApplication,
+  toRecruiterOutreachJson,
+  type ApplicationRow,
+} from "./mappers";
+⋮----
+/** The asset columns do not exist yet (migration 003 not run). */
+export class AssetsNotProvisionedError extends Error
+⋮----
+constructor()
+⋮----
+// Postgres "undefined_column", and PostgREST's schema-cache miss for the same.
+⋮----
+// All queries run as the signed-in user, so RLS already limits them to that
+// user's rows. The explicit user_id filters keep the intent visible.
+⋮----
+export async function listApplications(userId: string): Promise<JobApplication[]>
+⋮----
+export async function getApplication(
+  userId: string,
+  applicationId: string,
+): Promise<JobApplication | null>
+⋮----
+export interface NewApplication {
+  companyName: string;
+  roleTitle: string;
+  location: string | null;
+  jobUrl: string | null;
+  jobDescription: string;
+  /** True when the application has already been submitted. */
+  applied?: boolean;
+}
+⋮----
+/** True when the application has already been submitted. */
+⋮----
+export async function createApplication(
+  userId: string,
+  input: NewApplication,
+): Promise<JobApplication>
+⋮----
+export async function updateApplicationStatus(
+  userId: string,
+  applicationId: string,
+  status: ApplicationStatus,
+): Promise<JobApplication>
+⋮----
+// The first move out of Saved is when the application was submitted.
+⋮----
+export async function saveInterviewPrep(
+  userId: string,
+  applicationId: string,
+  interviewPrep: InterviewPrep,
+): Promise<JobApplication>
+⋮----
+export interface TailoringResult {
+  matchScore: number | null;
+  atsKeywords: AtsKeywords;
+  patchDocument: PatchDocument;
+  tailoredByModel: string;
+  interviewPrep: InterviewPrep;
+  coverLetter: CoverLetter | null;
+  recruiterOutreach: RecruiterOutreach | null;
+}
+⋮----
+export async function saveTailoringResult(
+  userId: string,
+  applicationId: string,
+  result: TailoringResult,
+): Promise<JobApplication>
+⋮----
+const save = (values: Record<string, unknown>)
+⋮----
+// Before migration 003 the asset columns are missing. The resume patch is
+// still worth saving, so fall back to the columns that do exist.
+⋮----
+/** Saves the user's edits to the cover letter text. */
+export async function saveCoverLetter(
+  userId: string,
+  applicationId: string,
+  coverLetter: CoverLetter,
+): Promise<JobApplication>
+</file>
+
+<file path="src/lib/db/calendar-events.ts">
+import { createClient } from "@/lib/supabase/server";
+import type { CalendarEvent, CalendarEventType } from "@/lib/types/calendar";
+⋮----
+import { toCalendarEvent, type CalendarEventRow } from "./mappers";
+⋮----
+/** The calendar_events table does not exist yet (migration 002 not run). */
+export class CalendarNotProvisionedError extends Error
+⋮----
+constructor()
+⋮----
+// Postgres "undefined_table", and PostgREST's schema-cache miss for the same.
+⋮----
+function failure(
+  action: string,
+  error: { code?: string; message: string },
+): Error
+⋮----
+// Queries run as the signed-in user, so RLS limits them to that user's rows.
+⋮----
+export async function listCalendarEvents(userId: string): Promise<CalendarEvent[]>
+⋮----
+export interface NewCalendarEvent {
+  applicationId: string;
+  type: CalendarEventType;
+  title: string;
+  startsAt: string;
+  allDay: boolean;
+  notes: string | null;
+}
+⋮----
+export async function createCalendarEvent(
+  userId: string,
+  input: NewCalendarEvent,
+): Promise<CalendarEvent>
+⋮----
+export async function deleteCalendarEvent(
+  userId: string,
+  eventId: string,
+): Promise<void>
+</file>
+
+<file path="src/lib/db/credits.ts">
+import type { SupabaseClient } from "@supabase/supabase-js";
+⋮----
+import { getAdminClient } from "@/lib/supabase/admin";
+import { createClient, getSessionUser } from "@/lib/supabase/server";
+import {
+  PLAN_TIERS,
+  type CreditLedgerEntry,
+  type CreditReferenceType,
+  type PlanTier,
+  type UserCredits,
+} from "@/lib/types/billing";
+⋮----
+/**
+ * Credits for tailoring on ApplyOS's own model keys. Balances change only
+ * inside the database functions of migration 004: nothing here writes to
+ * `user_credits` or `credit_ledger` directly.
+ */
+⋮----
+/** The balance cannot cover the run. The message is shown to the user. */
+export class InsufficientCreditsError extends Error
+⋮----
+constructor()
+⋮----
+export class CreditStoreError extends Error
+⋮----
+constructor(message: string, options?: ErrorOptions)
+⋮----
+interface PostgrestFailure {
+  code?: string;
+  message: string;
+}
+⋮----
+/** Table or function missing: migration 004 has not been run. */
+⋮----
+/** Raised by `debit_user_credits` when the balance is too low. */
+⋮----
+const notProvisioned = (error: PostgrestFailure)
+⋮----
+function warnNotProvisioned()
+⋮----
+/** The database functions let a signed-in user act on their own balance only. */
+async function creditStore(userId: string): Promise<SupabaseClient>
+⋮----
+interface UserCreditsRow {
+  balance: number;
+  tier: string;
+  tier_expires_at: string | null;
+}
+⋮----
+interface CreditLedgerRow {
+  id: string;
+  amount: number;
+  balance_after: number;
+  reference_type: CreditReferenceType;
+  reference_id: string | null;
+  description: string;
+  created_at: string;
+}
+⋮----
+const isPlanTier = (value: string): value is PlanTier
+⋮----
+/**
+ * The user's balance and plan, brought up to date first (today's free
+ * allowance, an expired plan). `null` when credits are not set up.
+ */
+export async function getUserCredits(userId: string): Promise<UserCredits | null>
+⋮----
+/** Most recent ledger entries, newest first. */
+export async function getCreditLedger(
+  userId: string,
+  limit = 25,
+): Promise<CreditLedgerEntry[]>
+⋮----
+/**
+ * Takes one credit for tailoring `applicationId`, atomically. Returns true
+ * when a credit was taken, false when credits are not set up (the run is
+ * then not metered). Throws InsufficientCreditsError on an empty balance.
+ */
+export async function spendCreditForTailoring(
+  userId: string,
+  applicationId: string,
+  description: string,
+): Promise<boolean>
+⋮----
+/**
+ * Gives back the credit taken for a run that then failed. Needs the service
+ * role: the database refuses a refund asked for with a user's own session,
+ * since that would let a user refund runs that succeeded. Never throws.
+ */
+export async function refundTailoringCredit(
+  userId: string,
+  applicationId: string,
+): Promise<boolean>
+</file>
+
+<file path="src/lib/db/email-interactions.ts">
+import { createClient } from "@/lib/supabase/server";
+import type { EmailIntent, EmailInteraction } from "@/lib/types/email";
+⋮----
+/**
+ * Recruiter emails saved by the inbound webhook. Reads and the draft edit go
+ * through the signed-in user's session, so RLS applies; the filters on
+ * `user_id` are for clarity and an extra guard.
+ */
+⋮----
+export class EmailStoreError extends Error
+⋮----
+constructor(message: string, options?: ErrorOptions)
+⋮----
+interface InteractionRow {
+  id: string;
+  application_id: string;
+  sender: string;
+  sender_name: string | null;
+  subject: string;
+  body_text: string;
+  intent: string;
+  draft_response: string | null;
+  received_at: string;
+  created_at: string;
+}
+⋮----
+/** Table missing: migration 005 has not been run. */
+⋮----
+export function toEmailInteraction(row: InteractionRow): EmailInteraction
+⋮----
+/** Newest first. Empty when migration 005 has not been run. */
+export async function listEmailInteractions(
+  userId: string,
+  applicationId: string,
+): Promise<EmailInteraction[]>
+⋮----
+export async function getEmailInteraction(
+  userId: string,
+  interactionId: string,
+): Promise<EmailInteraction | null>
+⋮----
+/**
+ * Saves the user's version of the draft. With `onlyIfEmpty`, a draft that
+ * appeared in the meantime (the webhook's, or an earlier click) is kept and
+ * returned instead of being overwritten.
+ */
+export async function saveDraftResponse(
+  userId: string,
+  interactionId: string,
+  draft: string,
+  options: { onlyIfEmpty?: boolean } = {},
+): Promise<EmailInteraction | null>
+</file>
+
+<file path="src/lib/db/mappers.ts">
+import type { CalendarEvent, CalendarEventType } from "@/lib/types/calendar";
+import type {
+  ApplicationStatus,
+  AtsKeywords,
+  CoverLetter,
+  InterviewPrep,
+  JobApplication,
+  MasterResume,
+  MasterResumeVersion,
+  PatchDocument,
+  RecruiterOutreach,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Row shapes as stored in Postgres (snake_case) and their mapping to the
+ * camelCase domain types. Pure, so both server and browser code can use it.
+ */
+⋮----
+export interface MasterResumeRow {
+  id: string;
+  user_id: string;
+  version: number;
+  parent_id: string | null;
+  resume: MasterResume;
+  created_at: string;
+}
+⋮----
+export interface ApplicationRow {
+  id: string;
+  user_id: string;
+  company_name: string;
+  role_title: string;
+  location: string | null;
+  job_board_source: string | null;
+  job_url: string | null;
+  job_description: string;
+  status: ApplicationStatus;
+  applied_at: string | null;
+  match_score: number | null;
+  ats_keywords: AtsKeywords;
+  patch_document: PatchDocument | null;
+  tailored_by_model: string | null;
+  interview_prep: InterviewPrep | null;
+  // Absent until migration 003 has been run.
+  cover_letter?: CoverLetterJson | null;
+  recruiter_outreach?: RecruiterOutreachJson | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+⋮----
+// Absent until migration 003 has been run.
+⋮----
+/** The cover letter as stored in `applications.cover_letter`. */
+export interface CoverLetterJson {
+  content: string;
+  tailored_hook: string;
+  call_to_action: string;
+}
+⋮----
+/** The outreach message as stored in `applications.recruiter_outreach`. */
+export interface RecruiterOutreachJson {
+  subject: string;
+  inmail_body: string;
+  short_hook: string;
+}
+⋮----
+export const toCoverLetterJson = (letter: CoverLetter): CoverLetterJson => (
+⋮----
+export const toRecruiterOutreachJson = (
+  outreach: RecruiterOutreach,
+): RecruiterOutreachJson => (
+⋮----
+export function toMasterResumeVersion(row: MasterResumeRow): MasterResumeVersion
+⋮----
+// Versions saved before custom sections existed do not have the field.
+⋮----
+export interface CalendarEventRow {
+  id: string;
+  user_id: string;
+  application_id: string;
+  event_type: CalendarEventType;
+  title: string;
+  starts_at: string;
+  all_day: boolean;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+⋮----
+export function toCalendarEvent(row: CalendarEventRow): CalendarEvent
+⋮----
+/** Fills in briefing fields missing from rows saved before they existed. */
+function normalizePrep(prep: InterviewPrep | null): InterviewPrep | null
+⋮----
+const questions = (list: InterviewPrep["technicalQuestions"] | undefined)
+⋮----
+export function toJobApplication(row: ApplicationRow): JobApplication
+</file>
+
+<file path="src/lib/db/master-resume.ts">
+import { createClient } from "@/lib/supabase/server";
+import type {
+  MasterResume,
+  MasterResumeVersion,
+  MasterResumeVersionSummary,
+} from "@/lib/types/resume";
+⋮----
+import { toMasterResumeVersion, type MasterResumeRow } from "./mappers";
+⋮----
+/**
+ * Every entry and bullet must carry a non-empty id that is unique across
+ * the whole resume, because patches address nodes by id alone.
+ */
+export function assertStableIds(resume: MasterResume): void
+⋮----
+const check = (id: string, where: string) =>
+⋮----
+/** The latest master resume version for the user, or `null` if none exists. */
+export async function getMasterResume(
+  userId: string,
+): Promise<MasterResumeVersion | null>
+⋮----
+/** Every saved version, newest first, without the resume content. */
+export async function listMasterResumeVersions(
+  userId: string,
+): Promise<MasterResumeVersionSummary[]>
+⋮----
+/** One specific version, e.g. to inspect an earlier snapshot. */
+export async function getMasterResumeVersion(
+  userId: string,
+  versionId: string,
+): Promise<MasterResumeVersion | null>
+⋮----
+/**
+ * Appends a new master resume version. Existing versions are never touched:
+ * the database numbers the row (previous version + 1) and rejects updates.
+ */
+export async function saveMasterResume(
+  userId: string,
+  resumeData: MasterResume,
+): Promise<MasterResumeVersion>
+⋮----
+// Two concurrent saves computed the same version number: try again.
+</file>
+
+<file path="src/lib/db/seed.ts">
+import type { MasterResume, MasterResumeVersion } from "@/lib/types/resume";
+⋮----
+import { getMasterResume, saveMasterResume } from "./master-resume";
+⋮----
+/**
+ * Sample profile saved as version 1 for a user who has no master resume yet,
+ * so tailoring works before they have entered their own history. Replacing
+ * it is just saving a new version.
+ */
+⋮----
+/** The user's latest master resume, seeding the sample profile if none exists. */
+export async function ensureMasterResume(
+  userId: string,
+): Promise<MasterResumeVersion>
+</file>
+
+<file path="src/lib/inbound/draft-reply.ts">
+import { z } from "zod";
+⋮----
+import { hasOwnKeyFor, platformAllows } from "@/lib/billing/model-access";
+import { generateStructured, type ProviderKeys } from "@/lib/llm/gateway";
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import { guardProse } from "@/lib/tailoring/guard";
+import type { PlanTier } from "@/lib/types/billing";
+import type { MasterResume } from "@/lib/types/resume";
+⋮----
+import type { EmailIntent, InboundEmail } from "./email";
+⋮----
+/**
+ * Drafts a reply to a recruiter email, for the user to review.
+ *
+ * Nothing here sends anything. The result is text saved on the interaction;
+ * the user edits it and sends it from their own mail client.
+ */
+⋮----
+/** Most of the email the model is shown. Anything past it is cut. */
+⋮----
+export interface DraftModelChoice {
+  modelId: string;
+  fallbackModelIds: string[];
+}
+⋮----
+/**
+ * The model a draft runs on. Drafting costs no credit and the model choice
+ * lives in the user's browser, so it follows the application: the model that
+ * tailored it, if the account may run it (own key, or allowed on platform
+ * keys for the plan), else the default model.
+ */
+export function pickDraftModel({
+  tier,
+  byokKeys,
+  assignedModelId,
+}: {
+  tier: PlanTier | null;
+  byokKeys: ProviderKeys;
+  assignedModelId: string | null;
+}): DraftModelChoice
+⋮----
+// A run on the user's own key never falls back to a platform key.
+⋮----
+export interface DraftReplyInput {
+  resume: MasterResume;
+  companyName: string;
+  roleTitle: string;
+  email: Pick<InboundEmail, "from" | "fromName" | "subject" | "text">;
+  intent: EmailIntent;
+  /** Skills the candidate lacks, so the reply does not claim them. */
+  gapSkills: string[];
+  model: DraftModelChoice;
+  byokKeys: ProviderKeys;
+}
+⋮----
+/** Skills the candidate lacks, so the reply does not claim them. */
+⋮----
+export interface DraftReplyResult {
+  text: string;
+  /** Registry id of the model that wrote it. */
+  modelId: string;
+}
+⋮----
+/** Registry id of the model that wrote it. */
+⋮----
+/** Throws GatewayError if no model could write a draft. */
+export async function draftReply({
+  resume,
+  companyName,
+  roleTitle,
+  email,
+  intent,
+  gapSkills,
+  model,
+  byokKeys,
+}: DraftReplyInput): Promise<DraftReplyResult>
+⋮----
+// The same check the cover letter gets: a sentence stating a figure that is
+// in neither the resume nor the email, or claiming a skill the candidate
+// lacks, is removed before the user sees it.
+</file>
+
+<file path="src/lib/inbound/email.ts">
+/**
+ * Reading an inbound recruiter email: which application it is about, and
+ * what it is asking for. Deterministic keyword rules, no model call, so the
+ * webhook is fast, free and predictable. Pure, so it can be tested alone.
+ */
+⋮----
+export interface InboundEmail {
+  /** Sender address, e.g. `jane@lumenpay.com`. */
+  from: string;
+  fromName: string | null;
+  subject: string;
+  text: string;
+}
+⋮----
+/** Sender address, e.g. `jane@lumenpay.com`. */
+⋮----
+export type EmailIntent = "SCREENING" | "INTERVIEW" | "REJECTION" | "OTHER";
+⋮----
+interface Candidate {
+  id: string;
+  companyName: string;
+  jobUrl: string | null;
+}
+⋮----
+/** Mail providers whose domain says nothing about the employer. */
+⋮----
+// Applicant tracking systems send on behalf of many employers.
+⋮----
+const squash = (value: string)
+⋮----
+const domainOf = (address: string)
+⋮----
+function hostOf(url: string | null): string
+⋮----
+/** `careers.lumenpay.co.uk` -> `lumenpay` (best effort, no public-suffix list). */
+function domainLabel(domain: string): string
+⋮----
+// co.uk, com.au and similar: the name is one label further left.
+⋮----
+/**
+ * The application an email belongs to, or `null` if none or more than one
+ * fits. Sender domain is the strongest signal; otherwise the company name
+ * has to appear as a whole phrase in the sender name, subject or body.
+ */
+export function matchApplication<T extends Candidate>(
+  applications: T[],
+  email: InboundEmail,
+): T | null
+⋮----
+/** What the email is asking for. Rejections win over scheduling words. */
+export function classifyEmail(email: Pick<InboundEmail, "subject" | "text">): EmailIntent
+</file>
+
+<file path="src/lib/llm/providers/anthropic.ts">
+import Anthropic from "@anthropic-ai/sdk";
+⋮----
+import { GatewayError } from "../errors";
+import type { ProviderAdapter } from "./types";
+⋮----
+function toGatewayError(error: unknown): GatewayError
+⋮----
+export const anthropicAdapter: ProviderAdapter = async (request) =>
+</file>
+
+<file path="src/lib/llm/providers/google.ts">
+import { ApiError, FinishReason, GoogleGenAI } from "@google/genai";
+⋮----
+import { GatewayError } from "../errors";
+import type { ProviderAdapter } from "./types";
+⋮----
+function toGatewayError(error: unknown): GatewayError
+⋮----
+// Gemini also reports an invalid API key as a 400.
+⋮----
+export const googleAdapter: ProviderAdapter = async (request) =>
+</file>
+
+<file path="src/lib/llm/providers/openai.ts">
+import OpenAI from "openai";
+⋮----
+import { GatewayError } from "../errors";
+import type { ProviderAdapter } from "./types";
+⋮----
+function toGatewayError(error: unknown): GatewayError
+⋮----
+export const openaiAdapter: ProviderAdapter = async (request) =>
+</file>
+
+<file path="src/lib/llm/providers/types.ts">
+export interface TokenUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
+⋮----
+export interface ProviderRequest {
+  apiKey: string;
+  /** Provider-side model string (`ModelDescriptor.apiModelId`). */
+  model: string;
+  system: string | null;
+  prompt: string;
+  /** JSON Schema the response must conform to. */
+  jsonSchema: Record<string, unknown>;
+  schemaName: string;
+  maxOutputTokens: number;
+  timeoutMs: number;
+  serverSideRefusalFallback: boolean;
+}
+⋮----
+/** Provider-side model string (`ModelDescriptor.apiModelId`). */
+⋮----
+/** JSON Schema the response must conform to. */
+⋮----
+export interface ProviderResponse {
+  /** Raw JSON text. The gateway parses and validates it. */
+  text: string;
+  usage: TokenUsage;
+}
+⋮----
+/** Raw JSON text. The gateway parses and validates it. */
+⋮----
+/**
+ * One vendor SDK call. Adapters translate every vendor failure into a
+ * GatewayError and never throw anything else.
+ */
+export type ProviderAdapter = (
+  request: ProviderRequest,
+) => Promise<ProviderResponse>;
+</file>
+
+<file path="src/lib/llm/describe-error.ts">
+import type { GatewayError } from "./errors";
+import { MODEL_REGISTRY } from "./models";
+⋮----
+/** A user-facing sentence for a failed gateway call. */
+export function describeGatewayError(error: GatewayError, task: string): string
+</file>
+
+<file path="src/lib/llm/errors.ts">
+import type { ProviderId } from "./models";
+⋮----
+export type GatewayErrorCode =
+  /** Model id is not in the registry. */
+  | "unknown_model"
+  /** No BYOK key and no platform key for the provider. */
+  | "missing_key"
+  /** Provider rejected the key. */
+  | "auth"
+  | "rate_limit"
+  | "timeout"
+  | "network"
+  /** Output was cut off at the output-token ceiling. */
+  | "token_limit"
+  /** Provider rejected the request itself (e.g. prompt too long). */
+  | "bad_request"
+  /** Model declined to answer. */
+  | "refusal"
+  /** Response was not parseable JSON. */
+  | "invalid_json"
+  /** Response was JSON but did not match the requested schema. */
+  | "schema_mismatch"
+  | "provider_error";
+⋮----
+/** Model id is not in the registry. */
+⋮----
+/** No BYOK key and no platform key for the provider. */
+⋮----
+/** Provider rejected the key. */
+⋮----
+/** Output was cut off at the output-token ceiling. */
+⋮----
+/** Provider rejected the request itself (e.g. prompt too long). */
+⋮----
+/** Model declined to answer. */
+⋮----
+/** Response was not parseable JSON. */
+⋮----
+/** Response was JSON but did not match the requested schema. */
+⋮----
+export interface GatewayAttempt {
+  modelId: string;
+  providerId: ProviderId | null;
+  code: GatewayErrorCode;
+  message: string;
+}
+⋮----
+export class GatewayError extends Error
+⋮----
+/** Every failed attempt, in order, including the one that raised this. */
+⋮----
+constructor(code: GatewayErrorCode, message: string, options?: ErrorOptions)
+</file>
+
+<file path="src/lib/llm/gateway.ts">
+import { z } from "zod";
+⋮----
+import { GatewayError, type GatewayAttempt } from "./errors";
+import {
+  getModel,
+  type AuthType,
+  type ModelDescriptor,
+  type ProviderId,
+} from "./models";
+import { anthropicAdapter } from "./providers/anthropic";
+import { googleAdapter } from "./providers/google";
+import { openaiAdapter } from "./providers/openai";
+import type { ProviderAdapter, TokenUsage } from "./providers/types";
+⋮----
+/**
+ * The single entry point for every AI call in the app. Route handlers and
+ * server actions call `generateStructured`; nothing else imports a vendor SDK.
+ */
+⋮----
+/** Ceiling for the automatic retry after a truncated response. */
+⋮----
+/** The user's own keys, already decrypted, by provider. */
+export type ProviderKeys = Partial<Record<ProviderId, string>>;
+⋮----
+export interface GenerateStructuredRequest<T> {
+  /** Registry id of the model to try first. */
+  modelId: string;
+  /**
+   * Zod schema for the response. Use only required fields (model optional
+   * values as `.nullable()`), since strict structured output requires every
+   * property to be present.
+   */
+  schema: z.ZodType<T>;
+  /** Short identifier for the schema: letters, digits, `_` or `-`. */
+  schemaName: string;
+  system?: string;
+  prompt: string;
+  /** BYOK keys for this user. A provider without one uses the platform key. */
+  byokKeys?: ProviderKeys;
+  /** Registry ids to try, in order, if the first model fails. */
+  fallbackModelIds?: string[];
+  maxOutputTokens?: number;
+  timeoutMs?: number;
+}
+⋮----
+/** Registry id of the model to try first. */
+⋮----
+/**
+   * Zod schema for the response. Use only required fields (model optional
+   * values as `.nullable()`), since strict structured output requires every
+   * property to be present.
+   */
+⋮----
+/** Short identifier for the schema: letters, digits, `_` or `-`. */
+⋮----
+/** BYOK keys for this user. A provider without one uses the platform key. */
+⋮----
+/** Registry ids to try, in order, if the first model fails. */
+⋮----
+export interface StructuredResult<T> {
+  data: T;
+  /** Registry id of the model that produced `data`. */
+  modelId: string;
+  providerId: ProviderId;
+  authType: AuthType;
+  usage: TokenUsage;
+  /** Failed attempts that preceded the successful one. */
+  attempts: GatewayAttempt[];
+}
+⋮----
+/** Registry id of the model that produced `data`. */
+⋮----
+/** Failed attempts that preceded the successful one. */
+⋮----
+interface ResolvedKey {
+  apiKey: string;
+  authType: AuthType;
+}
+⋮----
+function resolveKey(
+  providerId: ProviderId,
+  byokKeys: ProviderKeys | undefined,
+): ResolvedKey | null
+⋮----
+function toJsonSchema(schema: z.ZodType): Record<string, unknown>
+⋮----
+function parseResponse<T>(text: string, schema: z.ZodType<T>): T
+⋮----
+function asGatewayError(error: unknown): GatewayError
+⋮----
+export async function generateStructured<T>(
+  request: GenerateStructuredRequest<T>,
+): Promise<StructuredResult<T>>
+⋮----
+const fail = (
+    modelId: string,
+    model: ModelDescriptor | null,
+    error: GatewayError,
+) =>
+⋮----
+// A rejected key is the user's to fix: surface it rather than
+// quietly billing a different provider.
+⋮----
+// Rate limits, timeouts, refusals and provider errors: the SDK has
+// already retried what is retryable, so move to the next model.
+</file>
+
+<file path="src/lib/llm/key-vault.ts">
+import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
+⋮----
+import type { ProviderId } from "./models";
+⋮----
+/**
+ * Encryption for BYOK keys at rest (`user_api_keys.encrypted_key`).
+ *
+ * AES-256-GCM with a server-held key from BYOK_ENCRYPTION_KEY. The user id
+ * and provider are bound in as additional authenticated data, so a
+ * ciphertext copied onto another row fails to decrypt.
+ */
+⋮----
+export interface KeyOwner {
+  userId: string;
+  providerId: ProviderId;
+}
+⋮----
+function encryptionKey(): Buffer
+⋮----
+function aad(owner: KeyOwner): Buffer
+⋮----
+export function encryptApiKey(plaintext: string, owner: KeyOwner): string
+⋮----
+export function decryptApiKey(encrypted: string, owner: KeyOwner): string
+⋮----
+/** Last four characters, for showing which key is stored. */
+export function keyHint(plaintext: string): string
+</file>
+
+<file path="src/lib/llm/models.ts">
+/**
+ * Model registry. Safe to import from client components: it holds no keys
+ * and pulls in no vendor SDK.
+ *
+ * Providers are fixed by the adapters that exist in `./providers`. Models
+ * are data: adding or retiring one is an edit to MODEL_REGISTRY only.
+ */
+⋮----
+export type ProviderId = (typeof PROVIDER_IDS)[number];
+⋮----
+export type AuthType = "platform" | "byok";
+⋮----
+export interface ProviderDescriptor {
+  id: ProviderId;
+  label: string;
+  supportsByok: boolean;
+}
+⋮----
+export interface ModelDescriptor {
+  /** Stable id stored in the database (`applications.tailored_by_model`). */
+  id: string;
+  providerId: ProviderId;
+  label: string;
+  /** Model string sent to the provider API. */
+  apiModelId: string;
+  /** Hard output-token ceiling for this model. */
+  maxOutputTokens: number;
+  /**
+   * Anthropic only: let the API re-run a safety-declined request on its
+   * default fallback model inside the same call.
+   */
+  serverSideRefusalFallback?: boolean;
+}
+⋮----
+/** Stable id stored in the database (`applications.tailored_by_model`). */
+⋮----
+/** Model string sent to the provider API. */
+⋮----
+/** Hard output-token ceiling for this model. */
+⋮----
+/**
+   * Anthropic only: let the API re-run a safety-declined request on its
+   * default fallback model inside the same call.
+   */
+⋮----
+export interface ModelRegistry {
+  providers: ProviderDescriptor[];
+  models: ModelDescriptor[];
+  defaultModelId: string;
+}
+⋮----
+export function getModel(modelId: string): ModelDescriptor | null
+</file>
+
+<file path="src/lib/pdf/cover-letter.tsx">
+import { Document, Page, pdf, StyleSheet, Text, View } from "@react-pdf/renderer";
+⋮----
+import type { ResumeBasics } from "@/lib/types/resume";
+⋮----
+import { resumeFileName } from "./render";
+⋮----
+/** Cover letter as a one-page letter that matches the resume's typography. */
+⋮----
+export interface CoverLetterInput {
+  basics: ResumeBasics;
+  companyName: string;
+  roleTitle: string;
+  /** Body paragraphs separated by blank lines. No greeting, no signature. */
+  content: string;
+}
+⋮----
+/** Body paragraphs separated by blank lines. No greeting, no signature. */
+⋮----
+export async function renderCoverLetter({
+  basics,
+  companyName,
+  roleTitle,
+  content,
+}: CoverLetterInput): Promise<
+</file>
+
+<file path="src/lib/pdf/extract-text.ts">
+/**
+ * Reads the text layer of a PDF in the browser. The file never leaves the
+ * device: only the extracted text is sent on for structuring.
+ *
+ * The PDF engine is large, so import this module lazily.
+ */
+⋮----
+/** An error whose message is safe to show to the user. */
+export class PdfTextError extends Error
+⋮----
+constructor(message: string)
+⋮----
+/** Below this, the PDF is almost certainly a scan with no text layer. */
+⋮----
+export interface ExtractedPdf {
+  text: string;
+  pages: number;
+}
+⋮----
+export async function extractPdfText(file: File): Promise<ExtractedPdf>
+⋮----
+export function formatBytes(bytes: number): string
+</file>
+
+<file path="src/lib/pdf/merge.ts">
+import type {
+  MasterResume,
+  PatchDocument,
+  ResumeDate,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Projects a master resume through a patch into the flat shape the PDF
+ * template renders. Pure and non-destructive: the master is only read, and
+ * a patch can change wording and order but never add or remove an entry.
+ */
+⋮----
+export interface TailoredEntry {
+  id: string;
+  heading: string;
+  subheading: string | null;
+  dateRange: string | null;
+  bullets: string[];
+}
+⋮----
+export interface TailoredSkillGroup {
+  category: string;
+  skills: string[];
+}
+⋮----
+export interface TailoredResume {
+  name: string;
+  headline: string | null;
+  /** Email, phone, location and links, in display order. */
+  contact: string[];
+  summary: string;
+  skills: TailoredSkillGroup[];
+  experience: TailoredEntry[];
+  projects: TailoredEntry[];
+  education: TailoredEntry[];
+  /** User-defined sections, in the order they appear in the master. */
+  custom: { id: string; title: string; entries: TailoredEntry[] }[];
+}
+⋮----
+/** Email, phone, location and links, in display order. */
+⋮----
+/** User-defined sections, in the order they appear in the master. */
+⋮----
+function formatDate(date: ResumeDate): string
+⋮----
+function formatRange(
+  start: ResumeDate | null,
+  end: ResumeDate | null,
+  openEnded: boolean,
+): string | null
+⋮----
+export function mergeResume(
+  master: MasterResume,
+  patch: PatchDocument | null,
+): TailoredResume
+⋮----
+// Highlighted skills first (in highlight order), the rest in master order.
+const rank = (skill: string) =>
+</file>
+
+<file path="src/lib/pdf/render.tsx">
+import { pdf } from "@react-pdf/renderer";
+⋮----
+import type { MasterResume, PatchDocument } from "@/lib/types/resume";
+⋮----
+import { mergeResume } from "./merge";
+import { DENSITIES, ResumeDocument } from "./resume-document";
+⋮----
+export interface RenderedResume {
+  blob: Blob;
+  /** 1 unless the content could not fit even at the tightest layout. */
+  pages: number;
+}
+⋮----
+/** 1 unless the content could not fit even at the tightest layout. */
+⋮----
+/** Counts page objects in a PDF file's text (`/Type /Page`, not `/Pages`). */
+export function countPages(pdfText: string): number
+⋮----
+/**
+ * Merges the immutable master resume with a patch and compiles it to a PDF
+ * in the browser. Layout density is stepped down until the result fits on a
+ * single page; if nothing fits, the tightest layout is returned with its
+ * real page count so the caller can say so.
+ *
+ * Pass `null` as the patch to render the master resume unchanged.
+ */
+export async function renderTailoredResume(
+  masterResume: MasterResume,
+  patchDocument: PatchDocument | null,
+): Promise<RenderedResume>
+⋮----
+export function resumeFileName(name: string, company: string | null): string
+⋮----
+const slug = (value: string)
+</file>
+
+<file path="src/lib/pdf/resume-document.tsx">
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
+⋮----
+import type { TailoredEntry, TailoredResume } from "./merge";
+⋮----
+/**
+ * ATS-oriented resume template: one column, real text in reading order,
+ * standard section headings, a built-in font, and no tables, images or
+ * text boxes for a parser to trip over.
+ */
+⋮----
+export interface Density {
+  fontSize: number;
+  lineHeight: number;
+  /** Page margin in points. */
+  margin: number;
+  /** Space above each section in points. */
+  sectionGap: number;
+}
+⋮----
+/** Page margin in points. */
+⋮----
+/** Space above each section in points. */
+⋮----
+/** Tried in order until the resume fits on one page. */
+⋮----
+function createStyles(
+⋮----
+type Styles = ReturnType<typeof createStyles>;
+</file>
+
+<file path="src/lib/resume/bullet-quality.ts">
+/**
+ * Quick, deterministic signals about a resume bullet. They are hints for
+ * the writer, not rules: nothing here blocks saving.
+ */
+⋮----
+/** A bullet shorter than this rarely says what was done and what came of it. */
+⋮----
+/** Roughly two lines on a one-page resume. Longer bullets tend to wrap to three. */
+⋮----
+export type BulletLength = "empty" | "short" | "good" | "long";
+⋮----
+export interface BulletQuality {
+  chars: number;
+  length: BulletLength;
+  /** Carries a number: a metric, a count, a percentage, an amount. */
+  quantified: boolean;
+  /** The passive phrase it opens with, e.g. "Responsible for", if any. */
+  weakOpener: string | null;
+}
+⋮----
+/** Carries a number: a metric, a count, a percentage, an amount. */
+⋮----
+/** The passive phrase it opens with, e.g. "Responsible for", if any. */
+⋮----
+export function assessBullet(text: string): BulletQuality
+</file>
+
+<file path="src/lib/resume/ids.ts">
+import type { MasterResume } from "@/lib/types/resume";
+⋮----
+/**
+ * Stable id handling for the master resume.
+ *
+ * An id is permanent: once a job or bullet has one it keeps it across every
+ * later version, and an id that has been used is never handed to a different
+ * node. Patches address nodes by id alone, so this is what keeps them valid.
+ */
+⋮----
+/** Every id in the resume. */
+export function collectIds(resume: MasterResume): Set<string>
+⋮----
+/** A new id that is not in `taken`. The id is added to `taken`. */
+export function newId(prefix: string, taken: Set<string>): string
+⋮----
+// ---------------------------------------------------------------------------
+// Imported resumes: the same shape as the master, but ids are optional
+// because the source (pasted text, someone else's JSON) may not have any.
+// ---------------------------------------------------------------------------
+⋮----
+export interface ImportedBullet {
+  id?: string;
+  text: string;
+}
+⋮----
+export interface ImportedResume {
+  basics: {
+    name: string;
+    headline: string | null;
+    email: string | null;
+    phone: string | null;
+    location: string | null;
+    links: { id?: string; label: string; url: string }[];
+  };
+  summary: string;
+  experience: {
+    id?: string;
+    company: string;
+    title: string;
+    location: string | null;
+    startDate: string;
+    /** `null` means current role. */
+    endDate: string | null;
+    bullets: ImportedBullet[];
+  }[];
+  education: {
+    id?: string;
+    institution: string;
+    degree: string;
+    field: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    bullets: ImportedBullet[];
+  }[];
+  projects: {
+    id?: string;
+    name: string;
+    url: string | null;
+    technologies: string[];
+    bullets: ImportedBullet[];
+  }[];
+  skills: { id?: string; category: string; skills: string[] }[];
+  customSections: {
+    id?: string;
+    title: string;
+    entries: {
+      id?: string;
+      title: string;
+      subtitle: string | null;
+      date: string | null;
+      bullets: ImportedBullet[];
+    }[];
+  }[];
+}
+⋮----
+/** `null` means current role. */
+⋮----
+const normalize = (value: string)
+⋮----
+/**
+ * Turns an imported resume into a master resume, giving every node an id.
+ *
+ * Preference order for each node: the id it arrived with, then the id of
+ * the matching node in `current` (same company and title, same bullet
+ * text), then a new id. New ids never collide with one `current` uses.
+ */
+export function toMasterResume(
+  imported: ImportedResume,
+  current: MasterResume | null,
+): MasterResume
+⋮----
+const claim = (prefix: string, ...candidates: (string | undefined)[]) =>
+⋮----
+const claimBullets = (
+    bullets: ImportedBullet[],
+    existing: { id: string; text: string }[] = [],
+)
+</file>
+
+<file path="src/lib/resume/json-import.ts">
+import { z } from "zod";
+⋮----
+import type { ImportedResume } from "./ids";
+⋮----
+/**
+ * Reads a resume from JSON. Two formats are understood:
+ *
+ *  - ApplyOS's own master resume shape (optionally wrapped as a saved
+ *    version, `{ "resume": { ... } }`). Ids in the file are kept.
+ *  - The JSON Resume standard (jsonresume.org): `basics`, `work`,
+ *    `education`, `skills`, `projects`.
+ *
+ * The result still goes through the editor's validation before it can be
+ * saved, so this is deliberately lenient about missing fields.
+ */
+⋮----
+/** An error whose message is safe to show to the user. */
+export class ResumeImportError extends Error
+⋮----
+constructor(message: string)
+⋮----
+const list = <T extends z.ZodType>(item: T)
+⋮----
+type CustomEntries = ImportedResume["customSections"][number]["entries"];
+⋮----
+function fromJsonResume(source: z.infer<typeof jsonResumeSchema>): ImportedResume
+⋮----
+const toBullets = (text: string | null) => (text ? [
+const customSection = (title: string, entries: CustomEntries)
+⋮----
+// JSON Resume leaves endDate out for a current role.
+⋮----
+function isRecord(value: unknown): value is Record<string, unknown>
+⋮----
+export function parseResumeJson(source: string): ImportedResume
+⋮----
+// A saved version wraps the resume: { id, version, resume: { ... } }.
+</file>
+
+<file path="src/lib/resume/schema.ts">
+import { z } from "zod";
+⋮----
+import type { MasterResume } from "@/lib/types/resume";
+⋮----
+/**
+ * Validation for a master resume before it is saved as a new version. Used
+ * by the editor (to show what needs fixing) and by the save action (which
+ * never trusts the browser).
+ */
+⋮----
+/** `YYYY`, `YYYY-MM` or `YYYY-MM-DD`. */
+⋮----
+const required = (label: string, max: number)
+⋮----
+const optional = (max: number)
+⋮----
+// Ids must be unique across the whole document: patches use them alone.
+⋮----
+const check = (value: string, path: (string | number)[]) =>
+⋮----
+export interface ResumeIssue {
+  /** Dotted path into the resume, e.g. `experience.0.startDate`. */
+  path: string;
+  message: string;
+}
+⋮----
+/** Dotted path into the resume, e.g. `experience.0.startDate`. */
+⋮----
+export type ResumeValidation =
+  | { valid: true; resume: MasterResume; issues: [] }
+  | { valid: false; resume: null; issues: ResumeIssue[] };
+⋮----
+export function validateResume(draft: MasterResume): ResumeValidation
+</file>
+
+<file path="src/lib/resume/text-import.ts">
+import { z } from "zod";
+⋮----
+import { hasOwnKeyFor } from "@/lib/billing/model-access";
+import { getByokKeys } from "@/lib/db/api-keys";
+import { generateStructured } from "@/lib/llm/gateway";
+import { MODEL_REGISTRY } from "@/lib/llm/models";
+import { getSessionUser } from "@/lib/supabase/server";
+import type { TailorModelConfig } from "@/lib/tailoring/engine";
+⋮----
+import type { ImportedResume } from "./ids";
+import { applyVerbatimGuard, type VerbatimGuardResult } from "./verbatim-guard";
+⋮----
+/**
+ * Quick Import from pasted text: a model structures the text, then the
+ * verbatim guard removes anything that is not in the text.
+ */
+⋮----
+// Required-only fields: strict structured output needs every property.
+⋮----
+function toImported(data: z.infer<typeof extractionSchema>): ImportedResume
+⋮----
+const toBullets = (bullets: string[])
+⋮----
+export interface ImportResumeTextInput {
+  text: string;
+  modelConfig: TailorModelConfig;
+}
+⋮----
+/**
+ * Structures pasted resume text. Nothing is saved: the result is a draft
+ * for the editor. Throws GatewayError if no model could parse it.
+ */
+export async function importResumeFromText({
+  text,
+  modelConfig,
+}: ImportResumeTextInput): Promise<VerbatimGuardResult>
+⋮----
+// Extraction is a plain structuring job, so on platform keys it always
+// runs on the default fast model, whatever model the client picked. A
+// model on the user's own key runs as chosen, and never falls back to a
+// platform key.
+</file>
+
+<file path="src/lib/resume/verbatim-guard.ts">
+import type { ImportedResume } from "./ids";
+⋮----
+/**
+ * Verification guard for resumes parsed from pasted text by a model.
+ *
+ * The model is asked to copy, not write. This checks that it did: every
+ * name, title, bullet and skill it returned must appear in the text the
+ * user pasted. Anything that does not is left out and reported, so nothing
+ * the user did not write can reach their master resume.
+ */
+⋮----
+/** Letters and digits only, so line wraps, bullets and punctuation don't matter. */
+const squash = (value: string)
+⋮----
+export interface VerbatimGuardResult {
+  resume: ImportedResume;
+  /** Human-readable labels of everything that was left out. */
+  dropped: string[];
+}
+⋮----
+/** Human-readable labels of everything that was left out. */
+⋮----
+const preview = (value: string)
+⋮----
+export function applyVerbatimGuard(
+  sourceText: string,
+  parsed: ImportedResume,
+): VerbatimGuardResult
+⋮----
+const found = (value: string | null | undefined): value is string =>
+/** A date is trusted only if its year is somewhere in the text. */
+const dateFound = (value: string | null): boolean
+⋮----
+const keep = (value: string | null, label: string): string | null =>
+⋮----
+const keepBullets = (bullets: ImportedResume["experience"][number]["bullets"])
+⋮----
+/**
+   * Unverifiable start dates become "" (the editor asks for them).
+   * Unverifiable end dates do too, never `null`: null would claim the
+   * role is current.
+   */
+const keepDate = (value: string | null, label: string): string | null =>
+⋮----
+// Category names are labels, not claims, so only the skills are checked.
+⋮----
+// Section headings are labels too; every entry under them is checked.
+</file>
+
+<file path="src/lib/supabase/admin.ts">
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+⋮----
+import { SUPABASE_URL } from "./env";
+⋮----
+/**
+ * True only for a credential that bypasses RLS: a legacy JWT whose role
+ * claim is `service_role`, or a new-style `sb_secret_` key. The anon key
+ * pasted into SUPABASE_SERVICE_ROLE_KEY fails this check.
+ */
+function isServiceRoleKey(key: string): boolean
+⋮----
+/**
+ * Service-role client, or `null` when SUPABASE_SERVICE_ROLE_KEY is missing
+ * or is not actually a service-role credential.
+ *
+ * It bypasses RLS, so it is used only for `user_api_keys`
+ * (src/lib/db/api-keys.ts) and credits (src/lib/db/credits.ts). Every query
+ * through it must filter by an already-verified user id.
+ */
+export function getAdminClient(): SupabaseClient | null
+</file>
+
+<file path="src/lib/supabase/client.ts">
+import { createBrowserClient } from "@supabase/ssr";
+⋮----
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
+⋮----
+/** Browser client. Runs as the signed-in user, so RLS applies. */
+export function createClient()
+</file>
+
+<file path="src/lib/supabase/env.ts">
+// Referenced as literals so Next.js can inline them into the browser bundle.
+</file>
+
+<file path="src/lib/supabase/server.ts">
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
+import { cache } from "react";
+⋮----
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
+⋮----
+/**
+ * Server client for Server Components, Server Actions and Route Handlers.
+ * Runs as the signed-in user (session read from cookies), so RLS applies.
+ */
+export async function createClient()
+⋮----
+getAll()
+setAll(cookiesToSet)
+⋮----
+// Server Components cannot write cookies. The middleware refreshes
+// the session, so this is safe to ignore.
+⋮----
+export interface SessionUser {
+  id: string;
+  email: string | null;
+}
+⋮----
+/**
+ * The signed-in user as verified by Supabase Auth (`auth.getUser()`), or
+ * `null`. Memoised per request, so layers can each re-check it cheaply.
+ */
+</file>
+
+<file path="src/lib/tailoring/engine.ts">
+import { z } from "zod";
+⋮----
+import { getByokKeys } from "@/lib/db/api-keys";
+import { getApplication, saveTailoringResult } from "@/lib/db/applications";
+import {
+  getUserCredits,
+  refundTailoringCredit,
+  spendCreditForTailoring,
+} from "@/lib/db/credits";
+import {
+  hasOwnKeyFor,
+  ModelNotAllowedError,
+  platformAllows,
+  runnableModelIds,
+} from "@/lib/billing/model-access";
+import { ensureMasterResume } from "@/lib/db/seed";
+import { generateStructured, type ProviderKeys } from "@/lib/llm/gateway";
+import { getSessionUser } from "@/lib/supabase/server";
+import type {
+  JobApplication,
+  MasterResume,
+  SkillGap,
+} from "@/lib/types/resume";
+⋮----
+import { applyGuard, guardProse, type GuardRejection } from "./guard";
+⋮----
+export interface TailorModelConfig {
+  /** Registry id of the model to use. */
+  modelId: string;
+  /** Registry ids to fall back to, in order. */
+  fallbackModelIds?: string[];
+}
+⋮----
+/** Registry id of the model to use. */
+⋮----
+/** Registry ids to fall back to, in order. */
+⋮----
+export interface TailorApplicationInput {
+  /** `applications.id` of the job to tailor for. */
+  jobId: string;
+  jobDescription: string;
+  modelConfig: TailorModelConfig;
+}
+⋮----
+/** `applications.id` of the job to tailor for. */
+⋮----
+export interface TailorApplicationResult {
+  application: JobApplication;
+  /** Model-proposed changes the verification guard threw out. */
+  rejections: GuardRejection[];
+}
+⋮----
+/** Model-proposed changes the verification guard threw out. */
+⋮----
+// Every field is required and unconstrained on purpose: strict structured
+// output needs all properties present, and numeric/length constraints are
+// not supported by every provider.
+⋮----
+/** The parts of the master resume the model needs, with their stable ids. */
+function resumeForPrompt(resume: MasterResume)
+⋮----
+// Certifications, languages and the like: evidence for keyword
+// matching. A patch cannot change them.
+⋮----
+function buildPrompt(
+  resume: MasterResume,
+  job: Pick<JobApplication, "companyName" | "roleTitle" | "jobDescription">,
+): string
+⋮----
+/**
+ * Tailors the signed-in user's master resume to one job and saves the
+ * result on the application row. The master resume is only read.
+ *
+ * Throws GatewayError if no model could produce a valid patch; the
+ * application row is left as it was. Before any model is called, throws
+ * ModelNotAllowedError when the plan does not cover the chosen model on
+ * platform keys, and InsufficientCreditsError when no credit is left.
+ */
+export async function tailorApplication({
+  jobId,
+  jobDescription,
+  modelConfig,
+}: TailorApplicationInput): Promise<TailorApplicationResult>
+⋮----
+// A run on the user's own key is free and stays on their keys: it never
+// falls back to a platform key. Any other run is limited to the models the
+// plan allows on platform keys, and costs one credit, taken before the
+// model is called and given back if the run fails.
+⋮----
+interface TailoringRun {
+  userId: string;
+  master: Awaited<ReturnType<typeof ensureMasterResume>>;
+  byokKeys: ProviderKeys;
+  job: NonNullable<Awaited<ReturnType<typeof getApplication>>>;
+  jobId: string;
+  jobDescription: string;
+  modelId: string;
+  fallbackModelIds: string[] | undefined;
+}
+⋮----
+async function runTailoring({
+  userId,
+  master,
+  byokKeys,
+  job,
+  jobId,
+  jobDescription,
+  modelId,
+  fallbackModelIds,
+}: TailoringRun): Promise<TailorApplicationResult>
+⋮----
+// De-duplicate keywords case-insensitively, keeping the first verdict.
+⋮----
+// The cover letter and recruiter message go through the same check,
+// sentence by sentence.
+const checked = (text: string, ref: string) =>
+⋮----
+// Computed here rather than asked of the model: full credit for a matched
+// keyword, half for an adjacent one.
+</file>
+
+<file path="src/lib/tailoring/guard.ts">
+import type {
+  ExperienceOverride,
+  MasterResume,
+  PatchModifications,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Verification guard for model-generated patches.
+ *
+ * The prompt asks the model not to invent anything; this code does not take
+ * its word for it. Anything in a patch that cannot be traced back to the
+ * master resume is dropped, and the original text is used instead:
+ *
+ *  - references to experience or bullet ids that do not exist
+ *  - rewrites that contain a number (metric, date, count) the original
+ *    bullet does not contain
+ *  - rewrites that introduce a skill the model itself classified as a gap
+ *  - highlighted skills that appear nowhere in the master resume
+ */
+⋮----
+export type GuardRejectionKind =
+  | "unknown_experience"
+  | "unknown_bullet"
+  | "unearned_number"
+  | "unverified_sentence"
+  | "unearned_skill";
+⋮----
+export interface GuardRejection {
+  kind: GuardRejectionKind;
+  /** The experience id, bullet id, skill or "summary" that was rejected. */
+  ref: string;
+  detail: string;
+}
+⋮----
+/** The experience id, bullet id, skill or "summary" that was rejected. */
+⋮----
+export interface GuardResult {
+  modifications: PatchModifications;
+  rejections: GuardRejection[];
+}
+⋮----
+/** Numbers with an optional unit suffix: "40k", "86%", "2M", "2019", "1.5x". */
+⋮----
+function numbersIn(text: string): Set<string>
+⋮----
+function containsTerm(haystack: string, term: string): boolean
+⋮----
+/** Everything the candidate has actually claimed, lowercased. */
+function masterCorpus(master: MasterResume): string
+⋮----
+/**
+ * @param gapSkills Skills the job asks for that the model classified as
+ *   adjacent or missing. A rewrite may not claim any of them unless the
+ *   master resume already mentions it.
+ */
+export function applyGuard(
+  master: MasterResume,
+  proposed: PatchModifications,
+  gapSkills: string[],
+): GuardResult
+⋮----
+const unearnedSkillIn = (text: string): string | null
+⋮----
+const newNumberIn = (text: string, allowed: Set<string>): string | null
+⋮----
+export interface ProseGuardResult {
+  text: string;
+  /** Sentences that were taken out. */
+  removed: string[];
+}
+⋮----
+/** Sentences that were taken out. */
+⋮----
+/**
+ * The same check for generated prose (cover letter, recruiter message).
+ * A sentence is removed if it states a number found in neither the master
+ * resume nor the job description, or claims a skill the model classified
+ * as a gap. Paragraph breaks are kept.
+ */
+export function guardProse(
+  text: string,
+  master: MasterResume,
+  jobDescription: string,
+  gapSkills: string[],
+): ProseGuardResult
+</file>
+
+<file path="src/lib/tailoring/prep.ts">
+import { z } from "zod";
+⋮----
+import {
+  hasOwnKeyFor,
+  platformAllows,
+  runnableModelIds,
+} from "@/lib/billing/model-access";
+import { getByokKeys } from "@/lib/db/api-keys";
+import { getApplication, saveInterviewPrep } from "@/lib/db/applications";
+import { getUserCredits } from "@/lib/db/credits";
+import { ensureMasterResume } from "@/lib/db/seed";
+import { generateStructured } from "@/lib/llm/gateway";
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import { getSessionUser } from "@/lib/supabase/server";
+import type {
+  InterviewQuestion,
+  JobApplication,
+  MasterResume,
+} from "@/lib/types/resume";
+⋮----
+import type { TailorModelConfig } from "./engine";
+⋮----
+/**
+ * Second stage of the tailoring pipeline: the interview briefing.
+ *
+ * Tailoring has already classified the job's keywords (direct matches,
+ * adjacent gaps, missing skills) and saved them on the application. This
+ * stage turns that analysis into questions to rehearse and topics to review.
+ */
+⋮----
+function resumeForPrompt(resume: MasterResume)
+⋮----
+function buildPrompt(application: JobApplication, resume: MasterResume): string
+⋮----
+function toQuestions(
+  prefix: string,
+  questions: z.infer<typeof questionSchema>[],
+): InterviewQuestion[]
+⋮----
+export interface GenerateInterviewPrepInput {
+  /** `applications.id`. The application must already be tailored. */
+  jobId: string;
+  modelConfig: TailorModelConfig;
+}
+⋮----
+/** `applications.id`. The application must already be tailored. */
+⋮----
+/**
+ * Generates the interview briefing for a tailored application and saves it
+ * alongside the existing match analysis in `applications.interview_prep`.
+ *
+ * Throws GatewayError if no model could produce a valid briefing.
+ */
+export async function generateInterviewPrep({
+  jobId,
+  modelConfig,
+}: GenerateInterviewPrepInput): Promise<JobApplication>
+⋮----
+// On the user's own key the chosen model runs as picked. Otherwise the
+// briefing is part of the application's one credit: it runs on the model
+// that tailored it (or the default model if the plan no longer covers
+// that one) and takes no second credit.
+</file>
+
+<file path="src/lib/types/billing.ts">
+/** Plans and credits. One credit is one full tailored application. */
+⋮----
+export type PlanTier = (typeof PLAN_TIERS)[number];
+⋮----
+export interface UserCredits {
+  balance: number;
+  tier: PlanTier;
+  /** ISO timestamp, or `null` for a plan that does not end. */
+  tierExpiresAt: string | null;
+}
+⋮----
+/** ISO timestamp, or `null` for a plan that does not end. */
+⋮----
+export type CreditReferenceType =
+  | "PURCHASE"
+  | "TAILOR_APPLICATION"
+  | "REFUND"
+  | "GRANT";
+⋮----
+export interface CreditLedgerEntry {
+  id: string;
+  /** Positive for a purchase, grant or refund; negative for usage. */
+  amount: number;
+  balanceAfter: number;
+  referenceType: CreditReferenceType;
+  /** Application id for usage; otherwise a payment or ledger reference. */
+  referenceId: string | null;
+  description: string;
+  createdAt: string;
+}
+⋮----
+/** Positive for a purchase, grant or refund; negative for usage. */
+⋮----
+/** Application id for usage; otherwise a payment or ledger reference. */
+⋮----
+export interface BillingSummary {
+  /** `null` until supabase/migrations/004_billing_and_credit_ledger.sql is run. */
+  credits: UserCredits | null;
+  ledger: CreditLedgerEntry[];
+  /** Free applications a free-plan user starts each day with. */
+  freeDailyCredits: number;
+}
+⋮----
+/** `null` until supabase/migrations/004_billing_and_credit_ledger.sql is run. */
+⋮----
+/** Free applications a free-plan user starts each day with. */
+⋮----
+/** Mirrors `public.free_daily_credits()` in the database. */
+⋮----
+/** `ActionResult` error code for a run refused for lack of credits. */
+⋮----
+/** `ActionResult` error code for a model the plan does not cover on platform keys. */
+</file>
+
+<file path="src/lib/types/calendar.ts">
+export type CalendarEventType = (typeof CALENDAR_EVENT_TYPES)[number];
+⋮----
+/** A user-created calendar entry, always linked to one application. */
+export interface CalendarEvent {
+  id: string;
+  userId: string;
+  applicationId: string;
+  type: CalendarEventType;
+  title: string;
+  /** ISO timestamp. For all-day events this is local midnight of the day. */
+  startsAt: string;
+  allDay: boolean;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+⋮----
+/** ISO timestamp. For all-day events this is local midnight of the day. */
+⋮----
+export interface CalendarEventsResult {
+  events: CalendarEvent[];
+  /** False until the calendar_events migration has been run. */
+  provisioned: boolean;
+}
+⋮----
+/** False until the calendar_events migration has been run. */
+</file>
+
+<file path="src/lib/types/email.ts">
+import type { EmailIntent } from "@/lib/inbound/email";
+⋮----
+/** A recruiter email received for an application, with its reply draft. */
+export interface EmailInteraction {
+  id: string;
+  applicationId: string;
+  sender: string;
+  senderName: string | null;
+  subject: string;
+  bodyText: string;
+  intent: EmailIntent;
+  /** A reply for the user to review and send themselves; never sent by ApplyOS. */
+  draftResponse: string | null;
+  receivedAt: string;
+  createdAt: string;
+}
+⋮----
+/** A reply for the user to review and send themselves; never sent by ApplyOS. */
+</file>
+
+<file path="src/lib/types/resume.ts">
+/**
+ * Core domain types.
+ *
+ * These are the camelCase shapes used throughout the app. The JSONB columns
+ * in `supabase/schema.sql` (`master_resumes.resume`, `applications.patch_document`,
+ * `applications.interview_prep`, `applications.ats_keywords`) store these
+ * objects verbatim; row-level columns are snake_case and mapped at the data
+ * access layer.
+ */
+⋮----
+// ---------------------------------------------------------------------------
+// Master resume (immutable)
+// ---------------------------------------------------------------------------
+⋮----
+/** `YYYY`, `YYYY-MM` or `YYYY-MM-DD`. */
+export type ResumeDate = string;
+⋮----
+export interface ResumeLink {
+  id: string;
+  label: string;
+  url: string;
+}
+⋮----
+export interface ResumeBasics {
+  name: string;
+  headline: string | null;
+  email: string;
+  phone: string | null;
+  location: string | null;
+  links: ResumeLink[];
+}
+⋮----
+export interface ResumeBullet {
+  id: string;
+  text: string;
+}
+⋮----
+export interface ResumeExperience {
+  id: string;
+  company: string;
+  title: string;
+  location: string | null;
+  startDate: ResumeDate;
+  /** `null` means current role. */
+  endDate: ResumeDate | null;
+  bullets: ResumeBullet[];
+}
+⋮----
+/** `null` means current role. */
+⋮----
+export interface ResumeEducation {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string | null;
+  startDate: ResumeDate | null;
+  endDate: ResumeDate | null;
+  bullets: ResumeBullet[];
+}
+⋮----
+export interface ResumeProject {
+  id: string;
+  name: string;
+  url: string | null;
+  technologies: string[];
+  bullets: ResumeBullet[];
+}
+⋮----
+export interface ResumeSkillGroup {
+  id: string;
+  category: string;
+  skills: string[];
+}
+⋮----
+/** One item in a user-defined section: a certification, a publication... */
+export interface ResumeCustomEntry {
+  id: string;
+  title: string;
+  /** Issuer, venue, proficiency level and the like. */
+  subtitle: string | null;
+  /** Free text as the resume states it, e.g. "2023" or "Mar 2021 - Present". */
+  date: string | null;
+  bullets: ResumeBullet[];
+}
+⋮----
+/** Issuer, venue, proficiency level and the like. */
+⋮----
+/** Free text as the resume states it, e.g. "2023" or "Mar 2021 - Present". */
+⋮----
+/** A section the user added, e.g. "Certifications" or "Languages". */
+export interface ResumeCustomSection {
+  id: string;
+  title: string;
+  entries: ResumeCustomEntry[];
+}
+⋮----
+/**
+ * The master resume AST. Every job, project, education entry and bullet
+ * carries a stable `id` that never changes once assigned, so a PatchDocument
+ * can address nodes without copying them.
+ *
+ * It is never edited in place: a change inserts a new MasterResumeVersion.
+ */
+export interface MasterResume {
+  schemaVersion: 1;
+  basics: ResumeBasics;
+  summary: string;
+  experience: ResumeExperience[];
+  education: ResumeEducation[];
+  projects: ResumeProject[];
+  skills: ResumeSkillGroup[];
+  customSections: ResumeCustomSection[];
+}
+⋮----
+/** One immutable row of `master_resumes`. Rows are only ever inserted. */
+export interface MasterResumeVersion {
+  id: string;
+  userId: string;
+  /** Monotonically increasing per user, starting at 1. */
+  version: number;
+  parentId: string | null;
+  createdAt: string;
+  resume: MasterResume;
+}
+⋮----
+/** Monotonically increasing per user, starting at 1. */
+⋮----
+/** A version without its content, for listing history. */
+export interface MasterResumeVersionSummary {
+  id: string;
+  version: number;
+  createdAt: string;
+}
+⋮----
+// ---------------------------------------------------------------------------
+// Delta patch
+// ---------------------------------------------------------------------------
+⋮----
+export interface AdaptedBullet {
+  /** Id of an existing bullet in the referenced master resume. */
+  id: string;
+  /** ATS-adapted phrasing of that bullet. */
+  text: string;
+}
+⋮----
+/** Id of an existing bullet in the referenced master resume. */
+⋮----
+/** ATS-adapted phrasing of that bullet. */
+⋮----
+export interface ExperienceOverride {
+  /** Id of an existing experience entry in the referenced master resume. */
+  experienceId: string;
+  /** Bullets to surface first, in display order. The rest keep master order. */
+  promotedBulletIds: string[];
+  adaptedBullets: AdaptedBullet[];
+}
+⋮----
+/** Id of an existing experience entry in the referenced master resume. */
+⋮----
+/** Bullets to surface first, in display order. The rest keep master order. */
+⋮----
+export interface PatchModifications {
+  /** Customised summary, or `null` to keep the master summary. */
+  summary: string | null;
+  highlightedSkills: string[];
+  experienceOverrides: ExperienceOverride[];
+}
+⋮----
+/** Customised summary, or `null` to keep the master summary. */
+⋮----
+/**
+ * Output of the tailoring pipeline. A patch can only re-order and re-word
+ * nodes that already exist in the master resume it references: it has no
+ * way to express a new job, date or bullet.
+ */
+export interface PatchDocument {
+  /** `master_resumes.id` this patch was computed against. */
+  masterResumeId: string;
+  modifications: PatchModifications;
+}
+⋮----
+/** `master_resumes.id` this patch was computed against. */
+⋮----
+// ---------------------------------------------------------------------------
+// Interview prep
+// ---------------------------------------------------------------------------
+⋮----
+export type SkillGapSeverity = "ADJACENT" | "CRITICAL";
+⋮----
+export interface SkillGap {
+  skill: string;
+  /** ADJACENT: related experience exists. CRITICAL: nothing comparable. */
+  severity: SkillGapSeverity;
+  note: string;
+}
+⋮----
+/** ADJACENT: related experience exists. CRITICAL: nothing comparable. */
+⋮----
+export interface InterviewQuestion {
+  id: string;
+  question: string;
+  /** Why this role is likely to ask it. */
+  rationale: string;
+  /** Points to make in the answer, drawn only from the master resume. */
+  talkingPoints: string[];
+}
+⋮----
+/** Why this role is likely to ask it. */
+⋮----
+/** Points to make in the answer, drawn only from the master resume. */
+⋮----
+export interface ReviewTopic {
+  topic: string;
+  /** Why it is worth reviewing before the first round. */
+  reason: string;
+}
+⋮----
+/** Why it is worth reviewing before the first round. */
+⋮----
+export interface InterviewPrep {
+  generatedByModel: string;
+  generatedAt: string;
+  /** Seniority the job description is targeting, e.g. "Senior". */
+  targetSeniority: string | null;
+  matchedSkills: string[];
+  skillGaps: SkillGap[];
+  // The three fields below are the interview briefing. They stay empty
+  // until it has been generated (src/lib/tailoring/prep.ts).
+  technicalQuestions: InterviewQuestion[];
+  behavioralQuestions: InterviewQuestion[];
+  reviewTopics: ReviewTopic[];
+}
+⋮----
+/** Seniority the job description is targeting, e.g. "Senior". */
+⋮----
+// The three fields below are the interview briefing. They stay empty
+// until it has been generated (src/lib/tailoring/prep.ts).
+⋮----
+// ---------------------------------------------------------------------------
+// Application assets
+// ---------------------------------------------------------------------------
+⋮----
+export interface CoverLetter {
+  /** The full letter body: paragraphs separated by blank lines. */
+  content: string;
+  /** The opening line, tied to this company and role. */
+  tailoredHook: string;
+  /** The closing ask. */
+  callToAction: string;
+}
+⋮----
+/** The full letter body: paragraphs separated by blank lines. */
+⋮----
+/** The opening line, tied to this company and role. */
+⋮----
+/** The closing ask. */
+⋮----
+export interface RecruiterOutreach {
+  subject: string;
+  /** Under 100 words, for LinkedIn InMail or a cold email. */
+  inmailBody: string;
+  /** One line, e.g. for a connection request note. */
+  shortHook: string;
+}
+⋮----
+/** Under 100 words, for LinkedIn InMail or a cold email. */
+⋮----
+/** One line, e.g. for a connection request note. */
+⋮----
+// ---------------------------------------------------------------------------
+// Job application
+// ---------------------------------------------------------------------------
+⋮----
+export type ApplicationStatus = (typeof APPLICATION_STATUSES)[number];
+⋮----
+export interface AtsKeywords {
+  matched: string[];
+  missing: string[];
+}
+⋮----
+export interface JobApplication {
+  id: string;
+  userId: string;
+  companyName: string;
+  roleTitle: string;
+  location: string | null;
+  /** LinkedIn, Indeed, Greenhouse, etc. */
+  jobBoardSource: string | null;
+  jobUrl: string | null;
+  jobDescription: string;
+  status: ApplicationStatus;
+  /** `null` until the application is actually submitted. */
+  appliedAt: string | null;
+  /** ATS keyword match, 0-100. `null` until the match engine has run. */
+  matchScore: number | null;
+  atsKeywords: AtsKeywords;
+  /** `null` until a tailored resume has been generated. */
+  patchDocument: PatchDocument | null;
+  /** Model registry id that produced `patchDocument`. */
+  tailoredByModel: string | null;
+  interviewPrep: InterviewPrep | null;
+  /** `null` until tailoring has produced one. */
+  coverLetter: CoverLetter | null;
+  recruiterOutreach: RecruiterOutreach | null;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+⋮----
+/** LinkedIn, Indeed, Greenhouse, etc. */
+⋮----
+/** `null` until the application is actually submitted. */
+⋮----
+/** ATS keyword match, 0-100. `null` until the match engine has run. */
+⋮----
+/** `null` until a tailored resume has been generated. */
+⋮----
+/** Model registry id that produced `patchDocument`. */
+⋮----
+/** `null` until tailoring has produced one. */
+</file>
+
+<file path="src/lib/action-result.ts">
+/** Return type of every server action: errors are data, never thrown. */
+export type ActionResult<T> =
+  | { ok: true; data: T }
+  | { ok: false; error: string; /** Machine-readable reason, when the UI acts on it. */ code?: string };
+⋮----
+| { ok: false; error: string; /** Machine-readable reason, when the UI acts on it. */ code?: string };
+</file>
+
+<file path="src/lib/diff.ts">
+export interface DiffToken {
+  text: string;
+  changed: boolean;
+}
+⋮----
+export interface WordDiff {
+  original: DiffToken[];
+  tailored: DiffToken[];
+}
+⋮----
+const normalize = (word: string): string
+⋮----
+/** Word-level diff via longest common subsequence. */
+export function diffWords(original: string, tailored: string): WordDiff
+</file>
+
+<file path="src/lib/store.ts">
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+⋮----
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import type { MasterResume } from "@/lib/types/resume";
+⋮----
+interface GatewayState {
+  /** `null` until the user picks one; the registry default applies. */
+  activeModelId: string | null;
+  setActiveModel: (modelId: string) => void;
+}
+⋮----
+/** `null` until the user picks one; the registry default applies. */
+⋮----
+/**
+ * The model choice is kept in this browser's localStorage. Hydration is
+ * deferred (`skipHydration`) so the first client render matches the server;
+ * the top bar rehydrates once mounted.
+ */
+⋮----
+// A stored id may name a model that has since left the registry.
+⋮----
+export interface ModelConfig {
+  modelId: string;
+  fallbackModelIds: string[];
+}
+⋮----
+/** The selected model, with every other registry model as a fallback. */
+export function useModelConfig(): ModelConfig
+⋮----
+/** A point in the draft's history. `null` means "the saved version". */
+type DraftSnapshot = MasterResume | null;
+⋮----
+/** Keystrokes closer together than this are one undo step. */
+⋮----
+interface ResumeDraftState {
+  /** `master_resumes.id` the draft was started from. */
+  baseId: string | null;
+  /** Unsaved edits, or `null` when the editor shows the saved version. */
+  draft: DraftSnapshot;
+  past: DraftSnapshot[];
+  future: DraftSnapshot[];
+  lastEditAt: number;
+  /**
+   * Replaces the draft and records the previous state for undo. With
+   * `coalesce`, edits made in quick succession share one undo step.
+   */
+  setDraft: (
+    baseId: string,
+    draft: DraftSnapshot,
+    options?: { coalesce?: boolean },
+  ) => void;
+  undo: () => void;
+  redo: () => void;
+  /** Puts a draft in place without history, e.g. one restored after a reload. */
+  restore: (baseId: string, draft: MasterResume) => void;
+  /** Forgets the draft and its history, e.g. once a new version is saved. */
+  clearDraft: () => void;
+}
+⋮----
+/** `master_resumes.id` the draft was started from. */
+⋮----
+/** Unsaved edits, or `null` when the editor shows the saved version. */
+⋮----
+/**
+   * Replaces the draft and records the previous state for undo. With
+   * `coalesce`, edits made in quick succession share one undo step.
+   */
+⋮----
+/** Puts a draft in place without history, e.g. one restored after a reload. */
+⋮----
+/** Forgets the draft and its history, e.g. once a new version is saved. */
+⋮----
+/**
+ * Unsaved edits to the master resume, with undo and redo. Nothing is ever
+ * thrown away by an edit, an import or a discard: each one pushes the
+ * previous state onto `past`. Nothing here reaches the database until the
+ * user saves a new version.
+ */
+⋮----
+// A different saved version is a different document: start over.
+⋮----
+/** Where the unsaved draft is mirrored so a reload or crash does not lose it. */
+export const resumeDraftStorageKey = (userId: string) => `applyos:draft:$
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+⋮----
+export function cn(...inputs: ClassValue[]): string
+⋮----
+export function formatDate(iso: string): string
+</file>
+
+<file path="src/middleware.ts">
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
+⋮----
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from "@/lib/supabase/env";
+⋮----
+/** Refreshes the Supabase session cookie and gates the app behind sign-in. */
+export async function middleware(request: NextRequest)
+⋮----
+getAll()
+setAll(cookiesToSet)
+⋮----
+// API routes answer with their own status codes instead of a redirect.
+</file>
+
+<file path="next.config.ts">
+import type { NextConfig } from "next";
+⋮----
+// Lets a verification build run beside a live dev server without
+// overwriting its output: NEXT_DIST_DIR=.next-verify pnpm build
+</file>
+
+<file path="postcss.config.mjs">
+
+</file>
+
+<file path="tsconfig.json">
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "allowJs": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".next-build-check/types/**/*.ts",
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+</file>
+
+<file path="src/app/api/ingest/route.ts">
+import { after, NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+⋮----
+import { hasOwnKeyFor, platformAllows } from "@/lib/billing/model-access";
+import { getByokKeys } from "@/lib/db/api-keys";
+import { createApplication } from "@/lib/db/applications";
+import { getUserCredits } from "@/lib/db/credits";
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import { getSessionUser } from "@/lib/supabase/server";
+import { tailorApplication } from "@/lib/tailoring/engine";
+⋮----
+/**
+ * Universal job ingest: saves a job to the pipeline and, unless told not
+ * to, tailors the resume for it after the response has been sent.
+ *
+ * Auth is the signed-in session cookie. The clipper extension sends it
+ * because it holds host permission for this origin; the `/clip` page sends
+ * it because it is same-origin.
+ */
+⋮----
+// Tailoring continues after the response and waits on an LLM.
+⋮----
+const optionalText = (max: number)
+⋮----
+/** True when the application has already been submitted. */
+⋮----
+/** Registry id of the model to tailor with. Defaults to the app default. */
+⋮----
+/**
+ * Extension origins accepted besides this site. Any extension is accepted
+ * unless CLIPPER_EXTENSION_ORIGINS (comma-separated, e.g.
+ * `chrome-extension://<id>`) pins the clipper. Either way the session cookie
+ * is what authenticates, and the browser only sends it to an extension that
+ * holds host permission for this site.
+ */
+function extensionOriginAllowed(origin: string): boolean
+⋮----
+/** Same-origin pages and browser extensions only: no third-party sites. */
+function originAllowed(request: NextRequest): boolean
+⋮----
+/** CORS for an extension caller; same-origin callers need none. */
+function corsHeaders(request: NextRequest): Record<string, string>
+⋮----
+function respond(request: NextRequest, body: unknown, status: number)
+⋮----
+/** Preflight for the extension's JSON POST. */
+export function OPTIONS(request: NextRequest)
+⋮----
+/**
+ * The model background tailoring will actually run on. A model the account
+ * cannot use on platform keys (see src/lib/billing/model-access.ts) is
+ * replaced by the default model here, because nobody is watching the
+ * background run to see the refusal. Fails closed: if the plan cannot be
+ * read, only the default model is used.
+ */
+async function runnableModelId(
+  userId: string,
+  requested: string,
+): Promise<string>
+⋮----
+export async function POST(request: NextRequest)
+⋮----
+// From here the job is saved, and nothing below may turn that into an
+// error response: tailoring is best effort.
+⋮----
+// Runs once the response is out. A failure or a timeout leaves the
+// job saved and untailored; it can be retried from its detail drawer.
+⋮----
+/** The model tailoring runs on; differs from the request when clamped. */
+</file>
+
+<file path="src/app/api/webhooks/email/route.ts">
+import { timingSafeEqual } from "node:crypto";
+⋮----
+import { after, NextResponse, type NextRequest } from "next/server";
+import { z } from "zod";
+⋮----
+import { platformAllows } from "@/lib/billing/model-access";
+import {
+  toJobApplication,
+  toMasterResumeVersion,
+  type ApplicationRow as FullApplicationRow,
+  type MasterResumeRow,
+} from "@/lib/db/mappers";
+import { draftReply, pickDraftModel } from "@/lib/inbound/draft-reply";
+import { classifyEmail, matchApplication } from "@/lib/inbound/email";
+import { getAdminClient } from "@/lib/supabase/admin";
+import type { PlanTier } from "@/lib/types/billing";
+⋮----
+// The reply draft is written after the response has gone out.
+⋮----
+/**
+ * Inbound recruiter email webhook (scaffold).
+ *
+ * Point an inbound-mail service (Postmark, Mailgun, SendGrid Inbound
+ * Parse, a Gmail forwarding script) at this endpoint with the header
+ * `x-webhook-secret: $EMAIL_WEBHOOK_SECRET` and a JSON body of
+ * `{ to, from, fromName?, subject, text }`, where `to` is the ApplyOS
+ * account's email address.
+ *
+ * There is no user session here, so it needs the service-role key and
+ * every query below filters by the user resolved from `to`.
+ *
+ * Each matched email is saved to `email_interactions` (migration 005) and a
+ * reply is drafted for the user to review in the application drawer. The
+ * draft is text only: nothing here, or anywhere in ApplyOS, sends email.
+ *
+ * Not yet handled: provider-specific payload shapes, signature schemes, and
+ * reading the proposed time out of the email (the staged event lands, all
+ * day, on the day the email arrives).
+ */
+⋮----
+function secretMatches(request: NextRequest, secret: string): boolean
+⋮----
+interface ApplicationRow {
+  id: string;
+  company_name: string;
+  job_url: string | null;
+  status: string;
+}
+⋮----
+export async function POST(request: NextRequest)
+⋮----
+// Same answer whether or not the address has an account.
+⋮----
+// A provider that redelivers must not stage a second event or spend a
+// second model call.
+⋮----
+// Keep what was received. If migration 005 has not been run this fails and
+// the rest of the webhook carries on as it always did.
+⋮----
+// Only ever moves an application forward.
+⋮----
+// Noon UTC shows as today's date in nearly every time zone.
+⋮----
+interface DraftJob {
+  admin: NonNullable<ReturnType<typeof getAdminClient>>;
+  userId: string;
+  applicationId: string;
+  interactionId: string;
+  email: z.infer<typeof emailSchema>;
+  intent: ReturnType<typeof classifyEmail>;
+}
+⋮----
+/**
+ * Writes the reply draft for a stored email. Costs no credit.
+ *
+ * It runs on platform keys only, with the model the plan allows. A user who
+ * has stored their own API key is skipped on purpose: their email and resume
+ * should only ever reach their own provider, so their draft is written from
+ * the drawer, with their key. Never throws: a failed draft just leaves the
+ * email without one.
+ */
+async function draftInBackground({
+  admin,
+  userId,
+  applicationId,
+  interactionId,
+  email,
+  intent,
+}: DraftJob): Promise<void>
+⋮----
+// A plan that has run out is the free plan; no credits row counts as free.
+⋮----
+// Belt and braces: the picker already enforces this.
+⋮----
+// Only into an empty draft: never over something the user wrote.
+</file>
+
+<file path="src/components/kanban/application-card.tsx">
+import { useDraggable } from "@dnd-kit/core";
+import { Loader2, MapPin, Send } from "lucide-react";
+⋮----
+import { MatchScore } from "@/components/match-score";
+import type { JobApplication } from "@/lib/types/resume";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+interface ApplicationCardBodyProps {
+  application: JobApplication;
+  isTailoring: boolean;
+  /** Leave room in the corner for the apply shortcut. */
+  reserveAction?: boolean;
+}
+⋮----
+/** Leave room in the corner for the apply shortcut. */
+⋮----
+className=
+⋮----
+// A saved, tailored job can be applied to from the drawer.
+⋮----
+// A sibling of the card, not a child: a button cannot hold a button.
+</file>
+
+<file path="src/components/settings-view.tsx">
+import { useQuery } from "@tanstack/react-query";
+import { LogOut } from "lucide-react";
+import type { ReactNode } from "react";
+⋮----
+import { signOutAction } from "@/app/actions/auth";
+import { BillingSection } from "@/components/billing-section";
+import { ByokKeyForm } from "@/components/byok-key-form";
+import { ModelSelector } from "@/components/model-selector";
+import { Button } from "@/components/ui/button";
+import { InlineAlert } from "@/components/ui/inline-alert";
+import { useWorkspace } from "@/components/workspace-provider";
+import { platformAllows } from "@/lib/billing/model-access";
+import { fetchBilling, fetchKeyHints, queryKeys } from "@/lib/api";
+import { getModel, MODEL_REGISTRY } from "@/lib/llm/models";
+import { useModelConfig } from "@/lib/store";
+import { cn } from "@/lib/utils";
+⋮----
+function Section({
+  id,
+  title,
+  description,
+  children,
+}: {
+  id?: string;
+  title: string;
+  description: string;
+  children: ReactNode;
+})
+⋮----
+function KeySource(
+⋮----
+className=
+⋮----
+// Shared with the Plans & credits section, so this costs no extra request.
+⋮----
+// What the active model will run on, for the status line under its name.
+</file>
+
+<file path="src/lib/api.ts">
+import { getKeyHintsAction } from "@/app/actions/api-keys";
+import { getBillingAction } from "@/app/actions/billing";
+import { listEmailInteractionsAction } from "@/app/actions/email";
+import { listCalendarEventsAction } from "@/app/actions/calendar";
+import {
+  getResumeVersionAction,
+  listResumeVersionsAction,
+} from "@/app/actions/resume";
+import type { KeyHints } from "@/lib/db/api-keys";
+import {
+  toJobApplication,
+  toMasterResumeVersion,
+  type ApplicationRow,
+  type MasterResumeRow,
+} from "@/lib/db/mappers";
+import { createClient } from "@/lib/supabase/client";
+import type { BillingSummary } from "@/lib/types/billing";
+import type { CalendarEventsResult } from "@/lib/types/calendar";
+import type { EmailInteraction } from "@/lib/types/email";
+import type {
+  JobApplication,
+  MasterResumeVersion,
+  MasterResumeVersionSummary,
+} from "@/lib/types/resume";
+⋮----
+/**
+ * Browser-side reads for TanStack Query. Keys include the user id so one
+ * account's cached data can never be shown to the next account that signs
+ * in on the same browser.
+ */
+⋮----
+export async function fetchApplications(): Promise<JobApplication[]>
+⋮----
+export async function fetchMasterResume(): Promise<MasterResumeVersion | null>
+⋮----
+export async function fetchKeyHints(): Promise<KeyHints>
+⋮----
+export async function fetchEmailInteractions(
+  applicationId: string,
+): Promise<EmailInteraction[]>
+⋮----
+export async function fetchBilling(): Promise<BillingSummary>
+⋮----
+export async function fetchCalendarEvents(): Promise<CalendarEventsResult>
+⋮----
+export async function fetchResumeVersions(): Promise<MasterResumeVersionSummary[]>
+⋮----
+export async function fetchResumeVersion(
+  versionId: string,
+): Promise<MasterResumeVersion>
+</file>
+
+<file path="package.json">
+{
+  "name": "applyos",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.6",
+  "scripts": {
+    "dev": "next dev",
+    "clean": "node -e \"require('fs').rmSync('.next',{recursive:true,force:true})\"",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "@google/genai": "^2.28.0",
+    "@radix-ui/react-dialog": "^1.2.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.25",
+    "@radix-ui/react-slot": "^1.4.0",
+    "@radix-ui/react-tooltip": "^1.3.0",
+    "@react-pdf/renderer": "^4.9.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.3",
+    "@tanstack/react-query": "^5.104.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.54.0",
+    "next": "^15.5.27",
+    "openai": "^7.31.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "server-only": "^0.0.1",
+    "sonner": "^2.0.8",
+    "tailwind-merge": "^3.7.0",
+    "unpdf": "^1.8.1",
+    "zod": "^4.6.5",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^26.6.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  }
+}
+</file>
+
+<file path="src/components/application-drawer.tsx">
+import {
+  Building2,
+  ExternalLink,
+  Loader2,
+  Mail,
+  MapPin,
+  Send,
+  Sparkles,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+⋮----
+import { ApplicationAssets } from "@/components/application-assets";
+import {
+  ApplicationCommunications,
+  useEmailInteractions,
+} from "@/components/application-communications";
+import { InterviewPrep } from "@/components/interview-prep";
+import { MatchScore } from "@/components/match-score";
+import { ResumeDiffViewer } from "@/components/resume-diff-viewer";
+import { ResumePreview } from "@/components/resume-preview";
+import { STATUS_LABELS } from "@/components/status-badge";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogDescription,
+  DialogTitle,
+  SheetContent,
+} from "@/components/ui/dialog";
+import { getModel } from "@/lib/llm/models";
+import {
+  APPLICATION_STATUSES,
+  type ApplicationStatus,
+  type JobApplication,
+  type MasterResumeVersion,
+} from "@/lib/types/resume";
+import { cn, formatDate } from "@/lib/utils";
+⋮----
+interface ApplicationDrawerProps {
+  application: JobApplication | null;
+  /** Changes on every open, so the drawer starts on `initialTab` again. */
+  openKey: number;
+  initialTab: DrawerTab;
+  master: MasterResumeVersion | null;
+  isTailoring: boolean;
+  isPreparing: boolean;
+  onClose: () => void;
+  onMove: (
+    applicationId: string,
+    status: ApplicationStatus,
+  ) => void | Promise<void>;
+  onTailor: (applicationId: string) => void;
+  onPrepare: (applicationId: string) => void;
+  /** Called with the saved row when an asset is edited in the drawer. */
+  onUpdated: (application: JobApplication) => void;
+}
+⋮----
+/** Changes on every open, so the drawer starts on `initialTab` again. */
+⋮----
+/** Called with the saved row when an asset is edited in the drawer. */
+⋮----
+export type DrawerTab = (typeof TABS)[number]["id"];
+⋮----
+type DrawerBodyProps = Omit<
+  ApplicationDrawerProps,
+  "application" | "onClose" | "openKey"
+> & {
+  application: JobApplication;
+};
+⋮----
+// A patch only makes sense against the exact version it was computed from.
+⋮----
+/** Opens a link in a new tab, severed from this one, as an anchor would. */
+⋮----
+/**
+ * Assisted apply for a saved, tailored job: downloads the tailored PDF,
+ * copies the cover letter (or recruiter note), opens the posting and moves
+ * the card to Applied. The submission itself stays with the user.
+ */
+⋮----
+/** The patch was made against the current master resume. */
+⋮----
+// The PDF engine is large: have it loaded by the time the button is used.
+⋮----
+// Copy first, while the click still counts as a user gesture.
+⋮----
+// Reported in the final toast.
+⋮----
+// A failed PDF stops here: nothing is opened and nothing is marked.
+⋮----
+onMove(application.id, event.target.value as ApplicationStatus)
+⋮----
+className=
+</file>
+
+</files>

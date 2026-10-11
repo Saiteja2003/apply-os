@@ -17,7 +17,7 @@ import {
   ApplicationCommunications,
   useEmailInteractions,
 } from "@/components/application-communications";
-import { InterviewPrep } from "@/components/interview-prep";
+import { InterviewPrepStudio } from "@/components/interview/interview-prep-studio";
 import { MatchScore } from "@/components/match-score";
 import { ResumeDiffViewer } from "@/components/resume-diff-viewer";
 import { ResumePreview } from "@/components/resume-preview";
@@ -452,10 +452,12 @@ function DrawerBody({
           />
         )}
         {tab === "prep" && (
-          <InterviewPrep
+          <InterviewPrepStudio
             application={application}
+            master={master}
             isPreparing={isPreparing}
             onGenerate={() => onPrepare(application.id)}
+            onUpdated={onUpdated}
           />
         )}
         {tab === "mail" && (

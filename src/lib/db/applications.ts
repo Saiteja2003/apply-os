@@ -138,6 +138,53 @@ export async function saveInterviewPrep(
   return toJobApplication(data);
 }
 
+/**
+ * Atomically merges a single question's practice progress into the existing
+ * `interview_prep` JSONB blob without overwriting the generated questions.
+ *
+ * Strategy: read the current row, merge the `progress` key in TypeScript,
+ * then write the merged object back. The entire operation runs server-side
+ * so there is no client-visible latency between read and write.
+ */
+export async function saveInterviewPrepProgress(
+  userId: string,
+  applicationId: string,
+  questionId: string,
+  questionProgress: import("@/lib/types/interview").QuestionProgress,
+): Promise<JobApplication> {
+  const supabase = await createClient();
+
+  // Read current row first so we can merge rather than overwrite.
+  const { data: current, error: readError } = await supabase
+    .from("applications")
+    .select("interview_prep")
+    .eq("user_id", userId)
+    .eq("id", applicationId)
+    .maybeSingle<Pick<ApplicationRow, "interview_prep">>();
+
+  if (readError) throw new Error(`Could not load interview prep: ${readError.message}`);
+  if (!current?.interview_prep) throw new Error("Interview prep not found.");
+
+  const merged: InterviewPrep = {
+    ...current.interview_prep,
+    progress: {
+      ...(current.interview_prep.progress ?? {}),
+      [questionId]: questionProgress,
+    },
+  };
+
+  const { data, error } = await supabase
+    .from("applications")
+    .update({ interview_prep: merged })
+    .eq("user_id", userId)
+    .eq("id", applicationId)
+    .select("*")
+    .single<ApplicationRow>();
+
+  if (error) throw new Error(`Could not save progress: ${error.message}`);
+  return toJobApplication(data);
+}
+
 export interface TailoringResult {
   matchScore: number | null;
   atsKeywords: AtsKeywords;
