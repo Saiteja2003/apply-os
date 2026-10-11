@@ -31,14 +31,20 @@ import type { JobApplication } from "@/lib/types/resume";
 import { cn } from "@/lib/utils";
 
 export const EVENT_TYPE_LABELS: Record<CalendarEventType, string> = {
-  SCREENING: "Screening call",
   INTERVIEW: "Interview",
+  SCREENING: "Screening call",
+  FOLLOW_UP: "Follow-up reminder",
+  DEADLINE: "Deadline",
+  OFFER_EXPIRY: "Offer expiry",
   NOTE: "Note",
 };
 
 const TITLE_PLACEHOLDERS: Record<CalendarEventType, string> = {
-  SCREENING: "Recruiter screen",
   INTERVIEW: "Technical round, onsite loop…",
+  SCREENING: "Recruiter screen",
+  FOLLOW_UP: "Follow-up reminder",
+  DEADLINE: "Application deadline",
+  OFFER_EXPIRY: "Offer decision date",
   NOTE: "What to remember",
 };
 

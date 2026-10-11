@@ -6,6 +6,7 @@ import {
   Bookmark,
   ChevronLeft,
   ChevronRight,
+  Clock,
   MessagesSquare,
   Phone,
   Plus,
@@ -60,6 +61,10 @@ const EMERALD =
   "border-emerald-500/25 bg-emerald-500/10 text-emerald-200 hover:border-emerald-400/50 hover:bg-emerald-500/20";
 const AMBER =
   "border-amber-500/25 bg-amber-500/10 text-amber-200 hover:border-amber-400/50 hover:bg-amber-500/20";
+const ROSE =
+  "border-rose-500/25 bg-rose-500/10 text-rose-200 hover:border-rose-400/50 hover:bg-rose-500/20";
+const PURPLE =
+  "border-purple-500/25 bg-purple-500/10 text-purple-200 hover:border-purple-400/50 hover:bg-purple-500/20";
 const ZINC =
   "border-zinc-700/70 bg-zinc-800/50 text-zinc-300 hover:border-zinc-600 hover:bg-zinc-800";
 
@@ -85,6 +90,18 @@ const KIND_META: Record<
     icon: BellRing,
     chip: AMBER,
     dot: "bg-amber-400",
+  },
+  deadline: {
+    label: "Deadline",
+    icon: Clock,
+    chip: ROSE,
+    dot: "bg-rose-400",
+  },
+  offer_expiry: {
+    label: "Offer expiry",
+    icon: BellRing,
+    chip: PURPLE,
+    dot: "bg-purple-400",
   },
   note: { label: "Note", icon: StickyNote, chip: ZINC, dot: "bg-zinc-500" },
   saved: { label: "Saved", icon: Bookmark, chip: ZINC, dot: "bg-zinc-500" },

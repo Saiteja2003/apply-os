@@ -75,6 +75,8 @@ export type CalendarItemKind =
   | "follow_up"
   | "screening"
   | "interview"
+  | "deadline"
+  | "offer_expiry"
   | "note";
 
 export interface CalendarItem {
@@ -98,16 +100,21 @@ const KIND_ORDER: CalendarItemKind[] = [
   "interview",
   "screening",
   "follow_up",
+  "deadline",
+  "offer_expiry",
   "applied",
   "saved",
   "note",
 ];
 
-const EVENT_KINDS = {
-  SCREENING: "screening",
+const EVENT_KINDS: Record<CalendarEvent["type"], CalendarItemKind> = {
   INTERVIEW: "interview",
+  SCREENING: "screening",
+  FOLLOW_UP: "follow_up",
+  DEADLINE: "deadline",
+  OFFER_EXPIRY: "offer_expiry",
   NOTE: "note",
-} as const satisfies Record<CalendarEvent["type"], CalendarItemKind>;
+};
 
 /** Calendar items grouped by local day key, each day sorted for display. */
 export function buildCalendarItems(
@@ -166,8 +173,7 @@ export function buildCalendarItems(
   }
 
   for (const event of events) {
-    const application = byId.get(event.applicationId);
-    if (!application) continue;
+    const application = event.applicationId ? byId.get(event.applicationId) : null;
     const startsAt = new Date(event.startsAt);
     items.push({
       key: `event:${event.id}`,
@@ -177,10 +183,10 @@ export function buildCalendarItems(
         ? -1
         : startsAt.getHours() * 60 + startsAt.getMinutes(),
       title: event.title,
-      detail: application.companyName,
-      applicationId: application.id,
-      company: application.companyName,
-      role: application.roleTitle,
+      detail: application ? application.companyName : "Milestone",
+      applicationId: application ? application.id : (event.applicationId ?? ""),
+      company: application ? application.companyName : "General",
+      role: application ? application.roleTitle : "",
       event,
       due: false,
     });
